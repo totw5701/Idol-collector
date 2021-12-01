@@ -4,6 +4,7 @@ import com.idolcollector.idolcollector.domain.comment.Comment;
 import com.idolcollector.idolcollector.domain.member.Member;
 import com.idolcollector.idolcollector.domain.post.Post;
 import lombok.Getter;
+import org.springframework.lang.Nullable;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -23,10 +24,12 @@ public class Blame {
 
     @ManyToOne
     @JoinColumn(name = "POST_ID")
+    @Nullable
     private Post post;
 
     @ManyToOne
     @JoinColumn(name = "COMMENT_ID")
+    @Nullable
     private Comment comment;
 
     @ManyToOne

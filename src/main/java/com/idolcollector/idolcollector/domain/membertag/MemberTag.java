@@ -3,11 +3,13 @@ package com.idolcollector.idolcollector.domain.membertag;
 import com.idolcollector.idolcollector.domain.member.Member;
 import com.idolcollector.idolcollector.domain.tag.Tag;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
 @Entity
 @Getter
+@NoArgsConstructor
 public class MemberTag {
 
     @Id
@@ -22,4 +24,9 @@ public class MemberTag {
     @ManyToOne
     @JoinColumn(name = "TAG_ID")
     private Tag tag;
+
+    public MemberTag(Member member, Tag tag) {
+        this.member = member;
+        this.tag = tag;
+    }
 }

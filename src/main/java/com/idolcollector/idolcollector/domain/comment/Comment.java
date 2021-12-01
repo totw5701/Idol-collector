@@ -2,13 +2,16 @@ package com.idolcollector.idolcollector.domain.comment;
 
 import com.idolcollector.idolcollector.domain.member.Member;
 import com.idolcollector.idolcollector.domain.post.Post;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
 @Getter
+@NoArgsConstructor
 public class Comment {
 
     @Id
@@ -28,4 +31,15 @@ public class Comment {
     private int likes;
     private LocalDateTime createDate;
     private LocalDateTime modifyDate;
+
+    public Comment(Member member, Post post, String content) {
+        this.member = member;
+        this.post = post;
+        this.content = content;
+        this.likes = 0;
+        this.createDate = LocalDateTime.now();
+        this.modifyDate = LocalDateTime.now();
+    }
+
+    
 }

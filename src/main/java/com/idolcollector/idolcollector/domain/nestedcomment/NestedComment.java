@@ -4,12 +4,14 @@ import com.idolcollector.idolcollector.domain.comment.Comment;
 import com.idolcollector.idolcollector.domain.member.Member;
 import com.idolcollector.idolcollector.domain.post.Post;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
 @Getter
+@NoArgsConstructor
 public class NestedComment {
 
     @Id
@@ -29,4 +31,27 @@ public class NestedComment {
     private int likes;
     private LocalDateTime createDate;
     private LocalDateTime modifyDate;
+
+
+    public NestedComment(Member member, Comment comment, String content) {
+        this.member = member;
+        this.comment = comment;
+        this.content = content;
+        this.likes = 0;
+        this.createDate = LocalDateTime.now();
+        this.modifyDate = LocalDateTime.now();
+    }
+
+
+    // 비즈니스 로직
+    public Long update(String content) {
+        this.content = content;
+        return this.id;
+    }
+
+
+    public int addLike() {
+        return ++this.likes;
+    }
+
 }
