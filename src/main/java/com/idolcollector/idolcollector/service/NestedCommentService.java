@@ -26,17 +26,6 @@ public class NestedCommentService {
     private final MemberRepository memberRepository;
     private final CommentRepository commentRepository;
 
-    public List<NestedCommentResponseDto> findAllInComment(Long commentId) {
-        List<NestedComment> nestedComments = nestedCommentRepository.findAllInComment(commentId);
-
-        List<NestedCommentResponseDto> list = new ArrayList<>();
-        for (NestedComment nestedComment : nestedComments) {
-            list.add(new NestedCommentResponseDto(nestedComment));
-        }
-
-        return list;
-    }
-
 
     public NestedCommentResponseDto findById(Long id) {
         NestedComment nestedComment = nestedCommentRepository.findById(id)
@@ -66,6 +55,14 @@ public class NestedCommentService {
         return nComment.update(form.getContent());
     }
 
+    @Transactional
+    public Long delete(Long id) {
+        NestedComment nComment = nestedCommentRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 대댓글입니다. id=" + id));
+
+        nestedCommentRepository.delete(nComment);
+        return id;
+    }
 
     @Transactional
     public int like(Long id) {

@@ -41,5 +41,5 @@ public class Comment {
         this.modifyDate = LocalDateTime.now();
     }
 
-    
+
 }
