@@ -55,8 +55,8 @@ class MemberRepositoryTest {
 
         //Then
         assertThat(find.getNickName()).isEqualTo("nick");
-
     }
+
 
     @Test
     void 태그로_회원_모두_가져오기() {
@@ -79,7 +79,6 @@ class MemberRepositoryTest {
 
         //Then
         assertThat(members.size()).isEqualTo(1);
-
     }
 
 }

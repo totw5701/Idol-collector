@@ -24,11 +24,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 @SpringBootTest
 class CommentRepositoryTest {
 
-    @Autowired private NestedCommentRepository nestedCommentRepository;
-    @Autowired private MemberRepository memberRepository;
-    @Autowired private CommentRepository commentRepository;
-    @Autowired private RanksRepository ranksRepository;
-    @Autowired private PostRepository postRepository;
+    @Autowired NestedCommentRepository nestedCommentRepository;
+    @Autowired MemberRepository memberRepository;
+    @Autowired CommentRepository commentRepository;
+    @Autowired RanksRepository ranksRepository;
+    @Autowired PostRepository postRepository;
 
     @BeforeEach
     void before() {
@@ -40,9 +40,9 @@ class CommentRepositoryTest {
         postRepository.save(post);
     }
 
-
     @Test
     void 저장_조회() {
+
         // Given
         Member member = memberRepository.findAll().get(0);
         Post post = postRepository.findAll().get(0);
@@ -56,12 +56,14 @@ class CommentRepositoryTest {
         assertThat(find.getContent()).isEqualTo("content");
     }
 
+
     @Test
     void 수정() {
 
         //
 
     }
+
 
     @Test
     void 삭제() {
@@ -81,8 +83,8 @@ class CommentRepositoryTest {
 
         // Then
         assertThat(result.isPresent()).isEqualTo(false);
-
     }
+
 
     @Test
     void post_id로_댓글_모두_가져오기() {

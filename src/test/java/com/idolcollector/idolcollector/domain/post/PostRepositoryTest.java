@@ -46,6 +46,7 @@ class PostRepositoryTest {
 
     @Test
     void 저장_조회() {
+
         //Given
         List<Member> members = memberRepository.findAll();
         Member member = members.get(0);
@@ -62,8 +63,10 @@ class PostRepositoryTest {
         assertThat(find.getTitle()).isEqualTo("title");
     }
 
+
     @Test
     void 삭제() {
+
         //Given
         Member member = memberRepository.findAll().get(0);
 
@@ -79,8 +82,10 @@ class PostRepositoryTest {
         assertThat(result.isPresent()).isEqualTo(false);
     }
 
+
     @Test
     void 회원_게시글_모두조회() {
+
         //Given
         Member member = memberRepository.findAll().get(0);
 
@@ -97,8 +102,10 @@ class PostRepositoryTest {
         assertThat(posts.size()).isEqualTo(2);
     }
 
+
     @Test
     void 태그로_모든_게시글_조회() {
+
         //Given
         Member member = memberRepository.findAll().get(0);
 
@@ -118,8 +125,10 @@ class PostRepositoryTest {
         assertThat(posts.size()).isEqualTo(1);
     }
 
+
     @Test
     void 회원이_스크랩한_모든_게시글_조회() {
+
         //Given
         Member member = memberRepository.findAll().get(0);
 
@@ -135,5 +144,4 @@ class PostRepositoryTest {
         //Then
         assertThat(posts.size()).isEqualTo(1);
     }
-
 }

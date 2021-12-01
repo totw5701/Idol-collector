@@ -28,7 +28,6 @@ class RanksRepositoryTest {
 
         // Then
         assertThat(find.getRoll()).isEqualTo(ranks.getRoll());
-
     }
 
 }

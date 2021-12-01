@@ -42,9 +42,9 @@ class NestedCommentRepositoryTest {
         commentRepository.save(comment);
     }
 
-
     @Test
     void 저장_조회() {
+
         // Given
         Member member = memberRepository.findAll().get(0);
         Comment comment = commentRepository.findAll().get(0);
@@ -57,6 +57,7 @@ class NestedCommentRepositoryTest {
         // Then
         assertThat(nestedComment.getContent()).isEqualTo("test");
     }
+
 
     @Test
     void 수정() {
@@ -78,8 +79,8 @@ class NestedCommentRepositoryTest {
 
         //Then
         assertThat(find.getContent()).isEqualTo("updated");
-
     }
+
 
     @Test
     void 삭제() {
@@ -98,8 +99,8 @@ class NestedCommentRepositoryTest {
 
         //Then
         assertThat(find.isPresent()).isEqualTo(false);
-
     }
+
 
     @Test
     void 댓글_id로_대댓글_모두_가져오기() {
@@ -119,5 +120,4 @@ class NestedCommentRepositoryTest {
         // Then
         assertThat(nComments.size()).isEqualTo(2);
     }
-
 }

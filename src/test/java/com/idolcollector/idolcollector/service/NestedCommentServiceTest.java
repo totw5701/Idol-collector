@@ -28,8 +28,7 @@ import static org.assertj.core.api.Assertions.*;
 @Transactional
 class NestedCommentServiceTest {
 
-    @Autowired
-    private NestedCommentService nestedCommentService;
+    @Autowired NestedCommentService nestedCommentService;
 
     @Autowired NestedCommentRepository nestedCommentRepository;
     @Autowired MemberRepository memberRepository;
@@ -64,7 +63,6 @@ class NestedCommentServiceTest {
 
         // Then
         assertThat(nComment.getContent()).isEqualTo("nest comment test");
-
     }
 
 
@@ -87,6 +85,7 @@ class NestedCommentServiceTest {
         assertThat(result.getCreateDate()).isNotEqualTo(result.getModifyDate());
     }
 
+
     @Test
     void 삭제() {
 
@@ -101,8 +100,8 @@ class NestedCommentServiceTest {
 
         // Then
         assertThat(result.size()).isEqualTo(0);
-
     }
+
 
     @Test
     void 좋아요() {
@@ -119,6 +118,5 @@ class NestedCommentServiceTest {
 
         // Then
         assertThat(find.getLikes()).isEqualTo(1);
-
     }
 }
