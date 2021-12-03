@@ -23,7 +23,7 @@ public class NestedComment {
     @JoinColumn(name = "MEMBER_ID")
     private Member member;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "COMMENT_ID")
     private Comment comment;
 

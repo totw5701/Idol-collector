@@ -18,7 +18,7 @@ public class Notice {
     @JoinColumn(name = "NOTICE_TAG_ID")
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "MEMBER_ID")
     private Member member;
 
