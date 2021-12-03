@@ -182,29 +182,29 @@ class PostServiceTest {
         }).isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("존재하지 않는 게시글 입니다.");
 
-//        assertThatThrownBy(() -> {
-//            commentRepository.findById(comment.getId())
-//                    .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 댓글 입니다."));
-//        }).isInstanceOf(IllegalArgumentException.class)
-//                .hasMessage("존재하지 않는 댓글 입니다.");
-//
-//        assertThatThrownBy(() -> {
-//            commentRepository.findById(comment2.getId())
-//                    .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 댓글 입니다."));
-//        }).isInstanceOf(IllegalArgumentException.class)
-//                .hasMessage("존재하지 않는 댓글 입니다.");
-//
-//        assertThatThrownBy(() -> {
-//            commentRepository.findById(nComment.getId())
-//                    .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 대댓글 입니다."));
-//        }).isInstanceOf(IllegalArgumentException.class)
-//                .hasMessage("존재하지 않는 댓글 입니다.");
-//
-//        assertThatThrownBy(() -> {
-//            commentRepository.findById(nComment2.getId())
-//                    .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 대댓글 입니다."));
-//        }).isInstanceOf(IllegalArgumentException.class)
-//                .hasMessage("존재하지 않는 댓글 입니다.");
+        assertThatThrownBy(() -> {
+            commentRepository.findById(comment.getId())
+                    .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 댓글 입니다."));
+        }).isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("존재하지 않는 댓글 입니다.");
+
+        assertThatThrownBy(() -> {
+            commentRepository.findById(comment2.getId())
+                    .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 댓글 입니다."));
+        }).isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("존재하지 않는 댓글 입니다.");
+
+        assertThatThrownBy(() -> {
+            commentRepository.findById(nComment.getId())
+                    .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 대댓글 입니다."));
+        }).isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("존재하지 않는 대댓글 입니다.");
+
+        assertThatThrownBy(() -> {
+            commentRepository.findById(nComment2.getId())
+                    .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 대댓글 입니다."));
+        }).isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("존재하지 않는 대댓글 입니다.");
 
 
     }

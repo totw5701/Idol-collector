@@ -39,10 +39,10 @@ public class Post {
     private String storeFileName;
     private String oriFileName;
 
-    @OneToMany(mappedBy = "post")
+    @OneToMany(mappedBy = "post", orphanRemoval = true)
     private List<Comment> comments = new ArrayList<>();
 
-    @OneToMany(mappedBy = "post")
+    @OneToMany(mappedBy = "post", orphanRemoval = true)
     private List<PostTag> postTags = new ArrayList<>();
 
     @OneToMany(mappedBy = "post")

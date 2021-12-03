@@ -38,7 +38,7 @@ public class Comment {
     private LocalDateTime createDate;
     private LocalDateTime modifyDate;
 
-    @OneToMany(mappedBy = "comment")
+    @OneToMany(mappedBy = "comment", orphanRemoval = true)
     private List<NestedComment> nComment = new ArrayList<>();
 
     public Comment(Member member, Post post, String content) {

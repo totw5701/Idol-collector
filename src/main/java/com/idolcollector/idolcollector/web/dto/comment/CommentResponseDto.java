@@ -34,11 +34,12 @@ public class CommentResponseDto {
         this.modifyDate = comment.getModifyDate();
 
         this.nestedComments = new ArrayList<>();
-        if (comment.getNComment() != null) {
-            List<NestedComment> nComment = comment.getNComment();
-            for (NestedComment nestedComment : nComment) {
-                this.nestedComments.add(new NestedCommentResponseDto(nestedComment));
-            }
+
+
+        List<NestedComment> nComment = comment.getNComment();
+        for (NestedComment nestedComment : nComment) {
+            this.nestedComments.add(new NestedCommentResponseDto(nestedComment));
         }
+
     }
 }

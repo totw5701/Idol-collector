@@ -67,23 +67,7 @@ public class PostService {
         List<TagResponseDto> tags = tagService.findAllinPost(id);
         */
 
-        // 댓글 넣기.
-        List<CommentResponseDto> comments = new ArrayList<>();
-
-        List<Comment> rowComments = post.getComments();
-        for (Comment rowComment : rowComments) {
-            comments.add(new CommentResponseDto(rowComment));
-        }
-
-        // 태그 넣기.
-        List<TagResponseDto> tags = new ArrayList<>();
-
-        List<PostTag> postTags = post.getPostTags();
-        for (PostTag postTag : postTags) {
-            tags.add(new TagResponseDto(postTag.getTag()));
-        }
-
-        return new PostResponseDto(post, comments, tags);
+        return new PostResponseDto(post);
     }
 
     @Transactional
@@ -95,7 +79,6 @@ public class PostService {
 
         tagRepository.deleteAllByPostId(form.getPostId());
 
-        System.out.println("form.getTags() = " + form.getTags());
         if (form.getTags() != null) {
             tagService.createPostTag(form.getTags(), post);
         }
