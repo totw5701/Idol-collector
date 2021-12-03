@@ -11,6 +11,8 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class NestedCommentResponseDto {
 
+    private Long id;
+
     private String authorNickName;
     private Long authorId;
     private String content;
@@ -21,6 +23,7 @@ public class NestedCommentResponseDto {
 
 
     public NestedCommentResponseDto(NestedComment comment) {
+        this.id = comment.getId();
         this.authorId = comment.getMember().getId();
         this.authorNickName = comment.getMember().getNickName();
         this.content = comment.getContent();

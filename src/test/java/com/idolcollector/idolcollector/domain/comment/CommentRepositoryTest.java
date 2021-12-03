@@ -14,6 +14,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.Parameter;
+import javax.persistence.Query;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -38,6 +40,7 @@ class CommentRepositoryTest {
         memberRepository.save(member);
         Post post = new Post(member, "title", "conten", "ste", "ori");
         postRepository.save(post);
+
     }
 
     @Test
@@ -100,10 +103,28 @@ class CommentRepositoryTest {
         commentRepository.save(comment2);
 
         // When
-        List<Comment> comments = commentRepository.findAllInPost(post.getId());
+        List<Comment> comments = commentRepository.findAllByPostId(post.getId());
 
         // Then
         assertThat(comments.size()).isEqualTo(2);
     }
 
+    @Test
+    void 회원의_댓글_모두_가져오기() {
+        // Given
+        Member member = memberRepository.findAll().get(0);
+        Post post = postRepository.findAll().get(0);
+
+        Comment comment = new Comment(member, post, "content");
+        Comment comment2 = new Comment(member, post, "content");
+
+        commentRepository.save(comment);
+        commentRepository.save(comment2);
+
+        // When
+        List<Comment> comments = commentRepository.findAllByMemberId(member.getId());
+
+        // Then
+        assertThat(comments.size()).isEqualTo(2);
+    }
 }

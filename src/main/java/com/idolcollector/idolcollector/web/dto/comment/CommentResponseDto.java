@@ -1,7 +1,8 @@
-package com.idolcollector.idolcollector.web.dto;
+package com.idolcollector.idolcollector.web.dto.comment;
 
 import com.idolcollector.idolcollector.domain.comment.Comment;
 import com.idolcollector.idolcollector.domain.nestedcomment.NestedComment;
+import com.idolcollector.idolcollector.web.dto.nestedcomment.NestedCommentResponseDto;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
@@ -9,6 +10,8 @@ import java.util.List;
 
 @Getter
 public class CommentResponseDto {
+
+    private Long id;
 
     private String authorNickName;
     private Long authorId;
@@ -18,9 +21,10 @@ public class CommentResponseDto {
     private LocalDateTime createDate;
     private LocalDateTime modifyDate;
 
-    List<NestedComment> nestedComments;
+    List<NestedCommentResponseDto> nestedComments;
 
-    public CommentResponseDto(Comment comment, List<NestedComment> nestedComments) {
+    public CommentResponseDto(Comment comment, List<NestedCommentResponseDto> nestedComments) {
+        this.id = comment.getId();
         this.authorId = comment.getMember().getId();
         this.authorNickName = comment.getMember().getNickName();
         this.content = comment.getContent();

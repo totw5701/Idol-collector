@@ -41,5 +41,17 @@ public class Comment {
         this.modifyDate = LocalDateTime.now();
     }
 
+    // 비즈니스 로직
+    public Long update(String content) {
+        this.content = content;
+        this.modifyDate = LocalDateTime.now();
+        return this.id;
+    }
+
+
+    public int addLike() {
+        return ++this.likes;
+    }
+
 
 }
