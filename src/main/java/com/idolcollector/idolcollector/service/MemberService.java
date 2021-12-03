@@ -28,11 +28,13 @@ public class MemberService {
         return save.getId();
     }
 
+
+
     public MemberResponseDto findById(Long id) {
         Member member = memberRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 회원입니다. id=" + id));
 
-        // 댓글 ,태그, 알림 등 넣기.
+        // 댓글 ,태그, 알림 등 넣기.??
 
         return new MemberResponseDto(member);
     }
@@ -41,12 +43,16 @@ public class MemberService {
         Member member = memberRepository.findByNickName(nickName)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 회원입니다. nickName=" + nickName));
 
+        // 댓글 ,태그, 알림 등 넣기.??
+
         return new MemberResponseDto(member);
     }
 
     public MemberResponseDto findByEmail(String email) {
         Member member = memberRepository.findByEmail(email)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 회원입니다. email=" + email));
+
+        // 댓글 ,태그, 알림 등 넣기.??
 
         return new MemberResponseDto(member);
     }

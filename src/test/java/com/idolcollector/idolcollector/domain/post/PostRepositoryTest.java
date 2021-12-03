@@ -1,7 +1,11 @@
 package com.idolcollector.idolcollector.domain.post;
 
+import com.idolcollector.idolcollector.domain.comment.Comment;
+import com.idolcollector.idolcollector.domain.comment.CommentRepository;
 import com.idolcollector.idolcollector.domain.member.Member;
 import com.idolcollector.idolcollector.domain.member.MemberRepository;
+import com.idolcollector.idolcollector.domain.nestedcomment.NestedComment;
+import com.idolcollector.idolcollector.domain.nestedcomment.NestedCommentRepository;
 import com.idolcollector.idolcollector.domain.posttag.PostTag;
 import com.idolcollector.idolcollector.domain.posttag.PostTagRepository;
 import com.idolcollector.idolcollector.domain.rank.Ranks;
@@ -33,6 +37,9 @@ class PostRepositoryTest {
     @Autowired TagRepository tagRepository;
     @Autowired PostTagRepository postTagRepository;
     @Autowired ScrapRepository scrapRepository;
+    @Autowired CommentRepository commentRepository;
+    @Autowired NestedCommentRepository nestedCommentRepository;
+
 
     @BeforeEach
     void before() {
@@ -143,5 +150,60 @@ class PostRepositoryTest {
 
         //Then
         assertThat(posts.size()).isEqualTo(1);
+    }
+    
+
+    void testtest() {
+        Member member = memberRepository.findAll().get(0);
+
+        Post post = postRepository.save(new Post(member, "title1", "content1", "storeFilename1", "oriFileName1"));
+
+        Comment comment = commentRepository.save(new Comment(member, post, "content"));
+        Comment comment2 = commentRepository.save(new Comment(member, post, "content2"));
+
+
+
+        List<Object[]> objects = postRepository.multipleQ(post.getId());
+
+        for (Object[] object : objects) {
+            Post post1 = (Post) object[0];
+            Comment comment1 = (Comment) object[1];
+            System.out.println("post1.getTitle() = " + post1.getTitle());
+            System.out.println("comment1.getContent() = " + comment1.getContent());
+        }
+
+    }
+
+
+    void testtest2() {
+        Member member = memberRepository.findAll().get(0);
+
+        Post post = postRepository.save(new Post(member, "title1", "content1", "storeFilename1", "oriFileName1"));
+
+        Comment comment = commentRepository.save(new Comment(member, post, "content"));
+        Comment comment2 = commentRepository.save(new Comment(member, post, "content2"));
+
+
+        NestedComment nComment = new NestedComment(member, comment, "nContent");
+        NestedComment nComment2 = new NestedComment(member, comment, "nContent2");
+
+        NestedComment save = nestedCommentRepository.save(nComment);
+        NestedComment save2 = nestedCommentRepository.save(nComment2);
+
+
+        List<Object[]> objects = postRepository.multipleQ2(post.getId());
+
+        for (Object[] object : objects) {
+
+
+
+            Post post1 = (Post) object[0];
+            Comment comment1 = (Comment) object[1];
+            NestedComment nestedComment = (NestedComment) object[2];
+            System.out.println("post1.getTitle() = " + post1.getTitle());
+            System.out.println("comment1.getContent() = " + comment1.getContent());
+            System.out.println("nestedComment.getContent() = " + nestedComment.getContent());
+        }
+
     }
 }

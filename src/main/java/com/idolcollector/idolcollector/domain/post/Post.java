@@ -1,6 +1,7 @@
 package com.idolcollector.idolcollector.domain.post;
 
 import com.idolcollector.idolcollector.domain.member.Member;
+import com.idolcollector.idolcollector.web.dto.post.PostUpdateRequestDto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -48,6 +49,16 @@ public class Post {
 
 
     // 비즈니스 로직.
+
+    public Long update(PostUpdateRequestDto form) {
+
+        this.title = form.getTitle();
+        this.content = form.getContent();
+        this.modifyDate = LocalDateTime.now();
+
+        return this.id;
+    }
+
     public int addLike() {
         return ++this.likes;
     }

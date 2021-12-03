@@ -18,4 +18,18 @@ public interface PostRepository extends JpaRepository<Post, Long> {
 
     @Query("select s.post from Scrap s where s.member.id = :memberId")
     List<Post> findAllInScrap(@Param("memberId") Long memberId);
+
+
+
+    /**
+     *
+     * 아래 코드는 사용하지 않는 코드입니다.
+     *
+     */
+    @Query("select p, c from Comment c, Post p where p.id = :postId")
+    List<Object[]> multipleQ(@Param("postId") Long postId);
+
+    @Query("select p, c, nc from Comment c, Post p left outer join NestedComment nc on nc.comment.id = c.id where p.id = :postId")
+    List<Object[]> multipleQ2(@Param("postId") Long postId);
+
 }

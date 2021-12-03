@@ -17,7 +17,7 @@ public class PostTag {
     @JoinColumn(name = "POST_TAG_ID")
     private Long id;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "POST_ID")
     private Post post;
 

@@ -27,10 +27,10 @@ class MemberServiceTest {
     @Autowired
     private MemberService memberService;
 
-    @Autowired private NestedCommentRepository nestedCommentRepository;
-    @Autowired private MemberRepository memberRepository;
-    @Autowired private CommentRepository commentRepository;
-    @Autowired private RanksRepository ranksRepository;
+    @Autowired NestedCommentRepository nestedCommentRepository;
+    @Autowired MemberRepository memberRepository;
+    @Autowired CommentRepository commentRepository;
+    @Autowired RanksRepository ranksRepository;
 
     @BeforeEach
     void before() {

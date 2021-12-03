@@ -18,11 +18,11 @@ public class Scrap {
     @JoinColumn(name = "SCRAP_ID")
     private Long id;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "MEMBER_ID")
     private Member member;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "POST_ID")
     private Post post;
 

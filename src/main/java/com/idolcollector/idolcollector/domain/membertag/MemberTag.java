@@ -17,11 +17,11 @@ public class MemberTag {
     @JoinColumn(name = "MEMBER_TAG_ID")
     private Long id;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "MEMBER_ID")
     private Member member;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "TAG_ID")
     private Tag tag;
 

@@ -1,21 +1,14 @@
 package com.idolcollector.idolcollector.web.dto.post;
 
-import com.idolcollector.idolcollector.domain.comment.Comment;
-import com.idolcollector.idolcollector.domain.member.Member;
 import com.idolcollector.idolcollector.domain.post.Post;
-import com.idolcollector.idolcollector.web.dto.comment.CommentResponseDto;
-import com.idolcollector.idolcollector.web.dto.tag.TagResponseDto;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 @Getter
-public class PostResponseDto {
+@NoArgsConstructor
+public class HomePostListResponseDto {
 
     private Long id;
 
@@ -34,11 +27,7 @@ public class PostResponseDto {
     private String storeFileName;
     private String oriFileName;
 
-    List<CommentResponseDto> comments;
-    List<TagResponseDto> tags;
-
-
-    public PostResponseDto(Post post, List<CommentResponseDto> comments, List<TagResponseDto> tags) {
+    public HomePostListResponseDto(Post post) {
         this.id = post.getId();
         this.authorId = post.getMember().getId();
         this.authorNickName = post.getMember().getNickName();
@@ -50,10 +39,6 @@ public class PostResponseDto {
         this.likes = post.getLikes();
         this.storeFileName = post.getStoreFileName();
         this.oriFileName = post.getOriFileName();
-
-        this.comments = comments;
-        this.tags = tags;
     }
-
 
 }
