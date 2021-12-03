@@ -1,12 +1,17 @@
 package com.idolcollector.idolcollector.service;
 
+import com.idolcollector.idolcollector.domain.comment.Comment;
 import com.idolcollector.idolcollector.domain.member.Member;
 import com.idolcollector.idolcollector.domain.member.MemberRepository;
+import com.idolcollector.idolcollector.domain.nestedcomment.NestedComment;
 import com.idolcollector.idolcollector.domain.post.Post;
 import com.idolcollector.idolcollector.domain.post.PostRepository;
+import com.idolcollector.idolcollector.domain.posttag.PostTag;
 import com.idolcollector.idolcollector.domain.posttag.PostTagRepository;
+import com.idolcollector.idolcollector.domain.tag.Tag;
 import com.idolcollector.idolcollector.domain.tag.TagRepository;
 import com.idolcollector.idolcollector.web.dto.comment.CommentResponseDto;
+import com.idolcollector.idolcollector.web.dto.nestedcomment.NestedCommentResponseDto;
 import com.idolcollector.idolcollector.web.dto.post.HomePostListResponseDto;
 import com.idolcollector.idolcollector.web.dto.post.PostResponseDto;
 import com.idolcollector.idolcollector.web.dto.post.PostSaveRequestDto;
@@ -16,6 +21,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -52,11 +58,30 @@ public class PostService {
         // 조회수 증가.
         post.addLike();
 
+        /*
+        양방향 연관관계 설정하기 전. 쿼리가 많이 나가 성능 저하 우려가있음.
         // 댓글 넣기.
         List<CommentResponseDto> comments = commentService.findAllInPost(id);
 
         // 태그 넣기.
         List<TagResponseDto> tags = tagService.findAllinPost(id);
+        */
+
+        // 댓글 넣기.
+        List<CommentResponseDto> comments = new ArrayList<>();
+
+        List<Comment> rowComments = post.getComments();
+        for (Comment rowComment : rowComments) {
+            comments.add(new CommentResponseDto(rowComment));
+        }
+
+        // 태그 넣기.
+        List<TagResponseDto> tags = new ArrayList<>();
+
+        List<PostTag> postTags = post.getPostTags();
+        for (PostTag postTag : postTags) {
+            tags.add(new TagResponseDto(postTag.getTag()));
+        }
 
         return new PostResponseDto(post, comments, tags);
     }

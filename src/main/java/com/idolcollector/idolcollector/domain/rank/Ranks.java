@@ -21,6 +21,5 @@ public class Ranks {
 
     public Ranks(String roll) {
         this.roll = roll;
-
     }
 }

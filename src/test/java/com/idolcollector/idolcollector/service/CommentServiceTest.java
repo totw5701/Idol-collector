@@ -151,6 +151,7 @@ public class CommentServiceTest {
 
         nestedCommentRepository.save(nComment);
 
+
         // When
         List<CommentResponseDto> comments = commentService.findAllInPost(post.getId());
 

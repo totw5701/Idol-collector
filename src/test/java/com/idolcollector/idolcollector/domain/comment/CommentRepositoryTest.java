@@ -38,6 +38,7 @@ class CommentRepositoryTest {
         ranksRepository.save(rank);
         Member member = new Member(rank, "nick", "email", "1111", "steve", "dsfsdfdsfdsf", LocalDateTime.now());
         memberRepository.save(member);
+
         Post post = new Post(member, "title", "conten", "ste", "ori");
         postRepository.save(post);
 

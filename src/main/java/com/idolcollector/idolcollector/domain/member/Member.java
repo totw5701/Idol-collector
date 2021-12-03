@@ -1,11 +1,19 @@
 package com.idolcollector.idolcollector.domain.member;
 
+import com.idolcollector.idolcollector.domain.comment.Comment;
+import com.idolcollector.idolcollector.domain.membertag.MemberTag;
+import com.idolcollector.idolcollector.domain.nestedcomment.NestedComment;
+import com.idolcollector.idolcollector.domain.notice.Notice;
+import com.idolcollector.idolcollector.domain.post.Post;
 import com.idolcollector.idolcollector.domain.rank.Ranks;
+import com.idolcollector.idolcollector.domain.scrap.Scrap;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -29,6 +37,24 @@ public class Member {
     private LocalDateTime joinDate;
     private LocalDateTime modifyDate;
 
+    @OneToMany(mappedBy = "member")
+    private List<Post> posts = new ArrayList<>();
+
+    @OneToMany(mappedBy = "member")
+    private List<Comment> comments = new ArrayList<>();
+
+    @OneToMany(mappedBy = "member")
+    private List<NestedComment> nComments = new ArrayList<>();
+
+    @OneToMany(mappedBy = "member")
+    private List<MemberTag> memberTags = new ArrayList<>();
+
+    @OneToMany(mappedBy = "member")
+    private List<Notice> notices = new ArrayList<>();
+
+    @OneToMany(mappedBy = "post")
+    private List<Scrap> scraps = new ArrayList<>();
+
     public Member(Ranks ranks, String nickName, String email, String pwd, String name, String picture, LocalDateTime dateOfBirth) {
         this.ranks = ranks;
         this.nickName = nickName;
@@ -40,6 +66,7 @@ public class Member {
 
         this.joinDate = LocalDateTime.now();
         this.modifyDate = LocalDateTime.now();
+
     }
 
 }

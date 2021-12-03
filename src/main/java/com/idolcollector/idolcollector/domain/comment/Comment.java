@@ -1,6 +1,7 @@
 package com.idolcollector.idolcollector.domain.comment;
 
 import com.idolcollector.idolcollector.domain.member.Member;
+import com.idolcollector.idolcollector.domain.nestedcomment.NestedComment;
 import com.idolcollector.idolcollector.domain.post.Post;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -10,6 +11,8 @@ import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -35,6 +38,9 @@ public class Comment {
     private LocalDateTime createDate;
     private LocalDateTime modifyDate;
 
+    @OneToMany(mappedBy = "comment")
+    private List<NestedComment> nComment = new ArrayList<>();
+
     public Comment(Member member, Post post, String content) {
         this.member = member;
         this.post = post;
@@ -42,6 +48,14 @@ public class Comment {
         this.likes = 0;
         this.createDate = LocalDateTime.now();
         this.modifyDate = LocalDateTime.now();
+
+        this.construct(member, post);
+    }
+
+    // 연관관계 메소드
+    private void construct(Member member, Post post) {
+        member.getComments().add(this);
+        post.getComments().add(this);
     }
 
     // 비즈니스 로직

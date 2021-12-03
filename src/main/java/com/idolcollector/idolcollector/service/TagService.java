@@ -34,8 +34,7 @@ public class TagService {
         return tags;
     }
 
-    @Transactional
-    public Tag createTags(String name) {
+    private Tag createTags(String name) {
         
         String tagName = name.toLowerCase();
 

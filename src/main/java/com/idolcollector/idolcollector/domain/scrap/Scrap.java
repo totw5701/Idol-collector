@@ -32,5 +32,13 @@ public class Scrap {
         this.member = member;
         this.post = post;
         this.createDate = LocalDateTime.now();
+
+        this.construct(member, post);
+    }
+
+    // 연관관게 메서드
+    public void construct(Member member, Post post) {
+        member.getScraps().add(this);
+        post.getScraps().add(this);
     }
 }

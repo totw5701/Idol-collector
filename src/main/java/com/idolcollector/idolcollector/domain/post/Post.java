@@ -1,12 +1,17 @@
 package com.idolcollector.idolcollector.domain.post;
 
+import com.idolcollector.idolcollector.domain.comment.Comment;
 import com.idolcollector.idolcollector.domain.member.Member;
+import com.idolcollector.idolcollector.domain.posttag.PostTag;
+import com.idolcollector.idolcollector.domain.scrap.Scrap;
 import com.idolcollector.idolcollector.web.dto.post.PostUpdateRequestDto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -34,6 +39,15 @@ public class Post {
     private String storeFileName;
     private String oriFileName;
 
+    @OneToMany(mappedBy = "post")
+    private List<Comment> comments = new ArrayList<>();
+
+    @OneToMany(mappedBy = "post")
+    private List<PostTag> postTags = new ArrayList<>();
+
+    @OneToMany(mappedBy = "post")
+    private List<Scrap> scraps = new ArrayList<>();
+
     public Post(Member member, String title, String content, String storeFileName, String oriFileName) {
         this.member = member;
         this.title = title;
@@ -45,11 +59,15 @@ public class Post {
         this.storeFileName = storeFileName;
         this.oriFileName = oriFileName;
 
+        this.construct(member);
     }
 
+    // 연관관계 메서드
+    public void construct(Member member) {
+        member.getPosts().add(this);
+    }
 
     // 비즈니스 로직.
-
     public Long update(PostUpdateRequestDto form) {
 
         this.title = form.getTitle();

@@ -38,4 +38,9 @@ public class Notice {
     private String message;
     private LocalDateTime createDate;
     private String url; // 클릭하면 이동할 url
+
+    // 생성자
+
+    // 연관관계 메서드.
+
 }

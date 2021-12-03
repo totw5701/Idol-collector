@@ -29,4 +29,10 @@ public class PostTag {
         this.post = post;
         this.tag = tag;
     }
+
+    // 연관관계 메소드
+    private void construct(Post post) {
+        post.getPostTags().add(this);
+        // Tag와는 단방향 연관관계를 맺고있음.
+    }
 }

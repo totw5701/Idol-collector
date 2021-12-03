@@ -4,16 +4,12 @@ import com.idolcollector.idolcollector.domain.comment.Comment;
 import com.idolcollector.idolcollector.domain.comment.CommentRepository;
 import com.idolcollector.idolcollector.domain.member.Member;
 import com.idolcollector.idolcollector.domain.member.MemberRepository;
-import com.idolcollector.idolcollector.domain.nestedcomment.NestedComment;
 import com.idolcollector.idolcollector.domain.nestedcomment.NestedCommentRepository;
 import com.idolcollector.idolcollector.domain.post.Post;
 import com.idolcollector.idolcollector.domain.post.PostRepository;
 import com.idolcollector.idolcollector.web.dto.comment.CommentResponseDto;
 import com.idolcollector.idolcollector.web.dto.comment.CommentSaveRequestDto;
 import com.idolcollector.idolcollector.web.dto.comment.CommentUpdateRequestDto;
-import com.idolcollector.idolcollector.web.dto.nestedcomment.NestedCommentResponseDto;
-import com.idolcollector.idolcollector.web.dto.nestedcomment.NestedCommentSaveRequestDto;
-import com.idolcollector.idolcollector.web.dto.nestedcomment.NestedCommentUpdateRequestDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -35,14 +31,7 @@ public class CommentService {
         Comment comment = commentRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 댓글입니다. id=" + id));
 
-        List<NestedComment> nComments = nestedCommentRepository.findAllInComment(id);
-        List<NestedCommentResponseDto> nCommentResponseDtos = new ArrayList<>();
-        for (NestedComment nComment : nComments) {
-            NestedCommentResponseDto nestedCommentResponseDto = new NestedCommentResponseDto(nComment);
-            nCommentResponseDtos.add(nestedCommentResponseDto);
-        }
-
-        return new CommentResponseDto(comment, nCommentResponseDtos);
+        return new CommentResponseDto(comment);
     }
 
     @Transactional
@@ -90,13 +79,7 @@ public class CommentService {
         List<CommentResponseDto> list = new ArrayList<>();
 
         for (Comment comment : comments) {
-            List<NestedComment> nComments = nestedCommentRepository.findAllInComment(comment.getId());
-
-            List<NestedCommentResponseDto> nCommentResponseDtos = new ArrayList<>();
-            for (NestedComment nComment : nComments) {
-                nCommentResponseDtos.add(new NestedCommentResponseDto(nComment));
-            }
-            list.add(new CommentResponseDto(comment, nCommentResponseDtos));
+            list.add(new CommentResponseDto(comment));
         }
 
         return list;
@@ -109,13 +92,7 @@ public class CommentService {
         List<CommentResponseDto> list = new ArrayList<>();
 
         for (Comment comment : comments) {
-            List<NestedComment> nComments = nestedCommentRepository.findAllInComment(comment.getId());
-
-            List<NestedCommentResponseDto> nCommentResponseDtos = new ArrayList<>();
-            for (NestedComment nComment : nComments) {
-                nCommentResponseDtos.add(new NestedCommentResponseDto(nComment));
-            }
-            list.add(new CommentResponseDto(comment, nCommentResponseDtos));
+            list.add(new CommentResponseDto(comment));
         }
 
         return list;

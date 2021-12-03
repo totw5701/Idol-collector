@@ -23,7 +23,7 @@ public class NestedComment {
     @JoinColumn(name = "MEMBER_ID")
     private Member member;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "COMMENT_ID")
     private Comment comment;
 
@@ -40,6 +40,13 @@ public class NestedComment {
         this.likes = 0;
         this.createDate = LocalDateTime.now();
         this.modifyDate = LocalDateTime.now();
+        this.construct(member, comment);
+    }
+
+    // 연관관계 메서드
+    private void construct(Member member, Comment comment) {
+        comment.getNComment().add(this);
+        comment.getNComment().add(this);
     }
 
 

@@ -29,4 +29,10 @@ public class MemberTag {
         this.member = member;
         this.tag = tag;
     }
+
+    // 연관관계 메소드
+    public void construct(Member member) {
+        member.getMemberTags().add(this);
+        // Tag와는 단방향 연관관계.
+    }
 }
