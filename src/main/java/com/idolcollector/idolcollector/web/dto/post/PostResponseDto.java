@@ -37,11 +37,15 @@ public class PostResponseDto {
     private String storeFileName;
     private String oriFileName;
 
-    List<CommentResponseDto> comments;
-    List<TagResponseDto> tags;
+    List<CommentResponseDto> comments = new ArrayList<>();
+    List<TagResponseDto> tags = new ArrayList<>();
+
+    private boolean didLike = false;
+    private boolean didScrap = false;
 
 
     public PostResponseDto(Post post) {
+
         this.id = post.getId();
         this.authorId = post.getMember().getId();
         this.authorNickName = post.getMember().getNickName();
@@ -64,6 +68,14 @@ public class PostResponseDto {
             this.tags.add(new TagResponseDto(entPostTag.getTag()));
         }
 
+    }
+
+    public void didLike() {
+        this.didLike = true;
+    }
+
+    public void didScrap() {
+        this.didScrap = true;
     }
 
 

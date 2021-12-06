@@ -1,6 +1,7 @@
 package com.idolcollector.idolcollector.domain.post;
 
 import com.idolcollector.idolcollector.domain.comment.Comment;
+import com.idolcollector.idolcollector.domain.like.Likes;
 import com.idolcollector.idolcollector.domain.member.Member;
 import com.idolcollector.idolcollector.domain.posttag.PostTag;
 import com.idolcollector.idolcollector.domain.scrap.Scrap;
@@ -47,6 +48,7 @@ public class Post {
 
     @OneToMany(mappedBy = "post")
     private List<Scrap> scraps = new ArrayList<>();
+
 
     public Post(Member member, String title, String content, String storeFileName, String oriFileName) {
         this.member = member;

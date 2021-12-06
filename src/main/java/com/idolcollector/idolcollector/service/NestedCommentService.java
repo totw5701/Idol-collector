@@ -39,6 +39,8 @@ public class NestedCommentService {
         Comment comment = commentRepository.findById(form.getCommentId())
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 댓글입니다. id=" + form.getCommentId()));
 
+        // 멤버는 세션에서 받아올 것.
+
         NestedComment save = nestedCommentRepository.save(new NestedComment(member, comment, form.getContent()));
         return save.getId();
     }
@@ -49,6 +51,8 @@ public class NestedCommentService {
         NestedComment nComment = nestedCommentRepository.findById(form.getId())
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 대댓글입니다. id=" + form.getId()));
 
+        // 세션아이디 일치확인
+
         return nComment.update(form.getContent());
     }
 
@@ -56,6 +60,8 @@ public class NestedCommentService {
     public Long delete(Long id) {
         NestedComment nComment = nestedCommentRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 대댓글입니다. id=" + id));
+
+        // 세션아이디 일치확인
 
         nestedCommentRepository.delete(nComment);
         return id;
@@ -65,6 +71,9 @@ public class NestedCommentService {
     public int like(Long id) {
         NestedComment nestedComment = nestedCommentRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 대댓글입니다. id=" + id));
+
+        // 세션 아이디 중복체크.
+
         return nestedComment.addLike();
     }
 

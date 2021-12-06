@@ -22,7 +22,7 @@ public class CommentResponseDto {
     private LocalDateTime createDate;
     private LocalDateTime modifyDate;
 
-    List<NestedCommentResponseDto> nestedComments;
+    List<NestedCommentResponseDto> nestedComments = new ArrayList<>();
 
     public CommentResponseDto(Comment comment) {
         this.id = comment.getId();
@@ -32,9 +32,6 @@ public class CommentResponseDto {
         this.likes = comment.getLikes();
         this.createDate = comment.getCreateDate();
         this.modifyDate = comment.getModifyDate();
-
-        this.nestedComments = new ArrayList<>();
-
 
         List<NestedComment> nComment = comment.getNComment();
         for (NestedComment nestedComment : nComment) {

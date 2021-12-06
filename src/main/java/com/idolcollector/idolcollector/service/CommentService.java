@@ -36,10 +36,13 @@ public class CommentService {
 
     @Transactional
     public Long save(CommentSaveRequestDto form) {
-        Member member = memberRepository.findById(form.getAuthorId())
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 사용자입니다. id=" + form.getAuthorId()));
+
         Post post = postRepository.findById(form.getPostId())
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 게시글입니다. id=" + form.getPostId()));
+
+            // 지금은 form에 memberId가 있지만 세션에서 받아오는 걸로 수정 할 것,
+            Member member = memberRepository.findById(form.getAuthorId())
+                    .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 사용자입니다. id=" + form.getAuthorId()));
 
         Comment save = commentRepository.save(new Comment(member, post, form.getContent()));
         return save.getId();
@@ -50,6 +53,8 @@ public class CommentService {
         Comment comment = commentRepository.findById(form.getId())
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 댓글입니다. id=" + form.getId()));
 
+        // 세션유저 일치 확인.
+
         return comment.update(form.getContent());
     }
 
@@ -58,6 +63,8 @@ public class CommentService {
     public Long delete(Long id) {
         Comment comment = commentRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 댓글입니다. id=" + id));
+
+        // 세션유저 일치 확인.
 
         commentRepository.delete(comment);
         return comment.getId();
@@ -68,6 +75,8 @@ public class CommentService {
     public int like(Long id) {
         Comment comment = commentRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 댓글입니다. id=" + id));
+
+        // 세션유저 좋아요 중복확인.
 
         return comment.addLike();
     }

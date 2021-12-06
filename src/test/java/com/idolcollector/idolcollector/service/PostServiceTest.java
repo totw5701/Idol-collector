@@ -2,6 +2,7 @@ package com.idolcollector.idolcollector.service;
 
 import com.idolcollector.idolcollector.domain.comment.Comment;
 import com.idolcollector.idolcollector.domain.comment.CommentRepository;
+import com.idolcollector.idolcollector.domain.like.LikesRepository;
 import com.idolcollector.idolcollector.domain.member.Member;
 import com.idolcollector.idolcollector.domain.member.MemberRepository;
 import com.idolcollector.idolcollector.domain.nestedcomment.NestedComment;
@@ -12,25 +13,25 @@ import com.idolcollector.idolcollector.domain.posttag.PostTag;
 import com.idolcollector.idolcollector.domain.posttag.PostTagRepository;
 import com.idolcollector.idolcollector.domain.rank.Ranks;
 import com.idolcollector.idolcollector.domain.rank.RanksRepository;
+import com.idolcollector.idolcollector.domain.scrap.Scrap;
+import com.idolcollector.idolcollector.domain.scrap.ScrapRepository;
 import com.idolcollector.idolcollector.domain.tag.Tag;
 import com.idolcollector.idolcollector.domain.tag.TagRepository;
 import com.idolcollector.idolcollector.web.dto.post.PostResponseDto;
 import com.idolcollector.idolcollector.web.dto.post.PostSaveRequestDto;
 import com.idolcollector.idolcollector.web.dto.post.PostUpdateRequestDto;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @Transactional
@@ -46,6 +47,8 @@ class PostServiceTest {
     @Autowired PostTagRepository postTagRepository;
     @Autowired CommentRepository commentRepository;
     @Autowired NestedCommentRepository nestedCommentRepository;
+    @Autowired ScrapRepository scrapRepository;
+    @Autowired LikesRepository likesRepository;
 
     @BeforeEach
     void before() {
@@ -81,7 +84,7 @@ class PostServiceTest {
         Long postId = postService.create(form);
 
         // Then
-        Post findPost = postRepository.findAll().get(0);
+        Post findPost = postRepository.findById(postId).get();
         List<Tag> findTags = tagRepository.findAll();
         List<PostTag> findPostTags = postTagRepository.findAll();
 
@@ -110,6 +113,7 @@ class PostServiceTest {
         assertThat(detail.getContent()).isEqualTo(post.getContent());
         assertThat(detail.getComments().get(0).getContent()).isEqualTo(comment.getContent());
         assertThat(detail.getComments().get(0).getNestedComments().get(0).getContent()).isEqualTo(nComment.getContent());
+        assertThat(post.getViews()).isEqualTo(1);
     }
 
     @Test
@@ -160,7 +164,7 @@ class PostServiceTest {
     }
 
     @Test
-    void delete() {
+    void 삭제() {
 
         // Given
         Member member = memberRepository.findAll().get(0);
@@ -175,7 +179,6 @@ class PostServiceTest {
         postRepository.delete(post);
 
         // Then
-
         assertThatThrownBy(() -> {
             postRepository.findById(post.getId())
                     .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 게시글 입니다."));
@@ -206,7 +209,44 @@ class PostServiceTest {
         }).isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("존재하지 않는 대댓글 입니다.");
 
+    }
+
+    @Test
+    void 좋아요() {
+
+        // Given
+        Member member = memberRepository.findAll().get(0);
+        Post post = postRepository.save(new Post(member, "title", "content", "storeFilename", "oriFileName"));
+
+        // Then
+        postService.like(post.getId());
+        assertThat(post.getLikes()).isEqualTo(1);
+
 
     }
+
+    @Test
+    void 스크랩() {
+
+        // Given
+        Ranks rank = new Ranks("ROLL_USER");
+        ranksRepository.save(rank);
+        Member member = new Member(rank, "nick", "email", "1111", "david", "dsfsdfdsfdsf", LocalDateTime.now());
+        memberRepository.save(member);
+
+        Post post = postRepository.save(new Post(member, "title", "content", "storeFilename", "oriFileName"));
+
+        // When
+        Long scrap = postService.scrap(post.getId());
+
+        // Then
+        Scrap scrap1 = scrapRepository.findAll().get(0);
+
+        assertThat(scrap1.getPost().getTitle()).isEqualTo("title");
+        assertThat(scrap1.getMember().getNickName()).isEqualTo("scrapper");
+
+    }
+
+
 
 }

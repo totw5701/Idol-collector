@@ -1,6 +1,7 @@
 package com.idolcollector.idolcollector.domain.member;
 
 import com.idolcollector.idolcollector.domain.comment.Comment;
+import com.idolcollector.idolcollector.domain.like.Likes;
 import com.idolcollector.idolcollector.domain.membertag.MemberTag;
 import com.idolcollector.idolcollector.domain.nestedcomment.NestedComment;
 import com.idolcollector.idolcollector.domain.notice.Notice;
@@ -52,8 +53,11 @@ public class Member {
     @OneToMany(mappedBy = "member")
     private List<Notice> notices = new ArrayList<>();
 
-    @OneToMany(mappedBy = "post")
+    @OneToMany(mappedBy = "member")
     private List<Scrap> scraps = new ArrayList<>();
+
+    @OneToMany(mappedBy = "member")
+    private List<Likes> likesList = new ArrayList<>();
 
     public Member(Ranks ranks, String nickName, String email, String pwd, String name, String picture, LocalDateTime dateOfBirth) {
         this.ranks = ranks;
