@@ -12,6 +12,9 @@ import com.idolcollector.idolcollector.domain.rank.RanksRepository;
 import com.idolcollector.idolcollector.domain.scrap.Scrap;
 import com.idolcollector.idolcollector.domain.scrap.ScrapRepository;
 import com.idolcollector.idolcollector.domain.tag.TagRepository;
+import com.idolcollector.idolcollector.domain.trending.Trending;
+import com.idolcollector.idolcollector.domain.trending.TrendingRepository;
+import com.idolcollector.idolcollector.domain.trending.TrendingType;
 import com.idolcollector.idolcollector.web.dto.post.HomePostListResponseDto;
 import com.idolcollector.idolcollector.web.dto.post.PostResponseDto;
 import com.idolcollector.idolcollector.web.dto.post.PostSaveRequestDto;
@@ -38,6 +41,7 @@ public class PostService {
     private final RanksRepository ranksRepository;
     private final ScrapRepository scrapRepository;
     private final LikesRepository likesRepository;
+    private final TrendingRepository trendingRepository;
 
     @Transactional
     public Long create(PostSaveRequestDto form) {
@@ -134,15 +138,16 @@ public class PostService {
 
         Optional<Likes> isDup = likesRepository.findLikeByMemberIdPostId(post.getId(), member.getId(), LikeType.POST);
 
-        System.out.println("isDup = " + isDup);
-
         if (isDup.isPresent()) {
-            System.out.println("isDup.get() = " + isDup.get());
             return post.getLikes();
         }
 
         Likes likes = new Likes(post.getId(), member, LikeType.POST);
         likesRepository.save(likes);
+
+        // 추천 기록 테이블
+        trendingRepository.save(new Trending(post, TrendingType.COMMENT));
+
         return post.addLike();
     }
 
@@ -150,6 +155,10 @@ public class PostService {
     public int view(Long id) {
         Post post = postRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 게시글입니다. id=" + id));
+
+
+        // 추천 기록 테이블
+        trendingRepository.save(new Trending(post, TrendingType.VIEW));
 
         return post.addView();
     }
@@ -168,6 +177,10 @@ public class PostService {
 
         Scrap scrap = new Scrap(member, post);
         Scrap save = scrapRepository.save(scrap);
+
+        // 추천 기록 테이블
+        trendingRepository.save(new Trending(post, TrendingType.SCRAP));
+
         return save.getId();
     }
 
