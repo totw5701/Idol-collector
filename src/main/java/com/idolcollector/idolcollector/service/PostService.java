@@ -24,6 +24,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -111,17 +112,24 @@ public class PostService {
         return id;
     }
 
-    public HomePostListResponseDto postList() {
+    public List<HomePostListResponseDto> scorePostList() {
 
         // 1주일내 좋아요를 많이 받은 카드 순으로 출력.
 
         /**
          * PK, 일자, postId, 점수가 담긴 테이블을 만든다.
-         * 조회시 1점, 좋아요시 5점, 댓글 3점 등등 점수를 준다.
+         * 조회시 5점, 좋아요시 12점, 댓글 20점, 스크랩 30점을 부여한다.
          * 주간 SUM(점수)로 순위를 매겨 받아온다.
          */
 
-        return new HomePostListResponseDto();
+        List<Post> list = trendingRepository.trendAnalyByDate(LocalDateTime.now().minusDays(7));
+
+        List<HomePostListResponseDto> postList = new ArrayList<>();
+        for (Post post : list) {
+            postList.add(new HomePostListResponseDto(post));
+        }
+
+        return postList;
     }
 
     @Transactional

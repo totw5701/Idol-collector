@@ -21,13 +21,19 @@ public class Trending {
 
     private LocalDateTime createDate;
 
-    @Enumerated(EnumType.STRING)
-    private TrendingType type;
+//    @Enumerated(EnumType.STRING)
+//    private TrendingType type;
+
+    private int score;
 
     public Trending(Post post, TrendingType type) {
         this.post = post;
-        this.type = type;
         this.createDate = LocalDateTime.now();
+
+        if (type == TrendingType.VIEW) this.score = 5;
+        else if (type == TrendingType.LIKE) this.score = 12;
+        else if (type == TrendingType.COMMENT) this.score = 20;
+        else if (type == TrendingType.SCRAP) this.score = 30;
     }
 
 }

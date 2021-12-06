@@ -17,6 +17,10 @@ import com.idolcollector.idolcollector.domain.scrap.Scrap;
 import com.idolcollector.idolcollector.domain.scrap.ScrapRepository;
 import com.idolcollector.idolcollector.domain.tag.Tag;
 import com.idolcollector.idolcollector.domain.tag.TagRepository;
+import com.idolcollector.idolcollector.domain.trending.Trending;
+import com.idolcollector.idolcollector.domain.trending.TrendingRepository;
+import com.idolcollector.idolcollector.domain.trending.TrendingType;
+import com.idolcollector.idolcollector.web.dto.post.HomePostListResponseDto;
 import com.idolcollector.idolcollector.web.dto.post.PostResponseDto;
 import com.idolcollector.idolcollector.web.dto.post.PostSaveRequestDto;
 import com.idolcollector.idolcollector.web.dto.post.PostUpdateRequestDto;
@@ -49,6 +53,7 @@ class PostServiceTest {
     @Autowired NestedCommentRepository nestedCommentRepository;
     @Autowired ScrapRepository scrapRepository;
     @Autowired LikesRepository likesRepository;
+    @Autowired TrendingRepository trendingRepository;
 
     @BeforeEach
     void before() {
@@ -56,6 +61,52 @@ class PostServiceTest {
         ranksRepository.save(rank);
         Member member = new Member(rank, "nick", "email", "1111", "steve", "dsfsdfdsfdsf", LocalDateTime.now());
         memberRepository.save(member);
+    }
+
+    @Test
+    void 루트페이지_리스트받아오기() {
+
+        // Given
+        Member member = memberRepository.findAll().get(0);
+
+        Post post = new Post(member, "title", "conten", "ste", "ori");
+        Post p1 = postRepository.save(post);
+        Post post2 = new Post(member, "title2", "conten2", "ste", "ori");
+        Post p2 = postRepository.save(post2);
+
+        Trending p1T1 = new Trending(p1, TrendingType.VIEW);
+        Trending p1T2 = new Trending(p1, TrendingType.VIEW);
+        Trending p1T3 = new Trending(p1, TrendingType.LIKE);
+        Trending p1T4 = new Trending(p1, TrendingType.COMMENT);
+        Trending p1T5 = new Trending(p1, TrendingType.COMMENT);
+        Trending p1T6 = new Trending(p1, TrendingType.COMMENT);
+        Trending p1T7 = new Trending(p1, TrendingType.VIEW);
+
+        trendingRepository.save(p1T1);
+        trendingRepository.save(p1T2);
+        trendingRepository.save(p1T3);
+        trendingRepository.save(p1T4);
+        trendingRepository.save(p1T5);
+        trendingRepository.save(p1T6);
+        trendingRepository.save(p1T7);
+
+        Trending p2T1 = new Trending(p2, TrendingType.VIEW);
+        Trending p2T2 = new Trending(p2, TrendingType.VIEW);
+        Trending p2T3 = new Trending(p2, TrendingType.VIEW);
+
+        trendingRepository.save(p2T1);
+        trendingRepository.save(p2T2);
+        trendingRepository.save(p2T3);
+
+        // When
+        List<HomePostListResponseDto> list = postService.scorePostList();
+
+        HomePostListResponseDto first = list.get(0);
+        HomePostListResponseDto second = list.get(1);
+
+        // Then
+        assertThat(first.getId()).isEqualTo(p1.getId());
+        assertThat(second.getId()).isEqualTo(p2.getId());
     }
 
 
