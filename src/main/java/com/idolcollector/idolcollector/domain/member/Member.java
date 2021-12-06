@@ -8,6 +8,7 @@ import com.idolcollector.idolcollector.domain.notice.Notice;
 import com.idolcollector.idolcollector.domain.post.Post;
 import com.idolcollector.idolcollector.domain.rank.Ranks;
 import com.idolcollector.idolcollector.domain.scrap.Scrap;
+import com.idolcollector.idolcollector.web.dto.member.MemberUpdateRequestDto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -38,6 +39,7 @@ public class Member {
     private LocalDateTime joinDate;
     private LocalDateTime modifyDate;
 
+
     @OneToMany(mappedBy = "member")
     private List<Post> posts = new ArrayList<>();
 
@@ -59,6 +61,7 @@ public class Member {
     @OneToMany(mappedBy = "member")
     private List<Likes> likesList = new ArrayList<>();
 
+
     public Member(Ranks ranks, String nickName, String email, String pwd, String name, String picture, LocalDateTime dateOfBirth) {
         this.ranks = ranks;
         this.nickName = nickName;
@@ -71,6 +74,18 @@ public class Member {
         this.joinDate = LocalDateTime.now();
         this.modifyDate = LocalDateTime.now();
 
+    }
+
+
+    // 비즈니스 로직
+    public Long update(MemberUpdateRequestDto form) {
+        this.nickName = form.getNickName();
+        this.email = form.getEmail();
+        this.pwd = form.getPwd();
+        this.name = form.getName();
+        this.picture = form.getPicture();
+
+        return this.id;
     }
 
 }

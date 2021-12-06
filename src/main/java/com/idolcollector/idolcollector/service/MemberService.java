@@ -6,6 +6,7 @@ import com.idolcollector.idolcollector.domain.rank.Ranks;
 import com.idolcollector.idolcollector.domain.rank.RanksRepository;
 import com.idolcollector.idolcollector.web.dto.member.MemberResponseDto;
 import com.idolcollector.idolcollector.web.dto.member.MemberSaveRequestDto;
+import com.idolcollector.idolcollector.web.dto.member.MemberUpdateRequestDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,6 +29,16 @@ public class MemberService {
         return save.getId();
     }
 
+
+    @Transactional
+    public Long update(MemberUpdateRequestDto form) {
+        Member member = memberRepository.findById(form.getMemberId())
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 회원입니다. id=" + findById(form.getMemberId())));
+
+        // 세션 사용자 일치 확인.
+
+        return member.update(form);
+    }
 
 
     public MemberResponseDto findById(Long id) {

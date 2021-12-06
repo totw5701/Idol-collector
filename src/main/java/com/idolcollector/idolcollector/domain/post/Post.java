@@ -46,7 +46,7 @@ public class Post {
     @OneToMany(mappedBy = "post", orphanRemoval = true)
     private List<PostTag> postTags = new ArrayList<>();
 
-    @OneToMany(mappedBy = "post")
+    @OneToMany(mappedBy = "post", orphanRemoval = true)
     private List<Scrap> scraps = new ArrayList<>();
 
 
