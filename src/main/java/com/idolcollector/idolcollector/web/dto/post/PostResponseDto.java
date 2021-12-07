@@ -1,18 +1,12 @@
 package com.idolcollector.idolcollector.web.dto.post;
 
 import com.idolcollector.idolcollector.domain.comment.Comment;
-import com.idolcollector.idolcollector.domain.member.Member;
-import com.idolcollector.idolcollector.domain.nestedcomment.NestedComment;
 import com.idolcollector.idolcollector.domain.post.Post;
 import com.idolcollector.idolcollector.domain.posttag.PostTag;
 import com.idolcollector.idolcollector.web.dto.comment.CommentResponseDto;
-import com.idolcollector.idolcollector.web.dto.nestedcomment.NestedCommentResponseDto;
 import com.idolcollector.idolcollector.web.dto.tag.TagResponseDto;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
-import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;

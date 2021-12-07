@@ -1,6 +1,5 @@
 package com.idolcollector.idolcollector.web.dto.nestedcomment;
 
-import com.idolcollector.idolcollector.domain.comment.Comment;
 import com.idolcollector.idolcollector.domain.nestedcomment.NestedComment;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

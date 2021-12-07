@@ -1,7 +1,6 @@
 package com.idolcollector.idolcollector.service;
 
 import com.idolcollector.idolcollector.domain.post.Post;
-import com.idolcollector.idolcollector.domain.post.PostRepository;
 import com.idolcollector.idolcollector.domain.posttag.PostTag;
 import com.idolcollector.idolcollector.domain.posttag.PostTagRepository;
 import com.idolcollector.idolcollector.domain.tag.Tag;

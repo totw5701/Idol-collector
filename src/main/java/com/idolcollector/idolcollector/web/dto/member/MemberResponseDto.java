@@ -1,13 +1,9 @@
 package com.idolcollector.idolcollector.web.dto.member;
 
 import com.idolcollector.idolcollector.domain.member.Member;
-import com.idolcollector.idolcollector.domain.rank.Ranks;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import java.time.LocalDateTime;
 
 @Getter
