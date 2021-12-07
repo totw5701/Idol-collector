@@ -34,12 +34,27 @@ public class Notice {
     @JoinColumn(name = "TARGET_COMMENT_ID")
     private Comment targetComment;
 
-    private String noticeType;
-    private String message;
+    private NoticeType noticeType;
     private LocalDateTime createDate;
-    private String url; // 클릭하면 이동할 url
 
     // 생성자
+    public Notice(Member member, Member targetMember, Post targetPost, NoticeType type) {
+
+        this.member = member;
+        this.targetMember = targetMember;
+        this.targetPost = targetPost;
+        this.noticeType = type;
+        this.createDate = LocalDateTime.now();
+    }
+
+    public Notice(Member member, Member targetMember, Comment targetComment, NoticeType type) {
+
+        this.member = member;
+        this.targetMember = targetMember;
+        this.targetComment = targetComment;
+        this.noticeType = type;
+        this.createDate = LocalDateTime.now();
+    }
 
     // 연관관계 메서드.
 

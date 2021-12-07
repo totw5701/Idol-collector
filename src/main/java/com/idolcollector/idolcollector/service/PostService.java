@@ -5,6 +5,9 @@ import com.idolcollector.idolcollector.domain.like.Likes;
 import com.idolcollector.idolcollector.domain.like.LikesRepository;
 import com.idolcollector.idolcollector.domain.member.Member;
 import com.idolcollector.idolcollector.domain.member.MemberRepository;
+import com.idolcollector.idolcollector.domain.notice.Notice;
+import com.idolcollector.idolcollector.domain.notice.NoticeRepository;
+import com.idolcollector.idolcollector.domain.notice.NoticeType;
 import com.idolcollector.idolcollector.domain.post.Post;
 import com.idolcollector.idolcollector.domain.post.PostRepository;
 import com.idolcollector.idolcollector.domain.rank.Ranks;
@@ -43,6 +46,7 @@ public class PostService {
     private final ScrapRepository scrapRepository;
     private final LikesRepository likesRepository;
     private final TrendingRepository trendingRepository;
+    private final NoticeRepository noticeRepository;
 
     @Transactional
     public Long create(PostSaveRequestDto form) {
@@ -162,6 +166,9 @@ public class PostService {
         Likes likes = new Likes(post.getId(), member, LikeType.POST);
         likesRepository.save(likes);
 
+        // Notice 만들기
+        noticeRepository.save(new Notice(member, post.getMember(), post, NoticeType.LIKE));
+
         // 추천 기록 테이블
         trendingRepository.save(new Trending(post, TrendingType.COMMENT));
 
@@ -184,10 +191,12 @@ public class PostService {
         Scrap scrap = new Scrap(member, post);
         Scrap save = scrapRepository.save(scrap);
 
+        // Notice 만들기
+        noticeRepository.save(new Notice(member, post.getMember(), post, NoticeType.SCRAP));
+
         // 추천 기록 테이블
         trendingRepository.save(new Trending(post, TrendingType.SCRAP));
 
         return save.getId();
     }
-
 }
