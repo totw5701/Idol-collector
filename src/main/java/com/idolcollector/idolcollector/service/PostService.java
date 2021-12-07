@@ -49,7 +49,13 @@ public class PostService {
         Member member = memberRepository.findById(form.getMemberId())
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 회원입니다. id=" + form.getMemberId()));
 
-        // 지금은 form에 memberID있지만 세션에서 받아오는 걸로 수정할 것.
+        // 지금은 form에 memberID있지만 세션에서 받아오는 걸로 수정할 것??? 아니면 밖에서 넣어줄까?
+        // service의 create는 정말 create하는데만 집중하도록!
+
+        /**
+         * post에서 넘어온 memberId는 언제든 조작될 수있음. 세션에서 받아오는것이 정확하다.
+         * 그렇다면 컨트롤에서
+         */
 
         // Post 저장.
         Post savedPost = postRepository.save(new Post(member, form.getTitle(), form.getContent(), form.getStoreFileName(), form.getOriFileName()));
@@ -77,7 +83,10 @@ public class PostService {
         */
 
         PostResponseDto postResponseDto = new PostResponseDto(post);
-        // 세션유저 좋아요 눌렀는지, 스크랩했는지 유무 확인.
+
+        /**
+         * 세션유저 좋아요 눌렀는지, 스크랩했는지 유무 확인.
+         */
         // postResponseDto.didLike();
         // postResponseDto.didScrap();
 
@@ -89,7 +98,7 @@ public class PostService {
         Post post = postRepository.findById(form.getPostId())
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 게시글입니다. id=" + form.getPostId()));
 
-        // 세션유저 일치 확인.
+        // 세션유저 일치 확인?? 밖에서 하는게 더 좋을듯.
 
         post.update(form);
 
@@ -159,17 +168,6 @@ public class PostService {
         return post.addLike();
     }
 
-    @Transactional
-    public int view(Long id) {
-        Post post = postRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 게시글입니다. id=" + id));
-
-
-        // 추천 기록 테이블
-        trendingRepository.save(new Trending(post, TrendingType.VIEW));
-
-        return post.addView();
-    }
 
     @Transactional
     public Long scrap(Long id) {
