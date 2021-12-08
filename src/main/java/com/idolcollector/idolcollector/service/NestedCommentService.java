@@ -6,12 +6,20 @@ import com.idolcollector.idolcollector.domain.member.Member;
 import com.idolcollector.idolcollector.domain.member.MemberRepository;
 import com.idolcollector.idolcollector.domain.nestedcomment.NestedComment;
 import com.idolcollector.idolcollector.domain.nestedcomment.NestedCommentRepository;
+import com.idolcollector.idolcollector.domain.notice.Notice;
+import com.idolcollector.idolcollector.domain.notice.NoticeRepository;
+import com.idolcollector.idolcollector.domain.notice.NoticeType;
+import com.idolcollector.idolcollector.domain.rank.Ranks;
+import com.idolcollector.idolcollector.domain.trending.Trending;
+import com.idolcollector.idolcollector.domain.trending.TrendingType;
 import com.idolcollector.idolcollector.web.dto.nestedcomment.NestedCommentResponseDto;
 import com.idolcollector.idolcollector.web.dto.nestedcomment.NestedCommentSaveRequestDto;
 import com.idolcollector.idolcollector.web.dto.nestedcomment.NestedCommentUpdateRequestDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.time.LocalDateTime;
 
 
 @RequiredArgsConstructor
@@ -22,6 +30,7 @@ public class NestedCommentService {
     private final NestedCommentRepository nestedCommentRepository;
     private final MemberRepository memberRepository;
     private final CommentRepository commentRepository;
+    private final NoticeRepository noticeRepository;
 
 
     public NestedCommentResponseDto findById(Long id) {
@@ -40,6 +49,9 @@ public class NestedCommentService {
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 댓글입니다. id=" + form.getCommentId()));
 
         // 멤버는 세션에서 받아올 것.
+
+        // Notice 만들기
+        noticeRepository.save(new Notice(member, comment.getMember(), comment, NoticeType.COMMENT));
 
         NestedComment save = nestedCommentRepository.save(new NestedComment(member, comment, form.getContent()));
         return save.getId();
