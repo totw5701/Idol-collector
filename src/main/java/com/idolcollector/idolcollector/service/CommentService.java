@@ -5,8 +5,15 @@ import com.idolcollector.idolcollector.domain.comment.CommentRepository;
 import com.idolcollector.idolcollector.domain.member.Member;
 import com.idolcollector.idolcollector.domain.member.MemberRepository;
 import com.idolcollector.idolcollector.domain.nestedcomment.NestedCommentRepository;
+import com.idolcollector.idolcollector.domain.notice.Notice;
+import com.idolcollector.idolcollector.domain.notice.NoticeRepository;
+import com.idolcollector.idolcollector.domain.notice.NoticeType;
 import com.idolcollector.idolcollector.domain.post.Post;
 import com.idolcollector.idolcollector.domain.post.PostRepository;
+import com.idolcollector.idolcollector.domain.rank.Ranks;
+import com.idolcollector.idolcollector.domain.trending.Trending;
+import com.idolcollector.idolcollector.domain.trending.TrendingRepository;
+import com.idolcollector.idolcollector.domain.trending.TrendingType;
 import com.idolcollector.idolcollector.web.dto.comment.CommentResponseDto;
 import com.idolcollector.idolcollector.web.dto.comment.CommentSaveRequestDto;
 import com.idolcollector.idolcollector.web.dto.comment.CommentUpdateRequestDto;
@@ -14,6 +21,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,6 +34,8 @@ public class CommentService {
     private final NestedCommentRepository nestedCommentRepository;
     private final MemberRepository memberRepository;
     private final PostRepository postRepository;
+    private final NoticeRepository noticeRepository;
+    private final TrendingRepository trendingRepository;
 
     public CommentResponseDto findById(Long id) {
         Comment comment = commentRepository.findById(id)
@@ -41,8 +51,14 @@ public class CommentService {
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 게시글입니다. id=" + form.getPostId()));
 
             // 지금은 form에 memberId가 있지만 세션에서 받아오는 걸로 수정 할 것,
-            Member member = memberRepository.findById(form.getAuthorId())
+                Member member = memberRepository.findById(form.getAuthorId())
                     .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 사용자입니다. id=" + form.getAuthorId()));
+
+        // Notice 만들기
+        noticeRepository.save(new Notice(member, post.getMember(), post, NoticeType.COMMENT));
+
+        // 추천 기록 테이블
+        trendingRepository.save(new Trending(post, TrendingType.COMMENT));
 
         Comment save = commentRepository.save(new Comment(member, post, form.getContent()));
         return save.getId();
@@ -77,6 +93,12 @@ public class CommentService {
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 댓글입니다. id=" + id));
 
         // 세션유저 좋아요 중복확인.
+            Ranks rank = new Ranks("ROLL_USER");
+            Member member = new Member(rank, "nick", "email", "1111", "steve", "dsfsdfdsfdsf", LocalDateTime.now());
+
+        // Notice 만들기
+        noticeRepository.save(new Notice(member, comment.getMember(), comment, NoticeType.LIKE));
+
 
         return comment.addLike();
     }

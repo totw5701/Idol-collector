@@ -168,7 +168,7 @@ public class PostService {
         noticeRepository.save(new Notice(member, post.getMember(), post, NoticeType.LIKE));
 
         // 추천 기록 테이블
-        trendingRepository.save(new Trending(post, TrendingType.COMMENT));
+        trendingRepository.save(new Trending(post, TrendingType.LIKE));
 
         return post.addLike();
     }
