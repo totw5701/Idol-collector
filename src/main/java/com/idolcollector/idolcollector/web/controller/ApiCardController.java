@@ -28,16 +28,6 @@ public class ApiCardController {
         return postService.scorePostList();
     }
 
-    @PostMapping("/add")
-    public Long addCard(@RequestBody PostSaveRequestDto form) {
-        return postService.create(form);
-    }
-
-    @PutMapping("/update")
-    public Long updateCard(@RequestBody PostUpdateRequestDto form) {
-        return postService.update(form);
-    }
-
     @GetMapping("/{id}")
     public PostResponseDto detail(@PathVariable("id") Long id) {
         return postService.detail(id);

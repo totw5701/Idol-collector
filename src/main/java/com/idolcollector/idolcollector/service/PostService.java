@@ -18,6 +18,8 @@ import com.idolcollector.idolcollector.domain.tag.TagRepository;
 import com.idolcollector.idolcollector.domain.trending.Trending;
 import com.idolcollector.idolcollector.domain.trending.TrendingRepository;
 import com.idolcollector.idolcollector.domain.trending.TrendingType;
+import com.idolcollector.idolcollector.file.FileStore;
+import com.idolcollector.idolcollector.web.dto.file.UploadFile;
 import com.idolcollector.idolcollector.web.dto.post.HomePostListResponseDto;
 import com.idolcollector.idolcollector.web.dto.post.PostResponseDto;
 import com.idolcollector.idolcollector.web.dto.post.PostSaveRequestDto;
@@ -26,6 +28,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -47,9 +50,10 @@ public class PostService {
     private final LikesRepository likesRepository;
     private final TrendingRepository trendingRepository;
     private final NoticeRepository noticeRepository;
+    private final FileStore fileStore;
 
     @Transactional
-    public Long create(PostSaveRequestDto form) {
+    public Long create(PostSaveRequestDto form) throws IOException {
         Member member = memberRepository.findById(form.getMemberId())
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 회원입니다. id=" + form.getMemberId()));
 
@@ -61,8 +65,11 @@ public class PostService {
          * 그렇다면 컨트롤에서
          */
 
+        // 사진 저장
+        UploadFile uploadFile = fileStore.storeFile(form.getAttachFile());
+
         // Post 저장.
-        Post savedPost = postRepository.save(new Post(member, form.getTitle(), form.getContent(), form.getStoreFileName(), form.getOriFileName()));
+        Post savedPost = postRepository.save(new Post(member, form.getTitle(), form.getContent(), uploadFile.getStoreFileName(), uploadFile.getUploadFileName()));
 
         // 태그 저장.
         tagService.createPostTag(form.getTags(), savedPost);

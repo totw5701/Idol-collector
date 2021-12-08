@@ -28,9 +28,16 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -111,7 +118,7 @@ class PostServiceTest {
 
 
     @Test
-    void 생성() {
+    void 생성() throws IOException {
 
         // Given
         Member member = memberRepository.findAll().get(0);
@@ -124,11 +131,14 @@ class PostServiceTest {
         tags.add("예쁨");
         tags.add("BEautiful");
 
+        // 사진 파일
+        File img = new File("/Users/totheworld/Desktop/idol-collector/test.png");
+        MultipartFile mf = new MockMultipartFile("image","test.png", "img",new FileInputStream(img));
+
         PostSaveRequestDto form = new PostSaveRequestDto(member.getId(),
                 "예쁜이하늬",
                 "이하늬 예쁘다 헤헤",
-                "slfihfaeufh33",
-                "leehn",
+                mf,
                 tags);
 
         // When
@@ -168,7 +178,7 @@ class PostServiceTest {
     }
 
     @Test
-    void 수정() {
+    void 수정() throws IOException {
 
         // Given
         Member member = memberRepository.findAll().get(0);
@@ -178,11 +188,14 @@ class PostServiceTest {
         tags.add("예쁨");
         tags.add("BEautiful");
 
+        // 사진 파일
+        File img = new File("/Users/totheworld/Desktop/idol-collector/test.png");
+        MultipartFile mf = new MockMultipartFile("image","test.png", "img",new FileInputStream(img));
+
         PostSaveRequestDto saveForm = new PostSaveRequestDto(member.getId(),
                 "예쁜이하늬",
                 "이하늬 예쁘다 lol 헤헤",
-                "slfihfaeufh33",
-                "leehn",
+                mf,
                 tags);
 
         Long postId = postService.create(saveForm);
@@ -206,7 +219,8 @@ class PostServiceTest {
         assertThat(updated.getTitle()).isEqualTo("2하2");
         assertThat(updated.getContent()).isEqualTo("타짜에서 나왔구나.");
         assertThat(updated.getModifyDate()).isNotEqualTo(updated.getCreateDate());
-        assertThat(updated.getStoreFileName()).isEqualTo("slfihfaeufh33");
+        assertThat(updated.getOriFileName()).isEqualTo("test.png");
+        assertThat(updated.getStoreFileName()).isNotNull();
 
         List<Tag> findTags = tagRepository.findAllByPostId(updated.getId());
 
