@@ -33,18 +33,5 @@ public class ApiCardController {
         return postService.detail(id);
     }
 
-    @DeleteMapping("/delete/{id}")
-    public void delete(@PathVariable("id") Long id) {
-        postService.delete(id);
-    }
 
-    @PostMapping("/like/{id}")
-    public void addLike(@PathVariable("id") Long id) {
-        postService.like(id);
-    }
-
-    @GetMapping("/scrap/{id}")
-    public void scrap(@PathVariable("id") Long id) {
-        postService.scrap(id);
-    }
 }

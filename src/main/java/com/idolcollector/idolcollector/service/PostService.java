@@ -71,7 +71,7 @@ public class PostService {
         // Post 저장.
         Post savedPost = postRepository.save(new Post(member, form.getTitle(), form.getContent(), uploadFile.getStoreFileName(), uploadFile.getUploadFileName()));
 
-        // 태그 저장.
+        // 태그 저장. // 다른 서비스를 건드는게 좀 그렇지만, tagService는 Post과 Member에 완전히 종속적이니 그냥 하자.
         tagService.createPostTag(form.getTags(), savedPost);
 
         return savedPost.getId();
@@ -83,15 +83,6 @@ public class PostService {
 
         // 조회수 증가.
         post.addView();
-
-        /*
-        양방향 연관관계 설정하기 전. 쿼리가 많이 나가 성능 저하 우려가있음.
-        // 댓글 넣기.
-        List<CommentResponseDto> comments = commentService.findAllInPost(id);
-
-        // 태그 넣기.
-        List<TagResponseDto> tags = tagService.findAllinPost(id);
-        */
 
         PostResponseDto postResponseDto = new PostResponseDto(post);
 
@@ -109,7 +100,7 @@ public class PostService {
         Post post = postRepository.findById(form.getPostId())
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 게시글입니다. id=" + form.getPostId()));
 
-        // 세션유저 일치 확인?? 밖에서 하는게 더 좋을듯.
+        // 세션유저 일치 확인
 
         post.update(form);
 
