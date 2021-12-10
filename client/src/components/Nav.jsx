@@ -1,3 +1,4 @@
+import { ArrowDropDown } from '@material-ui/icons';
 import { useState } from 'react';
 import styled from 'styled-components/macro';
 
@@ -9,9 +10,12 @@ function Nav() {
       <Logo>LOGO</Logo>
       <LoginRight>
         <LoginMakeCard>카드만들기</LoginMakeCard>
+
         <LoginNickname onClick={() => setDropdown(!dropdown)}>
-          닉네임 ↓
+          닉네임
+          <ArrowDropDown />
         </LoginNickname>
+
         {dropdown && (
           <DropdownBar>
             <li>나의 카드</li>
