@@ -1,6 +1,7 @@
-import { ArrowDropDown } from '@material-ui/icons';
+import { ArrowDropDown, ArrowDropUp } from '@material-ui/icons';
 import { useState } from 'react';
 import styled from 'styled-components/macro';
+import Button from './Button';
 
 function Nav() {
   const [dropdown, setDropdown] = useState(false);
@@ -9,18 +10,26 @@ function Nav() {
     <Navbar>
       <Logo>LOGO</Logo>
       <LoginRight>
-        <LoginMakeCard>카드만들기</LoginMakeCard>
+        <LoginMakeCard>
+          <Button>카드만들기</Button>
+        </LoginMakeCard>
 
         <LoginNickname onClick={() => setDropdown(!dropdown)}>
-          닉네임
-          <ArrowDropDown />
+          <Button>닉네임</Button>
+          {dropdown ? <ArrowDropUp /> : <ArrowDropDown />}
         </LoginNickname>
 
         {dropdown && (
           <DropdownBar>
-            <li>나의 카드</li>
-            <li>설정</li>
-            <li>로그아웃</li>
+            <li>
+              <Button>나의 카드</Button>
+            </li>
+            <li>
+              <Button>설정</Button>
+            </li>
+            <li>
+              <Button>로그아웃</Button>
+            </li>
           </DropdownBar>
         )}
       </LoginRight>
@@ -37,8 +46,6 @@ const Navbar = styled.nav`
   justify-content: space-between;
   align-items: center;
   padding: 1.5rem 2.5rem;
-
-  // 수정할 부분
 `;
 
 // a tag 및 내부 img 태그로 변경될 예정
@@ -49,6 +56,7 @@ const Logo = styled.h1`
 
 const LoginRight = styled.div`
   display: flex;
+  align-items: center;
 `;
 
 const LoginMakeCard = styled.div`
@@ -57,8 +65,12 @@ const LoginMakeCard = styled.div`
 `;
 
 const LoginNickname = styled.div`
-  // 화살표는 material-ui로 바꿀 예정
   cursor: pointer;
+  line-height: 35px;
+
+  svg {
+    line-height: 35px;
+  }
 `;
 
 const DropdownBar = styled.ul`
@@ -72,9 +84,6 @@ const DropdownBar = styled.ul`
   box-shadow: 0px 5px 10px 1px rgba(0, 0, 0, 0.5);
 
   li {
-    cursor: pointer;
     margin: 1rem 0;
   }
 `;
-
-// theme 사용하여 button style을 변수로 만들어 설정할 예정
