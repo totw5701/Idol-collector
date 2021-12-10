@@ -45,7 +45,7 @@ const Navbar = styled.nav`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 1.5rem 2.5rem;
+  padding: 15px 30px;
 `;
 
 // a tag 및 내부 img 태그로 변경될 예정
@@ -65,11 +65,14 @@ const LoginMakeCard = styled.div`
 `;
 
 const LoginNickname = styled.div`
+  position: relative;
   cursor: pointer;
   line-height: 35px;
 
   svg {
-    line-height: 35px;
+    position: absolute;
+    right: -10px;
+    top: 3px;
   }
 `;
 
@@ -79,6 +82,7 @@ const DropdownBar = styled.ul`
   top: 4rem;
   padding: 0.4rem 1rem;
 
+  background: #fff;
   border-radius: 5px;
   -webkit-box-shadow: 0px 5px 10px 1px rgba(0, 0, 0, 0.5);
   box-shadow: 0px 5px 10px 1px rgba(0, 0, 0, 0.5);

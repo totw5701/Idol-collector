@@ -1,4 +1,5 @@
 import GlobalStyle from './common/GlobalStyle';
+import Jumbotron from './components/Jumbotron';
 import Nav from './components/Nav';
 
 function App() {
@@ -6,6 +7,7 @@ function App() {
     <>
       <GlobalStyle />
       <Nav />
+      <Jumbotron />
     </>
   );
 }
