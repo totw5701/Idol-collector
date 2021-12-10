@@ -17,9 +17,9 @@ public class Ranks {
     @JoinColumn(name = "RANKS_ID")
     private Long id;
 
-    private String roll;
+    private String role;
 
-    public Ranks(String roll) {
-        this.roll = roll;
+    public Ranks(String role) {
+        this.role = role;
     }
 }

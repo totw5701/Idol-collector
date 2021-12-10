@@ -3,7 +3,6 @@ package com.idolcollector.idolcollector.domain.rank;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -19,7 +18,7 @@ class RanksRepositoryTest {
     void 저장_조회() {
 
         // Given
-        Ranks ranks = new Ranks("ROLL_USER");
+        Ranks ranks = new Ranks("ROLE_USER");
 
         // When
         Ranks saved = ranksRepository.save(ranks);
@@ -27,7 +26,7 @@ class RanksRepositoryTest {
         Ranks find = ranksRepository.findById(saved.getId()).get();
 
         // Then
-        assertThat(find.getRoll()).isEqualTo(ranks.getRoll());
+        assertThat(find.getRole()).isEqualTo(ranks.getRole());
     }
 
 }

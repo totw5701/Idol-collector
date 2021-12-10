@@ -31,7 +31,7 @@ class MemberRepositoryTest {
 
     @BeforeEach
     void before() {
-        Ranks rank = new Ranks("ROLL_USER");
+        Ranks rank = new Ranks("ROLE_USER");
         ranksRepository.save(rank);
 
         Tag tag = new Tag("이하늬");

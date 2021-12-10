@@ -46,7 +46,7 @@ public class CommentServiceTest {
 
     @BeforeEach
     void before() {
-        Ranks rank = new Ranks("ROLL_USER");
+        Ranks rank = new Ranks("ROLE_USER");
         ranksRepository.save(rank);
         Member member = new Member(rank, "nick", "email", "1111", "steve", "dsfsdfdsfdsf", LocalDateTime.now());
         memberRepository.save(member);
