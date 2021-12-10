@@ -6,6 +6,6 @@ import java.util.List;
 
 public interface RanksRepository extends JpaRepository<Ranks, Long> {
 
-    Ranks findByRoll(String roll);
+    Ranks findByRole(String role);
 
 }

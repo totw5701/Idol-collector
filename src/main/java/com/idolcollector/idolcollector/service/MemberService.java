@@ -22,7 +22,7 @@ public class MemberService {
 
     @Transactional
     public Long join(MemberSaveRequestDto form) {
-        Ranks rank = ranksRepository.findByRoll("ROLL_USER");
+        Ranks rank = ranksRepository.findByRole("ROLL_USER");
 
         Member save = memberRepository.save(new Member(rank, form.getNickName(), form.getEmail(), form.getPwd(), form.getName(), form.getPicture(), form.getDateOfBirth()));
         return save.getId();
