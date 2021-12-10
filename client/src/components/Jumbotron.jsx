@@ -25,7 +25,7 @@ const Banner = styled.div`
   width: 100%;
   height: 100%;
 
-  background: lightgreen;
+  border-bottom: 1px solid #000;
 `;
 
 const BannerTitle = styled.p`
