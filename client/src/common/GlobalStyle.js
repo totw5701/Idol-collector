@@ -33,6 +33,7 @@ const GlobalStyle = createGlobalStyle`
   }
   body {
     line-height: 1;
+    font-family: Roboto, sans-serif; // 업데이트 예정
   }
   ol, ul {
     list-style: none;
@@ -48,6 +49,9 @@ const GlobalStyle = createGlobalStyle`
   table {
     border-collapse: collapse;
     border-spacing: 0;
+  }
+  * {
+  box-sizing: border-box;
   }
 `;
 

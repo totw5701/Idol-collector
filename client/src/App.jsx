@@ -1,10 +1,13 @@
 import GlobalStyle from './common/GlobalStyle';
+import Jumbotron from './components/Jumbotron';
+import Nav from './components/Nav';
 
 function App() {
   return (
     <>
       <GlobalStyle />
-      <h1>App</h1>
+      <Nav />
+      <Jumbotron />
     </>
   );
 }
