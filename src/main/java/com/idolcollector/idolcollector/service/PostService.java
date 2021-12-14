@@ -161,7 +161,7 @@ public class PostService {
         likesRepository.save(likes);
 
         // Notice 만들기
-        noticeRepository.save(new Notice(member, post.getMember(), post, NoticeType.LIKE));
+        noticeRepository.save(new Notice(post.getMember(), member, post, NoticeType.LIKE));
 
         // 추천 기록 테이블
         trendingRepository.save(new Trending(post, TrendingType.LIKE));
@@ -184,7 +184,7 @@ public class PostService {
         Scrap save = scrapRepository.save(scrap);
 
         // Notice 만들기
-        noticeRepository.save(new Notice(member, post.getMember(), post, NoticeType.SCRAP));
+        noticeRepository.save(new Notice(post.getMember(), member, post, NoticeType.SCRAP));
 
         // 추천 기록 테이블
         trendingRepository.save(new Trending(post, TrendingType.SCRAP));

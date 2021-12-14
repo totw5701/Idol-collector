@@ -8,6 +8,8 @@ import com.idolcollector.idolcollector.domain.member.MemberRepository;
 import com.idolcollector.idolcollector.domain.member.MemberRole;
 import com.idolcollector.idolcollector.domain.nestedcomment.NestedComment;
 import com.idolcollector.idolcollector.domain.nestedcomment.NestedCommentRepository;
+import com.idolcollector.idolcollector.domain.notice.Notice;
+import com.idolcollector.idolcollector.domain.notice.NoticeRepository;
 import com.idolcollector.idolcollector.domain.post.Post;
 import com.idolcollector.idolcollector.domain.post.PostRepository;
 import com.idolcollector.idolcollector.domain.posttag.PostTag;
@@ -56,6 +58,7 @@ class PostServiceTest {
     @Autowired ScrapRepository scrapRepository;
     @Autowired LikesRepository likesRepository;
     @Autowired TrendingRepository trendingRepository;
+    @Autowired NoticeRepository noticeRepository;
 
     @BeforeEach
     void before() {
@@ -276,9 +279,14 @@ class PostServiceTest {
         Member member = memberRepository.findAll().get(0);
         Post post = postRepository.save(new Post(member, "title", "content", "storeFilename", "oriFileName"));
 
-        // Then
+        // When
         postService.like(post.getId());
+
+        // Then
         assertThat(post.getLikes()).isEqualTo(1);
+
+        List<Notice> notices = noticeRepository.findAll();
+        assertThat(notices.size()).isEqualTo(1);
 
 
     }
@@ -300,6 +308,9 @@ class PostServiceTest {
 
         assertThat(scrap1.getPost().getTitle()).isEqualTo("title");
         assertThat(scrap1.getMember().getNickName()).isEqualTo("scrapper");
+
+        List<Notice> notices = noticeRepository.findAll();
+        assertThat(notices.size()).isEqualTo(1);
 
     }
 

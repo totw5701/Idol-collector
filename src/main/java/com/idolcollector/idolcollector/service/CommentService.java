@@ -55,7 +55,7 @@ public class CommentService {
                     .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 사용자입니다. id=" + form.getAuthorId()));
 
         // Notice 만들기
-        noticeRepository.save(new Notice(member, post.getMember(), post, NoticeType.COMMENT));
+        noticeRepository.save(new Notice(post.getMember(), member, post, NoticeType.COMMENT));
 
         // 추천 기록 테이블
         trendingRepository.save(new Trending(post, TrendingType.COMMENT));
@@ -96,7 +96,7 @@ public class CommentService {
             Member member = new Member(MemberRole.ROLE_USER, "nick", "email", "1111", "steve", "dsfsdfdsfdsf", LocalDateTime.now());
 
         // Notice 만들기
-        noticeRepository.save(new Notice(member, comment.getMember(), comment, NoticeType.LIKE));
+        noticeRepository.save(new Notice(comment.getMember(), member, comment, NoticeType.LIKE));
 
 
         return comment.addLike();

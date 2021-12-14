@@ -7,6 +7,8 @@ import com.idolcollector.idolcollector.domain.member.MemberRepository;
 import com.idolcollector.idolcollector.domain.member.MemberRole;
 import com.idolcollector.idolcollector.domain.nestedcomment.NestedComment;
 import com.idolcollector.idolcollector.domain.nestedcomment.NestedCommentRepository;
+import com.idolcollector.idolcollector.domain.notice.Notice;
+import com.idolcollector.idolcollector.domain.notice.NoticeRepository;
 import com.idolcollector.idolcollector.domain.post.Post;
 import com.idolcollector.idolcollector.domain.post.PostRepository;
 import com.idolcollector.idolcollector.web.dto.comment.CommentResponseDto;
@@ -39,6 +41,8 @@ public class CommentServiceTest {
     CommentRepository commentRepository;
     @Autowired
     PostRepository postRepository;
+    @Autowired
+    NoticeRepository noticeRepository;
 
     @BeforeEach
     void before() {
@@ -69,6 +73,9 @@ public class CommentServiceTest {
         // Then
         assertThat(find.getId()).isEqualTo(saveId);
         assertThat(find.getNestedComments().get(0).getContent()).isEqualTo("n Comment");
+
+        List<Notice> notices = noticeRepository.findAll();
+        assertThat(notices.size()).isEqualTo(1);
     }
 
 
@@ -126,6 +133,9 @@ public class CommentServiceTest {
 
         // Then
         assertThat(comment.getLikes()).isEqualTo(1);
+
+        List<Notice> notices = noticeRepository.findAll();
+        assertThat(notices.size()).isEqualTo(1);
     }
 
     @Test

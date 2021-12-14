@@ -7,6 +7,8 @@ import com.idolcollector.idolcollector.domain.member.MemberRepository;
 import com.idolcollector.idolcollector.domain.member.MemberRole;
 import com.idolcollector.idolcollector.domain.nestedcomment.NestedComment;
 import com.idolcollector.idolcollector.domain.nestedcomment.NestedCommentRepository;
+import com.idolcollector.idolcollector.domain.notice.Notice;
+import com.idolcollector.idolcollector.domain.notice.NoticeRepository;
 import com.idolcollector.idolcollector.domain.post.Post;
 import com.idolcollector.idolcollector.domain.post.PostRepository;
 import com.idolcollector.idolcollector.web.dto.nestedcomment.NestedCommentResponseDto;
@@ -33,6 +35,7 @@ class NestedCommentServiceTest {
     @Autowired MemberRepository memberRepository;
     @Autowired CommentRepository commentRepository;
     @Autowired PostRepository postRepository;
+    @Autowired NoticeRepository noticeRepository;
 
     @BeforeEach
     void before() {
@@ -59,6 +62,9 @@ class NestedCommentServiceTest {
 
         // Then
         assertThat(nComment.getContent()).isEqualTo("nest comment test");
+
+        List<Notice> notices = noticeRepository.findAll();
+        assertThat(notices.size()).isEqualTo(1);
     }
 
 
@@ -114,5 +120,8 @@ class NestedCommentServiceTest {
 
         // Then
         assertThat(find.getLikes()).isEqualTo(1);
+
+        List<Notice> notices = noticeRepository.findAll();
+        assertThat(notices.size()).isEqualTo(1);
     }
 }
