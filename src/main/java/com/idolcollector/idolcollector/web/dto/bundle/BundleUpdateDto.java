@@ -5,13 +5,15 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class BundleSaveDto {
+public class BundleUpdateDto {
 
-    private Long memberId;
+    @NotNull
+    private Long bundleId;
 
     @NotBlank
     private String title;

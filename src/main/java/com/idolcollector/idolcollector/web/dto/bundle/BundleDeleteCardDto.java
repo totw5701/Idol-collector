@@ -4,16 +4,12 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import javax.validation.constraints.NotBlank;
-
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class BundleSaveDto {
+public class BundleDeleteCardDto {
 
-    private Long memberId;
+    private Long bundleId;
+    private Long postId;
 
-    @NotBlank
-    private String title;
-    private String description;
 }

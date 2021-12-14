@@ -57,6 +57,11 @@ public class PostService {
 
         /**
          * post에서 넘어온 memberId는 언제든 조작될 수있음. 세션에서 받아오는것이 정확하다.
+         * Controller에서 세션 memberId와 save form dto로 넘어온 memberId가 맞는지 확인하고 맞으면 service시작
+         * 그렇지 않다면 취소하자.
+         *
+         * 안됨, 실제 DB에서 받아온 post의 memberId와 세션이 일치하는지 확인해야함. service에서 할 수 밖에 없다.
+         *
          * 그렇다면 컨트롤에서 save form DTO에 넣어줄까?
          */
 
@@ -144,6 +149,7 @@ public class PostService {
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 게시글입니다. id=" + id));
 
                 // 세션에서 로그인유저 받아올 것.
+
                     // 임시 코드
                     Member member = new Member(MemberRole.ROLE_USER, "pressLike", "email", "1111", "pressLike", "dsfsdfdsfdsf", LocalDateTime.now());
                     memberRepository.save(member);

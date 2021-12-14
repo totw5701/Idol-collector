@@ -33,6 +33,6 @@ public class BundlePost {
     // 연관관계메소드
     private void construct(Bundle bundle) {
         bundle.getBundlePosts().add(this);
-        // post와는 단방향연관관계.
+        // post와는 단방향연관관계입니다. post에서 bundle을 조회할 일이 없음.
     }
 }
