@@ -3,39 +3,49 @@ import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 
 function SearchBar() {
-  const [positionY, setPositionY] = useState(false);
+  const [isFixed, setIsFixed] = useState(false);
+  const [searchValue, setSearchValue] = useState();
 
-  const onScroll = () => {
-    if (window.scrollY >= 380) {
-      return setPositionY(true);
-    } else if (window.scrollY < 380) {
-      return setPositionY(false);
-    }
-  };
+  const fixed = `position: fixed; top: 10px; left: 15%;`;
 
   useEffect(() => {
     window.addEventListener('scroll', onScroll);
 
     return () => {
-      window.addEventListener('scroll', onScroll);
+      window.removeEventListener('scroll', onScroll);
     };
   }, []);
 
-  const fixed = `position: fixed;
-      top: 10px;
-      left: 15%;`;
+  const onScroll = () => {
+    if (window.scrollY >= 380) {
+      return setIsFixed(true);
+    } else if (window.scrollY < 380) {
+      return setIsFixed(false);
+    }
+  };
+
+  const handleSearch = e => {
+    e.preventDefault();
+    console.log(searchValue);
+  };
 
   return (
-    <StyledSearchBar fixed={positionY && fixed}>
-      <Search />
-      <SearchInput type="search" placeholder="원하는 순간을 검색해보세요" />
-    </StyledSearchBar>
+    <>
+      <StyledSearchBar onSubmit={handleSearch} fixed={isFixed && fixed}>
+        <Search />
+        <SearchInput
+          onChange={e => setSearchValue(e.target.value)}
+          type="search"
+          placeholder="원하는 순간을 검색해보세요"
+        />
+      </StyledSearchBar>
+    </>
   );
 }
 
 export default SearchBar;
 
-const StyledSearchBar = styled.div`
+const StyledSearchBar = styled.form`
   ${({ fixed }) => fixed}
 
   margin: auto;
