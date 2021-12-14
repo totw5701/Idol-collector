@@ -48,6 +48,8 @@ public class Notice {
         this.targetPost = targetPost;
         this.noticeType = type;
         this.createDate = LocalDateTime.now();
+
+        construct(member);
     }
 
     public Notice(Member member, Member targetMember, Comment targetComment, NoticeType type) {
@@ -57,8 +59,12 @@ public class Notice {
         this.targetComment = targetComment;
         this.noticeType = type;
         this.createDate = LocalDateTime.now();
+
+        construct(member);
     }
 
     // 연관관계 메서드.
-
+    private void construct(Member member) {
+        member.getNotices().add(this);
+    }
 }
