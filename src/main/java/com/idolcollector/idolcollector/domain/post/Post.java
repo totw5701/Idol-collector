@@ -65,7 +65,7 @@ public class Post {
     }
 
     // 연관관계 메서드
-    public void construct(Member member) {
+    private void construct(Member member) {
         member.getPosts().add(this);
     }
 

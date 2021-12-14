@@ -1,5 +1,6 @@
 package com.idolcollector.idolcollector.domain.member;
 
+import com.idolcollector.idolcollector.domain.bundle.Bundle;
 import com.idolcollector.idolcollector.domain.comment.Comment;
 import com.idolcollector.idolcollector.domain.like.Likes;
 import com.idolcollector.idolcollector.domain.membertag.MemberTag;
@@ -55,6 +56,9 @@ public class Member {
 
     @OneToMany(mappedBy = "member")
     private List<Likes> likesList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "member")
+    private List<Bundle> bundles = new ArrayList<>();
 
 
     public Member(MemberRole role, String nickName, String email, String pwd, String name, String picture, LocalDateTime dateOfBirth) {
