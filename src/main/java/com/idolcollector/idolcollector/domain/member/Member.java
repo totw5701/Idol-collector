@@ -6,7 +6,6 @@ import com.idolcollector.idolcollector.domain.membertag.MemberTag;
 import com.idolcollector.idolcollector.domain.nestedcomment.NestedComment;
 import com.idolcollector.idolcollector.domain.notice.Notice;
 import com.idolcollector.idolcollector.domain.post.Post;
-import com.idolcollector.idolcollector.domain.rank.Ranks;
 import com.idolcollector.idolcollector.domain.scrap.Scrap;
 import com.idolcollector.idolcollector.web.dto.member.MemberUpdateRequestDto;
 import lombok.Getter;
@@ -25,11 +24,7 @@ public class Member {
     @Id @GeneratedValue
     @JoinColumn(name = "MEMBER_ID")
     private Long id;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "RANKS_ID")
-    private Ranks ranks;
-
+    private MemberRole role;
     private String nickName;
     private String email;
     private String pwd;
@@ -62,8 +57,8 @@ public class Member {
     private List<Likes> likesList = new ArrayList<>();
 
 
-    public Member(Ranks ranks, String nickName, String email, String pwd, String name, String picture, LocalDateTime dateOfBirth) {
-        this.ranks = ranks;
+    public Member(MemberRole role, String nickName, String email, String pwd, String name, String picture, LocalDateTime dateOfBirth) {
+        this.role = role;
         this.nickName = nickName;
         this.email = email;
         this.pwd = pwd;

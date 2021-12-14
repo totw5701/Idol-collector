@@ -4,12 +4,11 @@ import com.idolcollector.idolcollector.domain.comment.Comment;
 import com.idolcollector.idolcollector.domain.comment.CommentRepository;
 import com.idolcollector.idolcollector.domain.member.Member;
 import com.idolcollector.idolcollector.domain.member.MemberRepository;
+import com.idolcollector.idolcollector.domain.member.MemberRole;
 import com.idolcollector.idolcollector.domain.nestedcomment.NestedComment;
 import com.idolcollector.idolcollector.domain.nestedcomment.NestedCommentRepository;
 import com.idolcollector.idolcollector.domain.posttag.PostTag;
 import com.idolcollector.idolcollector.domain.posttag.PostTagRepository;
-import com.idolcollector.idolcollector.domain.rank.Ranks;
-import com.idolcollector.idolcollector.domain.rank.RanksRepository;
 import com.idolcollector.idolcollector.domain.scrap.Scrap;
 import com.idolcollector.idolcollector.domain.scrap.ScrapRepository;
 import com.idolcollector.idolcollector.domain.tag.Tag;
@@ -33,7 +32,6 @@ class PostRepositoryTest {
 
     @Autowired PostRepository postRepository;
     @Autowired MemberRepository memberRepository;
-    @Autowired RanksRepository ranksRepository;
     @Autowired TagRepository tagRepository;
     @Autowired PostTagRepository postTagRepository;
     @Autowired ScrapRepository scrapRepository;
@@ -43,9 +41,7 @@ class PostRepositoryTest {
 
     @BeforeEach
     void before() {
-        Ranks rank = new Ranks("ROLE_USER");
-        ranksRepository.save(rank);
-        Member member = new Member(rank, "nick", "email", "1111", "steve", "dsfsdfdsfdsf", LocalDateTime.now());
+        Member member = new Member(MemberRole.ROLE_USER, "nick", "email", "1111", "steve", "dsfsdfdsfdsf", LocalDateTime.now());
         memberRepository.save(member);
         Tag tag = new Tag("이하늬");
         tagRepository.save(tag);

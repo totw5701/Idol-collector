@@ -2,20 +2,16 @@ package com.idolcollector.idolcollector.domain.comment;
 
 import com.idolcollector.idolcollector.domain.member.Member;
 import com.idolcollector.idolcollector.domain.member.MemberRepository;
-import com.idolcollector.idolcollector.domain.nestedcomment.NestedComment;
+import com.idolcollector.idolcollector.domain.member.MemberRole;
 import com.idolcollector.idolcollector.domain.nestedcomment.NestedCommentRepository;
 import com.idolcollector.idolcollector.domain.post.Post;
 import com.idolcollector.idolcollector.domain.post.PostRepository;
-import com.idolcollector.idolcollector.domain.rank.Ranks;
-import com.idolcollector.idolcollector.domain.rank.RanksRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.Parameter;
-import javax.persistence.Query;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -29,14 +25,11 @@ class CommentRepositoryTest {
     @Autowired NestedCommentRepository nestedCommentRepository;
     @Autowired MemberRepository memberRepository;
     @Autowired CommentRepository commentRepository;
-    @Autowired RanksRepository ranksRepository;
     @Autowired PostRepository postRepository;
 
     @BeforeEach
     void before() {
-        Ranks rank = new Ranks("ROLE_USER");
-        ranksRepository.save(rank);
-        Member member = new Member(rank, "nick", "email", "1111", "steve", "dsfsdfdsfdsf", LocalDateTime.now());
+        Member member = new Member(MemberRole.ROLE_USER, "nick", "email", "1111", "steve", "dsfsdfdsfdsf", LocalDateTime.now());
         memberRepository.save(member);
 
         Post post = new Post(member, "title", "conten", "ste", "ori");

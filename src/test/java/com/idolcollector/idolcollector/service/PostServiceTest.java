@@ -5,14 +5,13 @@ import com.idolcollector.idolcollector.domain.comment.CommentRepository;
 import com.idolcollector.idolcollector.domain.like.LikesRepository;
 import com.idolcollector.idolcollector.domain.member.Member;
 import com.idolcollector.idolcollector.domain.member.MemberRepository;
+import com.idolcollector.idolcollector.domain.member.MemberRole;
 import com.idolcollector.idolcollector.domain.nestedcomment.NestedComment;
 import com.idolcollector.idolcollector.domain.nestedcomment.NestedCommentRepository;
 import com.idolcollector.idolcollector.domain.post.Post;
 import com.idolcollector.idolcollector.domain.post.PostRepository;
 import com.idolcollector.idolcollector.domain.posttag.PostTag;
 import com.idolcollector.idolcollector.domain.posttag.PostTagRepository;
-import com.idolcollector.idolcollector.domain.rank.Ranks;
-import com.idolcollector.idolcollector.domain.rank.RanksRepository;
 import com.idolcollector.idolcollector.domain.scrap.Scrap;
 import com.idolcollector.idolcollector.domain.scrap.ScrapRepository;
 import com.idolcollector.idolcollector.domain.tag.Tag;
@@ -29,14 +28,11 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.mock.web.MockMultipartFile;
-import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -52,7 +48,6 @@ class PostServiceTest {
     PostService postService;
 
     @Autowired PostRepository postRepository;
-    @Autowired RanksRepository ranksRepository;
     @Autowired MemberRepository memberRepository;
     @Autowired TagRepository tagRepository;
     @Autowired PostTagRepository postTagRepository;
@@ -64,9 +59,7 @@ class PostServiceTest {
 
     @BeforeEach
     void before() {
-        Ranks rank = new Ranks("ROLE_USER");
-        ranksRepository.save(rank);
-        Member member = new Member(rank, "nick", "email", "1111", "steve", "dsfsdfdsfdsf", LocalDateTime.now());
+        Member member = new Member(MemberRole.ROLE_USER, "nick", "email", "1111", "steve", "dsfsdfdsfdsf", LocalDateTime.now());
         memberRepository.save(member);
     }
 
@@ -294,9 +287,7 @@ class PostServiceTest {
     void 스크랩() {
 
         // Given
-        Ranks rank = new Ranks("ROLL_USER");
-        ranksRepository.save(rank);
-        Member member = new Member(rank, "nick", "email", "1111", "david", "dsfsdfdsfdsf", LocalDateTime.now());
+        Member member = new Member(MemberRole.ROLE_USER, "nick", "email", "1111", "david", "dsfsdfdsfdsf", LocalDateTime.now());
         memberRepository.save(member);
 
         Post post = postRepository.save(new Post(member, "title", "content", "storeFilename", "oriFileName"));

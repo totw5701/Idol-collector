@@ -27,7 +27,7 @@ public class MemberResponseDto {
     private List<NoticeResponseDto> notices = new ArrayList<>();
 
     public MemberResponseDto(Member member) {
-        this.role = member.getRanks().getRole();
+        this.role = member.getRole().name();
         this.nickName = member.getNickName();
         this.email = member.getEmail();
         this.name = member.getName();

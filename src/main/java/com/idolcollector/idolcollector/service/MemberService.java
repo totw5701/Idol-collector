@@ -2,8 +2,7 @@ package com.idolcollector.idolcollector.service;
 
 import com.idolcollector.idolcollector.domain.member.Member;
 import com.idolcollector.idolcollector.domain.member.MemberRepository;
-import com.idolcollector.idolcollector.domain.rank.Ranks;
-import com.idolcollector.idolcollector.domain.rank.RanksRepository;
+import com.idolcollector.idolcollector.domain.member.MemberRole;
 import com.idolcollector.idolcollector.web.dto.member.MemberResponseDto;
 import com.idolcollector.idolcollector.web.dto.member.MemberSaveRequestDto;
 import com.idolcollector.idolcollector.web.dto.member.MemberUpdateRequestDto;
@@ -18,13 +17,11 @@ import org.springframework.transaction.annotation.Transactional;
 public class MemberService {
 
     private final MemberRepository memberRepository;
-    private final RanksRepository ranksRepository;
 
     @Transactional
     public Long join(MemberSaveRequestDto form) {
-        Ranks rank = ranksRepository.findByRole("ROLL_USER");
 
-        Member save = memberRepository.save(new Member(rank, form.getNickName(), form.getEmail(), form.getPwd(), form.getName(), form.getPicture(), form.getDateOfBirth()));
+        Member save = memberRepository.save(new Member(MemberRole.ROLE_USER, form.getNickName(), form.getEmail(), form.getPwd(), form.getName(), form.getPicture(), form.getDateOfBirth()));
         return save.getId();
     }
 

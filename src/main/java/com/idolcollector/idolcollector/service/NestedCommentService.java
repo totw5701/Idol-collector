@@ -9,9 +9,6 @@ import com.idolcollector.idolcollector.domain.nestedcomment.NestedCommentReposit
 import com.idolcollector.idolcollector.domain.notice.Notice;
 import com.idolcollector.idolcollector.domain.notice.NoticeRepository;
 import com.idolcollector.idolcollector.domain.notice.NoticeType;
-import com.idolcollector.idolcollector.domain.rank.Ranks;
-import com.idolcollector.idolcollector.domain.trending.Trending;
-import com.idolcollector.idolcollector.domain.trending.TrendingType;
 import com.idolcollector.idolcollector.web.dto.nestedcomment.NestedCommentResponseDto;
 import com.idolcollector.idolcollector.web.dto.nestedcomment.NestedCommentSaveRequestDto;
 import com.idolcollector.idolcollector.web.dto.nestedcomment.NestedCommentUpdateRequestDto;

@@ -2,12 +2,8 @@ package com.idolcollector.idolcollector.domain.member;
 
 import com.idolcollector.idolcollector.domain.membertag.MemberTag;
 import com.idolcollector.idolcollector.domain.membertag.MemberTagRepository;
-import com.idolcollector.idolcollector.domain.rank.Ranks;
-import com.idolcollector.idolcollector.domain.rank.RanksRepository;
 import com.idolcollector.idolcollector.domain.tag.Tag;
 import com.idolcollector.idolcollector.domain.tag.TagRepository;
-import org.aspectj.lang.annotation.Before;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,22 +14,17 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.*;
 
 @Transactional
 @SpringBootTest
 class MemberRepositoryTest {
 
     @Autowired MemberRepository memberRepository;
-    @Autowired RanksRepository ranksRepository;
     @Autowired TagRepository tagRepository;
     @Autowired MemberTagRepository memberTagRepository;
 
     @BeforeEach
     void before() {
-        Ranks rank = new Ranks("ROLE_USER");
-        ranksRepository.save(rank);
-
         Tag tag = new Tag("이하늬");
         tagRepository.save(tag);
 
@@ -43,10 +34,7 @@ class MemberRepositoryTest {
     void 저장_조회() {
 
         //Given
-        List<Ranks> all = ranksRepository.findAll();
-        Ranks rank = all.get(0);
-
-        Member member = new Member(rank, "nick", "email", "1111", "steve", "dsfsdfdsfdsf", LocalDateTime.now());
+        Member member = new Member(MemberRole.ROLE_USER, "nick", "email", "1111", "steve", "dsfsdfdsfdsf", LocalDateTime.now());
 
         //When
         Member save = memberRepository.save(member);
@@ -62,10 +50,7 @@ class MemberRepositoryTest {
     void 태그로_회원_모두_가져오기() {
 
         //Given
-        List<Ranks> all = ranksRepository.findAll();
-        Ranks rank = all.get(0);
-
-        Member member = new Member(rank, "nick", "email", "1111", "steve", "dsfsdfdsfdsf", LocalDateTime.now());
+        Member member = new Member(MemberRole.ROLE_USER, "nick", "email", "1111", "steve", "dsfsdfdsfdsf", LocalDateTime.now());
         memberRepository.save(member);
 
         List<Tag> tags = tagRepository.findAll();

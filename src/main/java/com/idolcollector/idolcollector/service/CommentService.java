@@ -4,13 +4,13 @@ import com.idolcollector.idolcollector.domain.comment.Comment;
 import com.idolcollector.idolcollector.domain.comment.CommentRepository;
 import com.idolcollector.idolcollector.domain.member.Member;
 import com.idolcollector.idolcollector.domain.member.MemberRepository;
+import com.idolcollector.idolcollector.domain.member.MemberRole;
 import com.idolcollector.idolcollector.domain.nestedcomment.NestedCommentRepository;
 import com.idolcollector.idolcollector.domain.notice.Notice;
 import com.idolcollector.idolcollector.domain.notice.NoticeRepository;
 import com.idolcollector.idolcollector.domain.notice.NoticeType;
 import com.idolcollector.idolcollector.domain.post.Post;
 import com.idolcollector.idolcollector.domain.post.PostRepository;
-import com.idolcollector.idolcollector.domain.rank.Ranks;
 import com.idolcollector.idolcollector.domain.trending.Trending;
 import com.idolcollector.idolcollector.domain.trending.TrendingRepository;
 import com.idolcollector.idolcollector.domain.trending.TrendingType;
@@ -93,8 +93,7 @@ public class CommentService {
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 댓글입니다. id=" + id));
 
         // 세션유저 좋아요 중복확인.
-            Ranks rank = new Ranks("ROLL_USER");
-            Member member = new Member(rank, "nick", "email", "1111", "steve", "dsfsdfdsfdsf", LocalDateTime.now());
+            Member member = new Member(MemberRole.ROLE_USER, "nick", "email", "1111", "steve", "dsfsdfdsfdsf", LocalDateTime.now());
 
         // Notice 만들기
         noticeRepository.save(new Notice(member, comment.getMember(), comment, NoticeType.LIKE));

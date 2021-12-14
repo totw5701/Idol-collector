@@ -5,13 +5,12 @@ import com.idolcollector.idolcollector.domain.like.Likes;
 import com.idolcollector.idolcollector.domain.like.LikesRepository;
 import com.idolcollector.idolcollector.domain.member.Member;
 import com.idolcollector.idolcollector.domain.member.MemberRepository;
+import com.idolcollector.idolcollector.domain.member.MemberRole;
 import com.idolcollector.idolcollector.domain.notice.Notice;
 import com.idolcollector.idolcollector.domain.notice.NoticeRepository;
 import com.idolcollector.idolcollector.domain.notice.NoticeType;
 import com.idolcollector.idolcollector.domain.post.Post;
 import com.idolcollector.idolcollector.domain.post.PostRepository;
-import com.idolcollector.idolcollector.domain.rank.Ranks;
-import com.idolcollector.idolcollector.domain.rank.RanksRepository;
 import com.idolcollector.idolcollector.domain.scrap.Scrap;
 import com.idolcollector.idolcollector.domain.scrap.ScrapRepository;
 import com.idolcollector.idolcollector.domain.tag.TagRepository;
@@ -45,7 +44,6 @@ public class PostService {
     private final PostRepository postRepository;
     private final MemberRepository memberRepository;
     private final TagRepository tagRepository;
-    private final RanksRepository ranksRepository;
     private final ScrapRepository scrapRepository;
     private final LikesRepository likesRepository;
     private final TrendingRepository trendingRepository;
@@ -150,9 +148,7 @@ public class PostService {
 
                 // 세션에서 로그인유저 받아올 것.
                     // 임시 코드
-                    Ranks rank = new Ranks("ROLL_USER");
-                    ranksRepository.save(rank);
-                    Member member = new Member(rank, "pressLike", "email", "1111", "pressLike", "dsfsdfdsfdsf", LocalDateTime.now());
+                    Member member = new Member(MemberRole.ROLE_USER, "pressLike", "email", "1111", "pressLike", "dsfsdfdsfdsf", LocalDateTime.now());
                     memberRepository.save(member);
 
         Optional<Likes> isDup = likesRepository.findLikeByMemberIdPostId(post.getId(), member.getId(), LikeType.POST);
@@ -181,9 +177,7 @@ public class PostService {
 
             // 세션에서 회원 정보 받아오기.
                 // 임시 코드
-                Ranks rank = new Ranks("ROLL_USER");
-                ranksRepository.save(rank);
-                Member member = new Member(rank, "scrapper", "email", "1111", "scrapper", "dsfsdfdsfdsf", LocalDateTime.now());
+                Member member = new Member(MemberRole.ROLE_USER, "scrapper", "email", "1111", "scrapper", "dsfsdfdsfdsf", LocalDateTime.now());
                 memberRepository.save(member);
 
         Scrap scrap = new Scrap(member, post);
