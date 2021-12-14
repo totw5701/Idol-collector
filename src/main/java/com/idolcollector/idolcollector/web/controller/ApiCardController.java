@@ -33,5 +33,4 @@ public class ApiCardController {
         return postService.detail(id);
     }
 
-
 }

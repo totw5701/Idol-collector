@@ -47,6 +47,7 @@ public class CardController {
         postService.scrap(id);
     }
 
+
     @ResponseBody
     @GetMapping("/images/{fileName}")
     public Resource imageFile(@PathVariable String fileName) throws MalformedURLException {
