@@ -55,12 +55,9 @@ public class PostService {
         Member member = memberRepository.findById(form.getMemberId())
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 회원입니다. id=" + form.getMemberId()));
 
-        // 지금은 form에 memberID있지만 세션에서 받아오는 걸로 수정할 것??? 아니면 밖에서 넣어줄까?
-        // service의 create는 정말 create하는데만 집중하도록!
-
         /**
          * post에서 넘어온 memberId는 언제든 조작될 수있음. 세션에서 받아오는것이 정확하다.
-         * 그렇다면 컨트롤에서
+         * 그렇다면 컨트롤에서 save form DTO에 넣어줄까?
          */
 
         // 사진 저장
@@ -69,7 +66,7 @@ public class PostService {
         // Post 저장.
         Post savedPost = postRepository.save(new Post(member, form.getTitle(), form.getContent(), uploadFile.getStoreFileName(), uploadFile.getUploadFileName()));
 
-        // 태그 저장. // 다른 서비스를 건드는게 좀 그렇지만, tagService는 Post과 Member에 완전히 종속적이니 그냥 하자.
+        // 태그 저장. // 다른 서비스를 의존하는 좀 그렇지만, tagService는 Post과 Member에 완전히 종속적이니 그냥 하자.
         tagService.createPostTag(form.getTags(), savedPost);
 
         return savedPost.getId();
