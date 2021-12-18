@@ -13,5 +13,5 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/member")
 @RequiredArgsConstructor
-public class ApiMemberController {
+public class MemberApiController {
 }

@@ -129,11 +129,14 @@ public class PostService {
 
         /**
          * PK, 일자, postId, 점수가 담긴 테이블을 만든다.
-         * 조회시 5점, 좋아요시 12점, 댓글 20점, 스크랩 30점을 부여한다.
+         * 조회시 5점, 좋아요시 40점, 댓글 45점, 스크랩 100점을 부여한다.
          * 주간 SUM(점수)로 순위를 매겨 받아온다.
          */
 
         List<Post> list = trendingRepository.trendAnalyByDate(LocalDateTime.now().minusDays(7));
+
+        // 위 코드 trendAnalyByDate() 메소드에 페이징을 적용하자. 그리고 if list의 수가 0라면 그 다음부터는 최신 등록된 카드를 보여준다.
+
 
         List<HomePostListResponseDto> postList = new ArrayList<>();
         for (Post post : list) {

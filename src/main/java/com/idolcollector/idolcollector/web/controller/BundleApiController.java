@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/bundle")
 @RequiredArgsConstructor
-public class ApiBundleController {
+public class BundleApiController {
 
     private final BundleService bundleService;
 
