@@ -7,33 +7,36 @@ function Nav() {
   const [dropdown, setDropdown] = useState(false);
 
   return (
-    <Navbar>
-      <Logo>LOGO</Logo>
-      <LoginRight>
-        <LoginMakeCard>
-          <Button>카드만들기</Button>
-        </LoginMakeCard>
+    <>
+      <Navbar>
+        <Logo>LOGO</Logo>
+        <LoginRight>
+          <LoginMakeCard>
+            <Button>카드만들기</Button>
+          </LoginMakeCard>
 
-        <LoginNickname onClick={() => setDropdown(!dropdown)}>
-          <Button>닉네임</Button>
-          {dropdown ? <ArrowDropUp /> : <ArrowDropDown />}
-        </LoginNickname>
+          <LoginNickname onClick={() => setDropdown(!dropdown)}>
+            <Button>닉네임</Button>
+            {dropdown ? <ArrowDropUp /> : <ArrowDropDown />}
+          </LoginNickname>
 
-        {dropdown && (
-          <DropdownBar>
-            <li>
-              <Button>나의 카드</Button>
-            </li>
-            <li>
-              <Button>설정</Button>
-            </li>
-            <li>
-              <Button>로그아웃</Button>
-            </li>
-          </DropdownBar>
-        )}
-      </LoginRight>
-    </Navbar>
+          {dropdown && (
+            <DropdownBar>
+              <li>
+                <Button>나의 카드</Button>
+              </li>
+              <li>
+                <Button>설정</Button>
+              </li>
+              <li>
+                <Button>로그아웃</Button>
+              </li>
+            </DropdownBar>
+          )}
+        </LoginRight>
+      </Navbar>
+      <Space />
+    </>
   );
 }
 
@@ -92,4 +95,8 @@ const DropdownBar = styled.ul`
   li {
     margin: 1rem 0;
   }
+`;
+
+const Space = styled.div`
+  height: 65px;
 `;

@@ -1,34 +1,22 @@
-import styled from 'styled-components';
-import Jumbotron from './components/Jumbotron';
+import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import Nav from './components/Nav';
+import DetailPage from './pages/DetailPage';
+import MainPage from './pages/MainPage';
 
 function App() {
   return (
-    <>
+    <BrowserRouter>
       <Nav />
-      <Jumbotron />
-      <TestText>
-        Lorem ipsum dolor sit amet consectetur, adipisicing elit. Error
-        blanditiis nisi quas impedit cupiditate aut. Soluta, accusamus.
-        Reiciendis, cupiditate natus? Dolor dignissimos pariatur nemo ad,
-        aspernatur tempora dolorem sequi dolore! Lorem ipsum dolor sit amet
-        consectetur, adipisicing elit. Error blanditiis nisi quas impedit
-        cupiditate aut. Soluta, accusamus. Reiciendis, cupiditate natus? Dolor
-        dignissimos pariatur nemo ad, aspernatur tempora dolorem sequi dolore!
-        Lorem ipsum dolor sit amet consectetur, adipisicing elit. Error
-        blanditiis nisi quas impedit cupiditate aut. Soluta, accusamus.
-        Reiciendis, cupiditate natus? Dolor dignissimos pariatur nemo ad,
-        aspernatur tempora dolorem sequi dolore! Lorem ipsum dolor sit amet
-        consectetur, adipisicing elit. Error blanditiis nisi quas impedit
-        cupiditate aut. Soluta, accusamus. Reiciendis, cupiditate natus? Dolor
-        dignissimos pariatur nemo ad, aspernatur tempora dolorem sequi dolore!
-      </TestText>
-    </>
+      <Switch>
+        <Route path="/card/:cardId">
+          <DetailPage />
+        </Route>
+        <Route path="/" exact>
+          <MainPage />
+        </Route>
+      </Switch>
+    </BrowserRouter>
   );
 }
 
 export default App;
-
-const TestText = styled.p`
-  font-size: 4rem;
-`;
