@@ -1,12 +1,11 @@
 import { Search } from '@material-ui/icons';
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
+import { css } from 'styled-components';
 
 function SearchBar() {
   const [isFixed, setIsFixed] = useState(false);
   const [searchValue, setSearchValue] = useState();
-
-  const fixed = `position: fixed; top: 10px; left: 15%;`;
 
   useEffect(() => {
     window.addEventListener('scroll', onScroll);
@@ -30,23 +29,27 @@ function SearchBar() {
   };
 
   return (
-    <>
-      <StyledSearchBar onSubmit={handleSearch} fixed={isFixed && fixed}>
-        <Search />
-        <SearchInput
-          onChange={e => setSearchValue(e.target.value)}
-          type="search"
-          placeholder="원하는 순간을 검색해보세요"
-        />
-      </StyledSearchBar>
-    </>
+    <StyledSearchBar onSubmit={handleSearch} fixed={isFixed}>
+      <Search />
+      <SearchInput
+        onChange={e => setSearchValue(e.target.value)}
+        type="search"
+        placeholder="원하는 순간을 검색해보세요"
+      />
+    </StyledSearchBar>
   );
 }
 
 export default SearchBar;
 
 const StyledSearchBar = styled.form`
-  ${({ fixed }) => fixed}
+  ${({ fixed }) =>
+    fixed &&
+    css`
+      position: fixed;
+      top: 10px;
+      left: 15%;
+    `}
 
   margin: auto;
 
@@ -59,6 +62,7 @@ const StyledSearchBar = styled.form`
   background: #e1e1e1;
   border: 1.5px solid #000;
   border-radius: 50px;
+  z-index: 5;
 
   svg {
     flex: 0.6;

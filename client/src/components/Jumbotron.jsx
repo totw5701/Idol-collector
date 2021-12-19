@@ -18,6 +18,7 @@ export default Jumbotron;
 const StyledJumbotron = styled.section`
   height: 40vh;
   margin-bottom: 100px;
+  padding-top: 65px;
 `;
 
 const Banner = styled.div`
