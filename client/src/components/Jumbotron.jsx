@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import SearchBar from './SearchBar';
 
 function Jumbotron() {
   return (
@@ -7,6 +8,7 @@ function Jumbotron() {
         {/* 이미지 들어올 곳 */}
         <BannerTitle>최애의 순간을 수집하세요!</BannerTitle>
       </Banner>
+      <SearchBar />
     </StyledJumbotron>
   );
 }
@@ -14,8 +16,9 @@ function Jumbotron() {
 export default Jumbotron;
 
 const StyledJumbotron = styled.section`
-  height: 50vh;
-  padding-top: 67px;
+  height: 40vh;
+  margin-bottom: 100px;
+  padding-top: 65px;
 `;
 
 const Banner = styled.div`
@@ -24,10 +27,11 @@ const Banner = styled.div`
   justify-content: center;
   width: 100%;
   height: 100%;
-
-  border-bottom: 1px solid #000;
 `;
 
 const BannerTitle = styled.p`
   font-size: 5rem;
+  font-weight: 700;
+
+  // 단순 문자 배치보다는 약간의 스타일링으로 움직이는 효과가 있으면 좋겠음
 `;

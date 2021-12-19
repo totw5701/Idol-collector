@@ -1,7 +1,7 @@
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
-import Jumbotron from './components/Jumbotron';
 import Nav from './components/Nav';
 import DetailPage from './pages/DetailPage';
+import MainPage from './pages/MainPage';
 
 function App() {
   return (
@@ -12,7 +12,7 @@ function App() {
           <DetailPage />
         </Route>
         <Route path="/" exact>
-          <Jumbotron />
+          <MainPage />
         </Route>
       </Switch>
     </BrowserRouter>
