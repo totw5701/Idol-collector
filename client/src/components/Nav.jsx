@@ -46,6 +46,8 @@ const Navbar = styled.nav`
   justify-content: space-between;
   align-items: center;
   padding: 15px 30px;
+  background: #fff;
+  z-index: 5;
 `;
 
 // a tag 및 내부 img 태그로 변경될 예정
