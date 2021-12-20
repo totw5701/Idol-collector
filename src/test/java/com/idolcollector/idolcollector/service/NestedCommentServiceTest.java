@@ -120,8 +120,5 @@ class NestedCommentServiceTest {
 
         // Then
         assertThat(find.getLikes()).isEqualTo(1);
-
-        List<Notice> notices = noticeRepository.findAll();
-        assertThat(notices.size()).isEqualTo(1);
     }
 }

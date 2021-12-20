@@ -2,6 +2,8 @@ package com.idolcollector.idolcollector.domain.post;
 
 import com.idolcollector.idolcollector.domain.member.Member;
 import com.idolcollector.idolcollector.domain.nestedcomment.NestedComment;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -20,6 +22,8 @@ public interface PostRepository extends JpaRepository<Post, Long> {
     List<Post> findAllInScrap(@Param("memberId") Long memberId);
 
 
+    @Query("select p from Post p order by p.id desc")
+    Page<Post> findAll(Pageable pageable);
 
     /**
      *

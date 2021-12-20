@@ -49,6 +49,8 @@ public class BundleService {
         Bundle bundle = bundleRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 카드집입니다. id=" + id));
 
+        bundleRepository.delete(bundle);
+
         return id;
     }
 

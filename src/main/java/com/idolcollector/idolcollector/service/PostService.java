@@ -24,6 +24,8 @@ import com.idolcollector.idolcollector.web.dto.post.PostResponseDto;
 import com.idolcollector.idolcollector.web.dto.post.PostSaveRequestDto;
 import com.idolcollector.idolcollector.web.dto.post.PostUpdateRequestDto;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -123,7 +125,7 @@ public class PostService {
         return id;
     }
 
-    public List<HomePostListResponseDto> scorePostList() {
+    public List<HomePostListResponseDto> scorePostList(Integer page) {
 
         // 1주일내 좋아요를 많이 받은 카드 순으로 출력.
 
@@ -131,12 +133,31 @@ public class PostService {
          * PK, 일자, postId, 점수가 담긴 테이블을 만든다.
          * 조회시 5점, 좋아요시 40점, 댓글 45점, 스크랩 100점을 부여한다.
          * 주간 SUM(점수)로 순위를 매겨 받아온다.
+         *
+         * 지금 DB 아껴야하니까 조회는 빼자.
          */
 
-        List<Post> list = trendingRepository.trendAnalyByDate(LocalDateTime.now().minusDays(7));
+        Integer count = trendingRepository.trendAnalyByDateCount(LocalDateTime.now().minusDays(7));
+        System.out.println("count = " + count);
+        int trendingPageCount = count / 15 + 1;
 
-        // 위 코드 trendAnalyByDate() 메소드에 페이징을 적용하자. 그리고 if list의 수가 0라면 그 다음부터는 최신 등록된 카드를 보여준다.
+        List<Post> list = new ArrayList<>();
+        if (trendingPageCount > page) {
+            System.out.println("trendingRepository");
+            PageRequest preq = PageRequest.of(page, 15);
+            Page<Post> result = trendingRepository.trendAnalyByDate(LocalDateTime.now().minusDays(7), preq);
+            list = result.getContent();
 
+        } else {
+            System.out.println("postRepository");
+            page = page - trendingPageCount;
+            PageRequest preq = PageRequest.of(page, 15);
+            Page<Post> result = postRepository.findAll(preq);
+
+            System.out.println("result = " + result);
+            list = result.getContent();
+
+        }
 
         List<HomePostListResponseDto> postList = new ArrayList<>();
         for (Post post : list) {

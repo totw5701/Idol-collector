@@ -1,6 +1,9 @@
 package com.idolcollector.idolcollector.domain.trending;
 
 import com.idolcollector.idolcollector.domain.post.Post;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -12,8 +15,13 @@ public interface TrendingRepository extends JpaRepository<Trending, Long> {
 
 
     @Query("select t.post from Trending t where t.createDate > :period group by t.post order by sum(t.score) desc")
-    List<Post> trendAnalyByDate(@Param("period")LocalDateTime period);
+    List<Post> trendAnalyByDateAll(@Param("period")LocalDateTime period);
 
+    @Query("select count(distinct t.post) from Trending t where t.createDate > :period")
+    Integer trendAnalyByDateCount(@Param("period")LocalDateTime period);
+
+    @Query("select t.post from Trending t where t.createDate > :period group by t.post order by sum(t.score) desc, t.post.id desc")
+    Page<Post> trendAnalyByDate(@Param("period")LocalDateTime period, Pageable pageable);
 
     /**
      *
