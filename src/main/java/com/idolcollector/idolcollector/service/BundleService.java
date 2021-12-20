@@ -15,6 +15,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @RequiredArgsConstructor
@@ -27,12 +29,23 @@ public class BundleService {
     private final PostRepository postRepository;
     private final BundlePostRepository bundlePostRepository;
 
-    @Transactional
     public BundleResponseDto findById(Long id) {
         Bundle bundle = bundleRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 카드집입니다. id=" + id));
 
         return new BundleResponseDto(bundle);
+    }
+
+    public List<BundleResponseDto> findAllInMember(Long memberId) {
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 회원입니다. id=" + memberId));
+
+        List<Bundle> byMemberId = bundleRepository.findByMemberId(memberId);
+        List<BundleResponseDto> list = new ArrayList<>();
+        for (Bundle bundle : byMemberId) {
+            list.add(new BundleResponseDto(bundle));
+        }
+        return list;
     }
 
     @Transactional

@@ -6,11 +6,13 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
 public class MemberDetailPageDto {
 
     private MemberResponseDto member;
-    private BundleResponseDto bundles;
+    private List<BundleResponseDto> bundles;
 }

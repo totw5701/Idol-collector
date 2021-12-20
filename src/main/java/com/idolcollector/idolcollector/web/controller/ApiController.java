@@ -1,7 +1,9 @@
 package com.idolcollector.idolcollector.web.controller;
 
+import com.idolcollector.idolcollector.service.BundleService;
 import com.idolcollector.idolcollector.service.MemberService;
 import com.idolcollector.idolcollector.service.PostService;
+import com.idolcollector.idolcollector.web.dto.bundle.BundleResponseDto;
 import com.idolcollector.idolcollector.web.dto.member.MemberResponseDto;
 import com.idolcollector.idolcollector.web.dto.pageresponsedto.CardDetailPageDto;
 import com.idolcollector.idolcollector.web.dto.pageresponsedto.MemberDetailPageDto;
@@ -26,6 +28,7 @@ public class ApiController {
 
     private final PostService postService;
     private final MemberService memberService;
+    private final BundleService bundleService;
 
 
     @GetMapping("/home/{page}")
@@ -54,6 +57,14 @@ public class ApiController {
         return new CardDetailPageDto(post, member);
     }
 
-    
+    @GetMapping("/member/{id}")
+    public MemberDetailPageDto myInfo() {
+        // 세션에서 멤버정보 받아오기
+            MemberResponseDto member = memberService.testMember();
+
+        List<BundleResponseDto> bundles = bundleService.findAllInMember(member.getId());
+
+        return new MemberDetailPageDto(member, bundles);
+    }
 
 }

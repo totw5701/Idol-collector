@@ -17,18 +17,16 @@ import java.net.MalformedURLException;
 @Slf4j
 @Controller
 @RequiredArgsConstructor
+@RequestMapping("/card")
 public class CardController {
 
     private final PostService postService;
-
     private final FileStore fileStore;
 
-
-    @PostMapping("/card/create")
+    @PostMapping("/create")
     public String create(@ModelAttribute PostSaveRequestDto form) throws IOException {
 
         Long cardId = postService.create(form);
-
         return "redirect:/card/" + cardId;
     }
 

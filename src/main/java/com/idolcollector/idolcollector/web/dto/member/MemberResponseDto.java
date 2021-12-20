@@ -16,6 +16,7 @@ public class MemberResponseDto {
 
     private String role;
 
+    private Long id;
     private String nickName;
     private String email;
     private String name;
@@ -27,6 +28,7 @@ public class MemberResponseDto {
     private List<NoticeResponseDto> notices = new ArrayList<>();
 
     public MemberResponseDto(Member member) {
+        this.id = member.getId();
         this.role = member.getRole().name();
         this.nickName = member.getNickName();
         this.email = member.getEmail();
