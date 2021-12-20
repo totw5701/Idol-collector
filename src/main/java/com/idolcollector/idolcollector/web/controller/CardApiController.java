@@ -17,14 +17,14 @@ import java.net.MalformedURLException;
 @Slf4j
 @Controller
 @RequiredArgsConstructor
-@RequestMapping("/card")
-public class CardController {
+@RequestMapping("/api/card")
+public class CardApiController {
 
     private final PostService postService;
     private final FileStore fileStore;
 
     @PostMapping("/create")
-    public String create(@ModelAttribute PostSaveRequestDto form) throws IOException {
+    public String create(PostSaveRequestDto form) throws IOException {
 
         Long cardId = postService.create(form);
         return "redirect:/card/" + cardId;
@@ -35,19 +35,19 @@ public class CardController {
         postService.delete(id);
     }
 
-    @PostMapping("/like/{id}")
+    @PutMapping("/like/{id}")
     public void addLike(@PathVariable("id") Long id) {
         postService.like(id);
     }
 
-    @GetMapping("/scrap/{id}")
+    @PutMapping("/scrap/{id}")
     public void scrap(@PathVariable("id") Long id) {
         postService.scrap(id);
     }
 
 
     @ResponseBody
-    @GetMapping("/images/{fileName}")
+    @GetMapping("/image/{fileName}")
     public Resource imageFile(@PathVariable String fileName) throws MalformedURLException {
         return new UrlResource("file:" + fileStore.getFullPath(fileName));
     }

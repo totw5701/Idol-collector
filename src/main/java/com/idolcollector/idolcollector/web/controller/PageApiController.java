@@ -24,14 +24,14 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/api")
 @RequiredArgsConstructor
-public class ApiController {
+public class PageApiController {
 
     private final PostService postService;
     private final MemberService memberService;
     private final BundleService bundleService;
 
 
-    @GetMapping("/home/{page}")
+    @GetMapping({"/home/{page}", "/home"})
     public RootPageDto homePageList(@PathVariable(name = "page", required = false) Optional<Integer> page) {
 
         int pageNum = 0;
@@ -41,7 +41,6 @@ public class ApiController {
 
         // 세션에서 멤버정보 받아오기
             MemberResponseDto memberResponseDto = memberService.testMember();
-
 
         return new RootPageDto(homePostListResponseDtos, memberResponseDto);
     }

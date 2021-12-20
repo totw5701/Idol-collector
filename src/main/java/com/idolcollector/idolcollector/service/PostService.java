@@ -54,6 +54,8 @@ public class PostService {
 
     @Transactional
     public Long create(PostSaveRequestDto form) throws IOException {
+
+        // 세션에서 받아올 것.
         Member member = memberRepository.findById(form.getMemberId())
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 회원입니다. id=" + form.getMemberId()));
 

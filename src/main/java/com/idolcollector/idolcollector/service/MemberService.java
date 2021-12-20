@@ -47,7 +47,7 @@ public class MemberService {
     }
 
     public MemberResponseDto testMember() {
-        Member member = new Member(MemberRole.ROLE_USER, "pressLike", "email", "1111", "pressLike", "dsfsdfdsfdsf", LocalDateTime.now());
+        Member member = new Member(MemberRole.ROLE_USER, "SessionLoginGuy", "email", "1111", "pressLike", "dsfsdfdsfdsf", LocalDateTime.now());
         memberRepository.save(member);
 
         return new MemberResponseDto(member);

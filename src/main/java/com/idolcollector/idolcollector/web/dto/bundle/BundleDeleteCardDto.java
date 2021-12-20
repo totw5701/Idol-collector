@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class BundleDeleteCardDto {
 
-    private Long bundleId;
     private Long postId;
+    private Long bundleId;
 
 }
