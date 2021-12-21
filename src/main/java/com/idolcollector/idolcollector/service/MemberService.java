@@ -23,7 +23,7 @@ public class MemberService {
     @Transactional
     public Long join(MemberSaveRequestDto form) {
 
-        Member save = memberRepository.save(new Member(MemberRole.ROLE_USER, form.getNickName(), form.getEmail(), form.getPwd(), form.getName(), form.getPicture(), form.getDateOfBirth()));
+        Member save = memberRepository.save(new Member(MemberRole.USER, form.getNickName(), form.getEmail(), form.getPwd(), form.getName(), form.getPicture(), form.getDateOfBirth()));
         return save.getId();
     }
 
@@ -47,7 +47,7 @@ public class MemberService {
     }
 
     public MemberResponseDto testMember() {
-        Member member = new Member(MemberRole.ROLE_USER, "SessionLoginGuy", "email", "1111", "pressLike", "dsfsdfdsfdsf", LocalDateTime.now());
+        Member member = new Member(MemberRole.USER, "SessionLoginGuy", "email", "1111", "pressLike", "dsfsdfdsfdsf", LocalDateTime.now());
         memberRepository.save(member);
 
         return new MemberResponseDto(member);

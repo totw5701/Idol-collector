@@ -177,7 +177,7 @@ public class PostService {
                 // 세션에서 로그인유저 받아올 것.
 
                     // 임시 코드
-                    Member member = new Member(MemberRole.ROLE_USER, "pressLike", "email", "1111", "pressLike", "dsfsdfdsfdsf", LocalDateTime.now());
+                    Member member = new Member(MemberRole.USER, "pressLike", "email", "1111", "pressLike", "dsfsdfdsfdsf", LocalDateTime.now());
                     memberRepository.save(member);
 
         Optional<Likes> isDup = likesRepository.findLikeByMemberIdPostId(post.getId(), member.getId(), LikeType.POST);
@@ -206,7 +206,7 @@ public class PostService {
 
             // 세션에서 회원 정보 받아오기.
                 // 임시 코드
-                Member member = new Member(MemberRole.ROLE_USER, "scrapper", "email", "1111", "scrapper", "dsfsdfdsfdsf", LocalDateTime.now());
+                Member member = new Member(MemberRole.USER, "scrapper", "email", "1111", "scrapper", "dsfsdfdsfdsf", LocalDateTime.now());
                 memberRepository.save(member);
 
         Scrap scrap = new Scrap(member, post);

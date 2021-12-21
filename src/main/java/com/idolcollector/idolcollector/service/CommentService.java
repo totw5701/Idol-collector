@@ -93,7 +93,7 @@ public class CommentService {
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 댓글입니다. id=" + id));
 
         // 세션유저 좋아요 중복확인.
-            Member member = new Member(MemberRole.ROLE_USER, "nick", "email", "1111", "steve", "dsfsdfdsfdsf", LocalDateTime.now());
+            Member member = new Member(MemberRole.USER, "nick", "email", "1111", "steve", "dsfsdfdsfdsf", LocalDateTime.now());
 
         // Notice 만들기
         noticeRepository.save(new Notice(comment.getMember(), member, comment, NoticeType.LIKE));

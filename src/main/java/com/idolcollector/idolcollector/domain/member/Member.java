@@ -87,4 +87,11 @@ public class Member {
         return this.id;
     }
 
+    public Member update(String name, String picture) {
+        this.name = name;
+        this.picture = picture;
+
+        return this;
+    }
+
 }
