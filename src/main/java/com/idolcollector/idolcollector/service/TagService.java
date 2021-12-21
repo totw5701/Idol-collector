@@ -50,6 +50,8 @@ public class TagService {
     @Transactional
     public void createPostTag(List<String> tags, Post post) {
 
+        if(tags.isEmpty()) return;
+
         for (String tagName : tags) {
             Tag tag = createTags(tagName);
 

@@ -17,6 +17,7 @@ public class PostSaveRequestDto {
     // 사진
     private MultipartFile attachFile;
 
+    @Nullable
     private List<String> tags;
 
 }
