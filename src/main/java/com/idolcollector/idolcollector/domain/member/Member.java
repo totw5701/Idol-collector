@@ -25,6 +25,8 @@ public class Member {
     @Id @GeneratedValue
     @JoinColumn(name = "MEMBER_ID")
     private Long id;
+
+    @Enumerated(EnumType.STRING)
     private MemberRole role;
     private String nickName;
     private String email;

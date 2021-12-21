@@ -34,7 +34,7 @@ class MemberRepositoryTest {
     void 저장_조회() {
 
         //Given
-        Member member = new Member(MemberRole.ROLE_USER, "nick", "email", "1111", "steve", "dsfsdfdsfdsf", LocalDateTime.now());
+        Member member = new Member(MemberRole.USER, "nick", "email", "1111", "steve", "dsfsdfdsfdsf", LocalDateTime.now());
 
         //When
         Member save = memberRepository.save(member);
@@ -50,7 +50,7 @@ class MemberRepositoryTest {
     void 태그로_회원_모두_가져오기() {
 
         //Given
-        Member member = new Member(MemberRole.ROLE_USER, "nick", "email", "1111", "steve", "dsfsdfdsfdsf", LocalDateTime.now());
+        Member member = new Member(MemberRole.USER, "nick", "email", "1111", "steve", "dsfsdfdsfdsf", LocalDateTime.now());
         memberRepository.save(member);
 
         List<Tag> tags = tagRepository.findAll();

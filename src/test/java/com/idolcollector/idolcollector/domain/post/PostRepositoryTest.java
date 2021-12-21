@@ -41,7 +41,7 @@ class PostRepositoryTest {
 
     @BeforeEach
     void before() {
-        Member member = new Member(MemberRole.ROLE_USER, "nick", "email", "1111", "steve", "dsfsdfdsfdsf", LocalDateTime.now());
+        Member member = new Member(MemberRole.USER, "nick", "email", "1111", "steve", "dsfsdfdsfdsf", LocalDateTime.now());
         memberRepository.save(member);
         Tag tag = new Tag("이하늬");
         tagRepository.save(tag);

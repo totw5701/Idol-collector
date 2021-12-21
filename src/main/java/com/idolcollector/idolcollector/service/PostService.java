@@ -28,7 +28,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.ModelAttribute;
 
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -52,12 +54,12 @@ public class PostService {
     private final NoticeRepository noticeRepository;
     private final FileStore fileStore;
 
-    @Transactional
-    public Long create(PostSaveRequestDto form) throws IOException {
+    private final HttpSession httpSession;
 
-        // 세션에서 받아올 것.
-        Member member = memberRepository.findById(form.getMemberId())
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 회원입니다. id=" + form.getMemberId()));
+    @Transactional
+    public Long create(@ModelAttribute PostSaveRequestDto form) throws IOException {
+
+        Member member = (Member) httpSession.getAttribute("loginMember");
 
         /**
          * post에서 넘어온 memberId는 언제든 조작될 수있음. 세션에서 받아오는것이 정확하다.

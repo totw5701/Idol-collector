@@ -29,7 +29,7 @@ class CommentRepositoryTest {
 
     @BeforeEach
     void before() {
-        Member member = new Member(MemberRole.ROLE_USER, "nick", "email", "1111", "steve", "dsfsdfdsfdsf", LocalDateTime.now());
+        Member member = new Member(MemberRole.USER, "nick", "email", "1111", "steve", "dsfsdfdsfdsf", LocalDateTime.now());
         memberRepository.save(member);
 
         Post post = new Post(member, "title", "conten", "ste", "ori");

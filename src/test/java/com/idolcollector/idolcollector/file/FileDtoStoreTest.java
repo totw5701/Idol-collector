@@ -19,7 +19,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @Transactional
 @SpringBootTest
-class FileStoreTest {
+class FileDtoStoreTest {
 
     @Autowired
     private FileStore fileStore;

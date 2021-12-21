@@ -8,11 +8,15 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.util.ArrayList;
 
 @Slf4j
 @Controller
@@ -23,8 +27,21 @@ public class CardApiController {
     private final PostService postService;
     private final FileStore fileStore;
 
-    @PostMapping("/create")
-    public String create(PostSaveRequestDto form) throws IOException {
+//    @PostMapping("/create")
+//    public String create(@RequestParam Long memberId, @RequestParam String title, @RequestParam String content, @RequestParam(required = false) ArrayList<String> tags, @RequestPart MultipartFile attachFile) throws IOException {
+//
+//        System.out.println("memberId = " + memberId);
+//        System.out.println("title = " + title);
+//        System.out.println("content = " + content);
+//        System.out.println("tags = " + tags);
+//        System.out.println("file = " + attachFile);
+//
+//        //Long cardId = postService.create(form);
+//        return "redirect:/card/" + 1L;
+//    }
+
+    @PostMapping(value = "/create")
+    public String create(@ModelAttribute PostSaveRequestDto form) throws IOException {
 
         Long cardId = postService.create(form);
         return "redirect:/card/" + cardId;
