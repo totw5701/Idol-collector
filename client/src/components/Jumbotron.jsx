@@ -16,8 +16,8 @@ function Jumbotron() {
 export default Jumbotron;
 
 const StyledJumbotron = styled.section`
-  height: 40vh;
-  margin-bottom: 100px;
+  height: 20vh;
+  margin-bottom: 140px;
   padding-top: 65px;
 `;
 
@@ -27,6 +27,7 @@ const Banner = styled.div`
   justify-content: center;
   width: 100%;
   height: 100%;
+  margin-bottom: 80px;
 `;
 
 const BannerTitle = styled.p`

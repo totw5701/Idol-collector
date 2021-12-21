@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import Jumbotron from '../components/Jumbotron';
 
-function MainConitaner() {
+function MainContainer() {
   return (
     <>
       <Jumbotron />
@@ -10,9 +10,9 @@ function MainConitaner() {
   );
 }
 
-export default MainConitaner;
+export default MainContainer;
 
 const MainArea = styled.main`
-  height: 120vh;
+  height: 140vh;
   background: lightyellow;
 `;
