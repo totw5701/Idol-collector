@@ -27,19 +27,6 @@ public class CardApiController {
     private final PostService postService;
     private final FileStore fileStore;
 
-//    @PostMapping("/create")
-//    public String create(@RequestParam Long memberId, @RequestParam String title, @RequestParam String content, @RequestParam(required = false) ArrayList<String> tags, @RequestPart MultipartFile attachFile) throws IOException {
-//
-//        System.out.println("memberId = " + memberId);
-//        System.out.println("title = " + title);
-//        System.out.println("content = " + content);
-//        System.out.println("tags = " + tags);
-//        System.out.println("file = " + attachFile);
-//
-//        //Long cardId = postService.create(form);
-//        return "redirect:/card/" + 1L;
-//    }
-
     @PostMapping(value = "/create")
     public String create(@ModelAttribute PostSaveRequestDto form) throws IOException {
 
@@ -47,14 +34,16 @@ public class CardApiController {
         return "redirect:/card/" + cardId;
     }
 
+    @ResponseBody
     @DeleteMapping("/delete/{id}")
-    public void delete(@PathVariable("id") Long id) {
-        postService.delete(id);
+    public Long delete(@PathVariable("id") Long id) {
+        return postService.delete(id);
     }
 
+    @ResponseBody
     @PutMapping("/like/{id}")
-    public void addLike(@PathVariable("id") Long id) {
-        postService.like(id);
+    public int addLike(@PathVariable("id") Long id) {
+        return postService.like(id);
     }
 
     @PutMapping("/scrap/{id}")
