@@ -9,27 +9,27 @@ function Nav() {
   return (
     <>
       <Navbar>
-        <Logo>LOGO</Logo>
+        <Logo src="./images/로고.png" alt="" />
         <LoginRight>
           <LoginMakeCard>
-            <Button>카드만들기</Button>
+            <Button src={'카드만들기.png'}>카드만들기</Button>
           </LoginMakeCard>
 
           <LoginNickname onClick={() => setDropdown(!dropdown)}>
-            <Button>닉네임</Button>
+            <Button src={'닉네임.png'}>닉네임</Button>
             {dropdown ? <ArrowDropUp /> : <ArrowDropDown />}
           </LoginNickname>
 
           {dropdown && (
             <DropdownBar>
               <li>
-                <Button>나의 카드</Button>
+                <Button src={'나의카드.png'}>나의 카드</Button>
               </li>
               <li>
-                <Button>설정</Button>
+                <Button src={'설정.png'}>설정</Button>
               </li>
               <li>
-                <Button>로그아웃</Button>
+                <Button src={'로그아웃.png'}>로그아웃</Button>
               </li>
             </DropdownBar>
           )}
@@ -53,10 +53,9 @@ const Navbar = styled.nav`
   z-index: 5;
 `;
 
-// a tag 및 내부 img 태그로 변경될 예정
-const Logo = styled.h1`
+const Logo = styled.img`
   cursor: pointer;
-  font-size: 2rem;
+  width: 100px;
 `;
 
 const LoginRight = styled.div`
@@ -67,6 +66,10 @@ const LoginRight = styled.div`
 const LoginMakeCard = styled.div`
   cursor: pointer;
   margin-right: 1rem;
+
+  img {
+    height: 30px;
+  }
 `;
 
 const LoginNickname = styled.div`
