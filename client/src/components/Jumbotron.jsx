@@ -32,6 +32,4 @@ const Banner = styled.div`
 const BannerTitle = styled.p`
   font-size: 5rem;
   font-weight: 700;
-
-  // 단순 문자 배치보다는 약간의 스타일링으로 움직이는 효과가 있으면 좋겠음
 `;
