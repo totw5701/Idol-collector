@@ -33,4 +33,5 @@ const Banner = styled.div`
 const BannerTitle = styled.p`
   font-size: 5rem;
   font-weight: 700;
+  color: #b580d1;
 `;

@@ -61,7 +61,7 @@ const StyledSearchBar = styled.form`
   display: flex;
   align-items: center;
 
-  background: #e1e1e1;
+  background: #edebeb;
   border: 2px solid #b580d1;
   border-radius: 50px;
   z-index: 5;

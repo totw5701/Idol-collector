@@ -1,9 +1,9 @@
 import MainContainer from '../containers/MainContainer';
 
-function MainPage() {
+function MainPage({ data }) {
   return (
     <>
-      <MainContainer />
+      <MainContainer data={data} />
     </>
   );
 }
