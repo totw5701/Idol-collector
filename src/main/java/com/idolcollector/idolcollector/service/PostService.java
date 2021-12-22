@@ -88,10 +88,6 @@ public class PostService {
             tagService.createPostTag(form.getTags(), savedPost);
         }
 
-        // 추천 기록 테이블
-        trendingRepository.save(new Trending(savedPost, TrendingType.CREATE));
-
-
         return savedPost.getId();
     }
 
