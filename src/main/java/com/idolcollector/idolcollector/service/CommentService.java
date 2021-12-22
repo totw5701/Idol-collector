@@ -8,6 +8,7 @@ import com.idolcollector.idolcollector.domain.like.LikesRepository;
 import com.idolcollector.idolcollector.domain.member.Member;
 import com.idolcollector.idolcollector.domain.member.MemberRepository;
 import com.idolcollector.idolcollector.domain.member.MemberRole;
+import com.idolcollector.idolcollector.domain.nestedcomment.NestedComment;
 import com.idolcollector.idolcollector.domain.nestedcomment.NestedCommentRepository;
 import com.idolcollector.idolcollector.domain.notice.Notice;
 import com.idolcollector.idolcollector.domain.notice.NoticeRepository;
@@ -20,6 +21,7 @@ import com.idolcollector.idolcollector.domain.trending.TrendingType;
 import com.idolcollector.idolcollector.web.dto.comment.CommentResponseDto;
 import com.idolcollector.idolcollector.web.dto.comment.CommentSaveRequestDto;
 import com.idolcollector.idolcollector.web.dto.comment.CommentUpdateRequestDto;
+import com.idolcollector.idolcollector.web.dto.nestedcomment.NestedCommentResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -48,7 +50,22 @@ public class CommentService {
         Comment comment = commentRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 댓글입니다. id=" + id));
 
-        return new CommentResponseDto(comment);
+        Member member = (Member) httpSession.getAttribute("loginMember");
+
+        CommentResponseDto dto = new CommentResponseDto(comment);
+
+        List<NestedComment> nComment = comment.getNComment();
+        List<NestedCommentResponseDto> nCommentsDto = new ArrayList<>();
+        for (NestedComment nestedComment : nComment) {
+            NestedCommentResponseDto nestedCommentResponseDto = new NestedCommentResponseDto(nestedComment);
+            Optional<Likes> didLikeN = likesRepository.findLikeByMemberIdPostId(nestedComment.getId(), member.getId(), LikeType.NESTED_COMMENT);
+            if(didLikeN.isPresent()) nestedCommentResponseDto.didLike();
+            nCommentsDto.add(nestedCommentResponseDto);
+        }
+
+        dto.setNCommentsDto(nCommentsDto);
+
+        return dto;
     }
 
     @Transactional
@@ -125,6 +142,17 @@ public class CommentService {
 
         for (Comment comment : comments) {
             CommentResponseDto dto = new CommentResponseDto(comment);
+
+            List<NestedComment> nComment = comment.getNComment();
+            List<NestedCommentResponseDto> nCommentsDto = new ArrayList<>();
+            for (NestedComment nestedComment : nComment) {
+                NestedCommentResponseDto nestedCommentResponseDto = new NestedCommentResponseDto(nestedComment);
+                Optional<Likes> didLikeN = likesRepository.findLikeByMemberIdPostId(nestedComment.getId(), member.getId(), LikeType.NESTED_COMMENT);
+                if(didLikeN.isPresent()) nestedCommentResponseDto.didLike();
+                nCommentsDto.add(nestedCommentResponseDto);
+            }
+
+            dto.setNCommentsDto(nCommentsDto);
 
             Optional<Likes> didLike = likesRepository.findLikeByMemberIdPostId(comment.getId(), member.getId(), LikeType.COMMENT);
             if(didLike.isPresent()) dto.didLike();

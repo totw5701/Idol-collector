@@ -7,6 +7,7 @@ import com.idolcollector.idolcollector.domain.like.LikesRepository;
 import com.idolcollector.idolcollector.domain.member.Member;
 import com.idolcollector.idolcollector.domain.member.MemberRepository;
 import com.idolcollector.idolcollector.domain.member.MemberRole;
+import com.idolcollector.idolcollector.domain.nestedcomment.NestedComment;
 import com.idolcollector.idolcollector.domain.notice.Notice;
 import com.idolcollector.idolcollector.domain.notice.NoticeRepository;
 import com.idolcollector.idolcollector.domain.notice.NoticeType;
@@ -22,6 +23,7 @@ import com.idolcollector.idolcollector.domain.trending.TrendingType;
 import com.idolcollector.idolcollector.file.FileStore;
 import com.idolcollector.idolcollector.web.dto.comment.CommentResponseDto;
 import com.idolcollector.idolcollector.web.dto.file.UploadFile;
+import com.idolcollector.idolcollector.web.dto.nestedcomment.NestedCommentResponseDto;
 import com.idolcollector.idolcollector.web.dto.post.HomePostListResponseDto;
 import com.idolcollector.idolcollector.web.dto.post.PostResponseDto;
 import com.idolcollector.idolcollector.web.dto.post.PostSaveRequestDto;
@@ -94,6 +96,8 @@ public class PostService {
         Post post = postRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 게시글입니다. id=" + id));
 
+        Member member = (Member) httpSession.getAttribute("loginMember");
+
         // 조회수 증가.
         post.addView();
 
@@ -102,8 +106,24 @@ public class PostService {
         // 댓글 dto 넣기
         List<Comment> entComments = post.getComments();
         List<CommentResponseDto> commentDto = new ArrayList<>();
-        for (Comment entComment : entComments) {
-            commentDto.add(new CommentResponseDto(entComment));
+        for (Comment comment : entComments) {
+            CommentResponseDto dto = new CommentResponseDto(comment);
+
+            // 대댓글 dto 넣기
+            List<NestedComment> nComment = comment.getNComment();
+            List<NestedCommentResponseDto> nCommentsDto = new ArrayList<>();
+            for (NestedComment nestedComment : nComment) {
+                NestedCommentResponseDto nestedCommentResponseDto = new NestedCommentResponseDto(nestedComment);
+                Optional<Likes> didLikeN = likesRepository.findLikeByMemberIdPostId(nestedComment.getId(), member.getId(), LikeType.NESTED_COMMENT);
+                if(didLikeN.isPresent()) nestedCommentResponseDto.didLike();
+                nCommentsDto.add(nestedCommentResponseDto);
+            }
+
+            dto.setNCommentsDto(nCommentsDto);
+
+            Optional<Likes> didLike = likesRepository.findLikeByMemberIdPostId(comment.getId(), member.getId(), LikeType.COMMENT);
+            if(didLike.isPresent()) dto.didLike();
+            commentDto.add(dto);
         }
         postResponseDto.setCommentsDto(commentDto);
 
@@ -118,7 +138,6 @@ public class PostService {
 
 
         // 좋아요 유무 체크
-        Member member = (Member) httpSession.getAttribute("loginMember");
         Optional<Likes> didLike = likesRepository.findLikeByMemberIdPostId(post.getId(), member.getId(), LikeType.POST);
         if(didLike.isPresent()) postResponseDto.didLike();
 

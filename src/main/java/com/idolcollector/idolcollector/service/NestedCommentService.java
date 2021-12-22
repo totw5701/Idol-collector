@@ -2,6 +2,9 @@ package com.idolcollector.idolcollector.service;
 
 import com.idolcollector.idolcollector.domain.comment.Comment;
 import com.idolcollector.idolcollector.domain.comment.CommentRepository;
+import com.idolcollector.idolcollector.domain.like.LikeType;
+import com.idolcollector.idolcollector.domain.like.Likes;
+import com.idolcollector.idolcollector.domain.like.LikesRepository;
 import com.idolcollector.idolcollector.domain.member.Member;
 import com.idolcollector.idolcollector.domain.member.MemberRepository;
 import com.idolcollector.idolcollector.domain.nestedcomment.NestedComment;
@@ -16,7 +19,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.servlet.http.HttpSession;
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 
 @RequiredArgsConstructor
@@ -25,10 +30,10 @@ import java.time.LocalDateTime;
 public class NestedCommentService {
 
     private final NestedCommentRepository nestedCommentRepository;
-    private final MemberRepository memberRepository;
     private final CommentRepository commentRepository;
     private final NoticeRepository noticeRepository;
-
+    private final HttpSession httpSession;
+    private final LikesRepository likesRepository;
 
     public NestedCommentResponseDto findById(Long id) {
         NestedComment nestedComment = nestedCommentRepository.findById(id)
@@ -40,12 +45,10 @@ public class NestedCommentService {
 
     @Transactional
     public Long save(NestedCommentSaveRequestDto form) {
-        Member member = memberRepository.findById(form.getAuthorId())
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 사용자입니다. id=" + form.getAuthorId()));
         Comment comment = commentRepository.findById(form.getCommentId())
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 댓글입니다. id=" + form.getCommentId()));
 
-        // 멤버는 세션에서 받아올 것.
+        Member member = (Member) httpSession.getAttribute("loginMember");
 
         // Notice 만들기
         noticeRepository.save(new Notice(comment.getMember(), member, comment, NoticeType.COMMENT));
@@ -61,6 +64,8 @@ public class NestedCommentService {
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 대댓글입니다. id=" + form.getId()));
 
         // 세션아이디 일치확인
+        Member member = (Member) httpSession.getAttribute("loginMember");
+        if(member.getId() != nComment.getMember().getId()) throw new IllegalArgumentException("작성자만 수정할 수 있습니다. 대댓글 id=" + form.getId());
 
         return nComment.update(form.getContent());
     }
@@ -71,6 +76,8 @@ public class NestedCommentService {
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 대댓글입니다. id=" + id));
 
         // 세션아이디 일치확인
+        Member member = (Member) httpSession.getAttribute("loginMember");
+        if(member.getId() != nComment.getMember().getId()) throw new IllegalArgumentException("작성자만 수정할 수 있습니다. 대댓글 id=" + id);
 
         nestedCommentRepository.delete(nComment);
         return id;
@@ -82,6 +89,10 @@ public class NestedCommentService {
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 대댓글입니다. id=" + id));
 
         // 세션 아이디 중복체크.
+        Member member = (Member) httpSession.getAttribute("loginMember");
+        Optional<Likes> didLike = likesRepository.findLikeByMemberIdPostId(nestedComment.getId(), member.getId(), LikeType.NESTED_COMMENT);
+        if(didLike.isPresent()) throw new IllegalArgumentException("이미 좋아요한 대댓글입니다. commentId = " + nestedComment.getId());
+
 
         return nestedComment.addLike();
     }

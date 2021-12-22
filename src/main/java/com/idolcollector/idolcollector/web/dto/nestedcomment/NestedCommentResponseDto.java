@@ -20,6 +20,7 @@ public class NestedCommentResponseDto {
     private LocalDateTime createDate;
     private LocalDateTime modifyDate;
 
+    private boolean didLike = false;
 
     public NestedCommentResponseDto(NestedComment comment) {
         this.id = comment.getId();
@@ -29,5 +30,9 @@ public class NestedCommentResponseDto {
         this.likes = comment.getLikes();
         this.createDate = comment.getCreateDate();
         this.modifyDate = comment.getModifyDate();
+    }
+
+    public void didLike() {
+        this.didLike = true;
     }
 }

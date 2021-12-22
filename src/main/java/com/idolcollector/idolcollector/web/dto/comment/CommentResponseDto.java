@@ -34,11 +34,10 @@ public class CommentResponseDto {
         this.likes = comment.getLikes();
         this.createDate = comment.getCreateDate();
         this.modifyDate = comment.getModifyDate();
+    }
 
-        List<NestedComment> nComment = comment.getNComment();
-        for (NestedComment nestedComment : nComment) {
-            this.nestedComments.add(new NestedCommentResponseDto(nestedComment));
-        }
+    public void setNCommentsDto(List<NestedCommentResponseDto> nestedComments) {
+        this.nestedComments = nestedComments;
     }
 
     public void didLike() {

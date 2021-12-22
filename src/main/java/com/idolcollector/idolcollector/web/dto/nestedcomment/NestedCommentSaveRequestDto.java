@@ -14,9 +14,6 @@ import javax.validation.constraints.NotNull;
 public class NestedCommentSaveRequestDto {
 
     @NotNull
-    private Long authorId;
-
-    @NotNull
     private Long commentId;
 
     @NotBlank

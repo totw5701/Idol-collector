@@ -20,6 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.servlet.http.HttpSession;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -36,6 +37,7 @@ class NestedCommentServiceTest {
     @Autowired CommentRepository commentRepository;
     @Autowired PostRepository postRepository;
     @Autowired NoticeRepository noticeRepository;
+    @Autowired HttpSession httpSession;
 
     @BeforeEach
     void before() {
@@ -52,9 +54,10 @@ class NestedCommentServiceTest {
 
         // Given
         Member member = memberRepository.findAll().get(0);
+        httpSession.setAttribute("loginMember", member);
         Comment comment = commentRepository.findAll().get(0);
 
-        NestedCommentSaveRequestDto form = new NestedCommentSaveRequestDto(member.getId(), comment.getId(), "nest comment test");
+        NestedCommentSaveRequestDto form = new NestedCommentSaveRequestDto(comment.getId(), "nest comment test");
 
         // When
         Long save = nestedCommentService.save(form);
@@ -73,6 +76,7 @@ class NestedCommentServiceTest {
 
         // Given
         Member member = memberRepository.findAll().get(0);
+        httpSession.setAttribute("loginMember", member);
         Comment comment = commentRepository.findAll().get(0);
         NestedComment saved = nestedCommentRepository.save(new NestedComment(member, comment, "nest comment test"));
 
@@ -93,6 +97,7 @@ class NestedCommentServiceTest {
 
         // Given
         Member member = memberRepository.findAll().get(0);
+        httpSession.setAttribute("loginMember", member);
         Comment comment = commentRepository.findAll().get(0);
         NestedComment saved = nestedCommentRepository.save(new NestedComment(member, comment, "nest comment test"));
 
@@ -110,6 +115,7 @@ class NestedCommentServiceTest {
 
         // Given
         Member member = memberRepository.findAll().get(0);
+        httpSession.setAttribute("loginMember", member);
         Comment comment = commentRepository.findAll().get(0);
         NestedComment nComment = nestedCommentRepository.save(new NestedComment(member, comment, "nest comment test"));
 
