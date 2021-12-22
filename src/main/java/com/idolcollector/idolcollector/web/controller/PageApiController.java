@@ -1,5 +1,6 @@
 package com.idolcollector.idolcollector.web.controller;
 
+import com.idolcollector.idolcollector.domain.member.Member;
 import com.idolcollector.idolcollector.service.BundleService;
 import com.idolcollector.idolcollector.service.MemberService;
 import com.idolcollector.idolcollector.service.PostService;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpSession;
 import java.util.List;
 import java.util.Optional;
 
@@ -30,6 +32,8 @@ public class PageApiController {
     private final MemberService memberService;
     private final BundleService bundleService;
 
+    private final HttpSession httpSession;
+
 
     @GetMapping({"/home/{page}", "/home"})
     public RootPageDto homePageList(@PathVariable(name = "page", required = false) Optional<Integer> page) {
@@ -40,7 +44,8 @@ public class PageApiController {
         List<HomePostListResponseDto> homePostListResponseDtos = postService.scorePostList(pageNum);
 
         // 세션에서 멤버정보 받아오기
-            MemberResponseDto memberResponseDto = memberService.testMember();
+        Member member = (Member) httpSession.getAttribute("loginMember");
+        MemberResponseDto memberResponseDto = new MemberResponseDto(member);
 
         return new RootPageDto(homePostListResponseDtos, memberResponseDto);
     }
@@ -51,7 +56,7 @@ public class PageApiController {
         PostResponseDto post = postService.detail(id);
 
         // 세션에서 멤버정보 받아오기
-        MemberResponseDto member = memberService.testMember();
+        MemberResponseDto member = new MemberResponseDto((Member) httpSession.getAttribute("loginMember"));
 
         return new CardDetailPageDto(post, member);
     }
@@ -59,7 +64,7 @@ public class PageApiController {
     @GetMapping("/member/{id}")
     public MemberDetailPageDto myInfo() {
         // 세션에서 멤버정보 받아오기
-            MemberResponseDto member = memberService.testMember();
+        MemberResponseDto member = new MemberResponseDto((Member) httpSession.getAttribute("loginMember"));
 
         List<BundleResponseDto> bundles = bundleService.findAllInMember(member.getId());
 

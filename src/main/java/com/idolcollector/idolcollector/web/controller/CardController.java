@@ -22,7 +22,7 @@ import java.util.ArrayList;
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/api/card")
-public class CardApiController {
+public class CardController {
 
     private final PostService postService;
     private final FileStore fileStore;

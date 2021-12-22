@@ -88,6 +88,10 @@ public class PostService {
             tagService.createPostTag(form.getTags(), savedPost);
         }
 
+        // 추천 기록 테이블
+        trendingRepository.save(new Trending(savedPost, TrendingType.CREATE));
+
+
         return savedPost.getId();
     }
 
@@ -234,7 +238,7 @@ public class PostService {
         Optional<Likes> isDup = likesRepository.findLikeByMemberIdPostId(post.getId(), member.getId(), LikeType.POST);
 
         if (isDup.isPresent()) {
-            return post.getLikes();
+            throw new IllegalArgumentException("이미 좋아요한 게시물입니다. 카드 id=" + id);
         }
 
         Likes likes = new Likes(post.getId(), member, LikeType.POST);

@@ -34,6 +34,7 @@ public class Trending {
         else if (type == TrendingType.LIKE) this.score = 12;
         else if (type == TrendingType.COMMENT) this.score = 20;
         else if (type == TrendingType.SCRAP) this.score = 30;
+        else if (type == TrendingType.CREATE) this.score = 10;
     }
 
 }
