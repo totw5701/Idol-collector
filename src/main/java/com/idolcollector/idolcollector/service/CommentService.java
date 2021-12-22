@@ -50,7 +50,7 @@ public class CommentService {
         Comment comment = commentRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 댓글입니다. id=" + id));
 
-        Member member = (Member) httpSession.getAttribute("loginMember");
+        Member member = memberRepository.findById((Long) httpSession.getAttribute("loginMember")).get();
 
         CommentResponseDto dto = new CommentResponseDto(comment);
 
@@ -74,7 +74,7 @@ public class CommentService {
         Post post = postRepository.findById(form.getPostId())
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 게시글입니다. id=" + form.getPostId()));
 
-        Member member = (Member) httpSession.getAttribute("loginMember");
+        Member member = memberRepository.findById((Long) httpSession.getAttribute("loginMember")).get();
 
         // Notice 만들기
         noticeRepository.save(new Notice(post.getMember(), member, post, NoticeType.COMMENT));
@@ -91,7 +91,7 @@ public class CommentService {
         Comment comment = commentRepository.findById(form.getId())
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 댓글입니다. id=" + form.getId()));
 
-        Member member = (Member) httpSession.getAttribute("loginMember");
+        Member member = memberRepository.findById((Long) httpSession.getAttribute("loginMember")).get();
         if (member.getId() != comment.getMember().getId()) {
             throw new IllegalArgumentException("작성자 본인만 수정할 수 있습니다. commentId = " + comment.getId());
         }
@@ -105,7 +105,7 @@ public class CommentService {
         Comment comment = commentRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 댓글입니다. id=" + id));
 
-        Member member = (Member) httpSession.getAttribute("loginMember");
+        Member member = memberRepository.findById((Long) httpSession.getAttribute("loginMember")).get();
         if (member.getId() != comment.getMember().getId()) {
             throw new IllegalArgumentException("작성자 본인만 삭제할 수 있습니다. commentId = " + comment.getId());
         }
@@ -121,7 +121,7 @@ public class CommentService {
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 댓글입니다. id=" + id));
 
         // 좋아요 유무 체크
-        Member member = (Member) httpSession.getAttribute("loginMember");
+        Member member = memberRepository.findById((Long) httpSession.getAttribute("loginMember")).get();
         Optional<Likes> didLike = likesRepository.findLikeByMemberIdPostId(comment.getId(), member.getId(), LikeType.COMMENT);
         if(didLike.isPresent()) throw new IllegalArgumentException("이미 좋아요한 댓글입니다. commentId = " + comment.getId());
 
@@ -138,7 +138,7 @@ public class CommentService {
 
         List<CommentResponseDto> list = new ArrayList<>();
 
-        Member member = (Member) httpSession.getAttribute("loginMember");
+        Member member = memberRepository.findById((Long) httpSession.getAttribute("loginMember")).get();
 
         for (Comment comment : comments) {
             CommentResponseDto dto = new CommentResponseDto(comment);

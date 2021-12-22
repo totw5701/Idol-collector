@@ -7,6 +7,7 @@ import com.idolcollector.idolcollector.domain.post.Post;
 import com.idolcollector.idolcollector.domain.tag.Tag;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -14,6 +15,7 @@ import java.time.LocalDateTime;
 @Entity
 @Getter
 @NoArgsConstructor
+@ToString
 public class Notice {
 
     @Id
@@ -37,6 +39,7 @@ public class Notice {
     @JoinColumn(name = "TARGET_COMMENT_ID")
     private Comment targetComment;
 
+    @Enumerated(EnumType.STRING)
     private NoticeType noticeType;
     private LocalDateTime createDate;
 

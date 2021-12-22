@@ -46,6 +46,13 @@ public class MemberService {
         return new MemberResponseDto(member);
     }
 
+    public Member findEntityById(Long id) {
+        Member member = memberRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 회원입니다. id=" + id));
+
+        return member;
+    }
+
     public MemberResponseDto testMember() {
         Member member = new Member(MemberRole.USER, "SessionLoginGuy", "email", "1111", "pressLike", "dsfsdfdsfdsf", LocalDateTime.now());
         memberRepository.save(member);

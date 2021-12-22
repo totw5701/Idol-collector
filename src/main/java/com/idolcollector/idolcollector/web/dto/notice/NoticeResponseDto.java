@@ -1,9 +1,13 @@
 package com.idolcollector.idolcollector.web.dto.notice;
 
 import com.idolcollector.idolcollector.domain.notice.Notice;
+import lombok.Getter;
+import lombok.ToString;
 
 import java.time.LocalDateTime;
 
+@Getter
+@ToString
 public class NoticeResponseDto {
 
     private String memberNickName;

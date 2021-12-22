@@ -21,8 +21,7 @@ public class ExControllerAdvice {
 
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ExceptionHandler
-    public ErrorResult exHandler(Exception e) {
+    public void exHandler(Exception e) {
         log.error("[exceptionHandler} ex", e);
-        return new ErrorResult("EX", "알 수 없는 내부오류");
     }
 }

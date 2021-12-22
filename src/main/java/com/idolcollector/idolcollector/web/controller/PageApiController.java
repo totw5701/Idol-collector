@@ -44,9 +44,10 @@ public class PageApiController {
         List<HomePostListResponseDto> homePostListResponseDtos = postService.scorePostList(pageNum);
 
         // 세션에서 멤버정보 받아오기
-        Member member = (Member) httpSession.getAttribute("loginMember");
-        MemberResponseDto memberResponseDto = new MemberResponseDto(member);
+        MemberResponseDto memberResponseDto = memberService.findById((Long) httpSession.getAttribute("loginMember"));
 
+        String s = memberResponseDto.getNotices().toString();
+        System.out.println("noticeREsponse dto = " + s);
         return new RootPageDto(homePostListResponseDtos, memberResponseDto);
     }
 
@@ -56,7 +57,7 @@ public class PageApiController {
         PostResponseDto post = postService.detail(id);
 
         // 세션에서 멤버정보 받아오기
-        MemberResponseDto member = new MemberResponseDto((Member) httpSession.getAttribute("loginMember"));
+        MemberResponseDto member = memberService.findById((Long) httpSession.getAttribute("loginMember"));
 
         return new CardDetailPageDto(post, member);
     }
@@ -64,7 +65,8 @@ public class PageApiController {
     @GetMapping("/member/{id}")
     public MemberDetailPageDto myInfo() {
         // 세션에서 멤버정보 받아오기
-        MemberResponseDto member = new MemberResponseDto((Member) httpSession.getAttribute("loginMember"));
+        MemberResponseDto member = memberService.findById((Long) httpSession.getAttribute("loginMember"));
+
 
         List<BundleResponseDto> bundles = bundleService.findAllInMember(member.getId());
 

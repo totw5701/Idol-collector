@@ -65,7 +65,7 @@ public class PostService {
     @Transactional
     public Long create(@ModelAttribute PostSaveRequestDto form) throws IOException {
 
-        Member member = (Member) httpSession.getAttribute("loginMember");
+        Member member = memberRepository.findById((Long) httpSession.getAttribute("loginMember")).get();
 
         /**
          * post에서 넘어온 memberId는 언제든 조작될 수있음. 세션에서 받아오는것이 정확하다.
@@ -96,7 +96,7 @@ public class PostService {
         Post post = postRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 게시글입니다. id=" + id));
 
-        Member member = (Member) httpSession.getAttribute("loginMember");
+        Member member = memberRepository.findById((Long) httpSession.getAttribute("loginMember")).get();
 
         // 조회수 증가.
         post.addView();
@@ -154,7 +154,7 @@ public class PostService {
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 게시글입니다. id=" + form.getPostId()));
 
         // 세션유저 일치 확인
-        Member member = (Member) httpSession.getAttribute("loginMember");
+        Member member = memberRepository.findById((Long) httpSession.getAttribute("loginMember")).get();
         if (post.getMember().getId() != member.getId()) {
             throw new IllegalArgumentException("작성자 본인만 수정할 수 있습니다. 카드 id =" + form.getPostId());
         }
@@ -176,7 +176,7 @@ public class PostService {
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 게시글입니다. id=" + id));
 
         // 세션유저 일치 확인
-        Member member = (Member) httpSession.getAttribute("loginMember");
+        Member member = memberRepository.findById((Long) httpSession.getAttribute("loginMember")).get();
         if (post.getMember().getId() != member.getId()) {
             throw new IllegalArgumentException("작성자 본인만 삭제할 수 있습니다. 카드 id =" + post.getId());
         }
@@ -204,7 +204,7 @@ public class PostService {
         Post post = postRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 게시글입니다. id=" + id));
 
-        Member member = (Member) httpSession.getAttribute("loginMember");
+        Member member = memberRepository.findById((Long) httpSession.getAttribute("loginMember")).get();
 
         Optional<Likes> isDup = likesRepository.findLikeByMemberIdPostId(post.getId(), member.getId(), LikeType.POST);
 
@@ -230,7 +230,7 @@ public class PostService {
         Post post = postRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 게시글입니다. id=" + id));
 
-        Member member = (Member) httpSession.getAttribute("loginMember");
+        Member member = memberRepository.findById((Long) httpSession.getAttribute("loginMember")).get();
 
         Scrap scrap = new Scrap(member, post);
         Scrap save = scrapRepository.save(scrap);

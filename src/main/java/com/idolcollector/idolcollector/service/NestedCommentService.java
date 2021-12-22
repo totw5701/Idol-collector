@@ -34,6 +34,7 @@ public class NestedCommentService {
     private final NoticeRepository noticeRepository;
     private final HttpSession httpSession;
     private final LikesRepository likesRepository;
+    private final MemberRepository memberRepository;
 
     public NestedCommentResponseDto findById(Long id) {
         NestedComment nestedComment = nestedCommentRepository.findById(id)
@@ -48,7 +49,7 @@ public class NestedCommentService {
         Comment comment = commentRepository.findById(form.getCommentId())
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 댓글입니다. id=" + form.getCommentId()));
 
-        Member member = (Member) httpSession.getAttribute("loginMember");
+        Member member = memberRepository.findById((Long) httpSession.getAttribute("loginMember")).get();
 
         // Notice 만들기
         noticeRepository.save(new Notice(comment.getMember(), member, comment, NoticeType.COMMENT));
@@ -64,7 +65,7 @@ public class NestedCommentService {
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 대댓글입니다. id=" + form.getId()));
 
         // 세션아이디 일치확인
-        Member member = (Member) httpSession.getAttribute("loginMember");
+        Member member = memberRepository.findById((Long) httpSession.getAttribute("loginMember")).get();
         if(member.getId() != nComment.getMember().getId()) throw new IllegalArgumentException("작성자만 수정할 수 있습니다. 대댓글 id=" + form.getId());
 
         return nComment.update(form.getContent());
@@ -76,7 +77,7 @@ public class NestedCommentService {
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 대댓글입니다. id=" + id));
 
         // 세션아이디 일치확인
-        Member member = (Member) httpSession.getAttribute("loginMember");
+        Member member = memberRepository.findById((Long) httpSession.getAttribute("loginMember")).get();
         if(member.getId() != nComment.getMember().getId()) throw new IllegalArgumentException("작성자만 수정할 수 있습니다. 대댓글 id=" + id);
 
         nestedCommentRepository.delete(nComment);
@@ -89,7 +90,7 @@ public class NestedCommentService {
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 대댓글입니다. id=" + id));
 
         // 세션 아이디 중복체크.
-        Member member = (Member) httpSession.getAttribute("loginMember");
+        Member member = memberRepository.findById((Long) httpSession.getAttribute("loginMember")).get();
         Optional<Likes> didLike = likesRepository.findLikeByMemberIdPostId(nestedComment.getId(), member.getId(), LikeType.NESTED_COMMENT);
         if(didLike.isPresent()) throw new IllegalArgumentException("이미 좋아요한 대댓글입니다. commentId = " + nestedComment.getId());
 
