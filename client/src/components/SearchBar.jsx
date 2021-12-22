@@ -1,4 +1,3 @@
-import { Search } from '@material-ui/icons';
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { css } from 'styled-components';
@@ -16,9 +15,11 @@ function SearchBar() {
   }, []);
 
   const onScroll = () => {
-    if (window.scrollY >= 380) {
+    // console.log(window.innerHeight);
+    // console.log(window.scrollY);
+    if (window.scrollY >= window.innerHeight * 0.32) {
       return setIsFixed(true);
-    } else if (window.scrollY < 380) {
+    } else if (window.scrollY < window.innerHeight * 0.32) {
       return setIsFixed(false);
     }
   };
@@ -30,7 +31,7 @@ function SearchBar() {
 
   return (
     <StyledSearchBar onSubmit={handleSearch} fixed={isFixed}>
-      <Search />
+      <SearchIcon src="./images/검색.png" />
       <SearchInput
         onChange={e => setSearchValue(e.target.value)}
         type="search"
@@ -43,6 +44,7 @@ function SearchBar() {
 export default SearchBar;
 
 const StyledSearchBar = styled.form`
+  position: sticky;
   ${({ fixed }) =>
     fixed &&
     css`
@@ -53,14 +55,14 @@ const StyledSearchBar = styled.form`
 
   margin: auto;
 
-  width: 68%;
+  width: 62%;
   padding: 4px 10px;
 
   display: flex;
   align-items: center;
 
-  background: #e1e1e1;
-  border: 1.5px solid #000;
+  background: #edebeb;
+  border: 2px solid #b580d1;
   border-radius: 50px;
   z-index: 5;
 
@@ -70,11 +72,17 @@ const StyledSearchBar = styled.form`
   }
 `;
 
+const SearchIcon = styled.img`
+  width: 30px;
+  height: 30px;
+`;
+
 const SearchInput = styled.input`
   flex: 9.4;
   background: none;
   border: none;
   font-size: 1.4rem;
+  margin-left: 10px;
 
   &:focus {
     outline: none;
