@@ -168,7 +168,7 @@ const dummyDB = [
     views: 1300,
     likes: 130,
     storeFileName:
-      'https://lh3.googleusercontent.com/proxy/RBOVnr34VSCJDfClV26y-ulbuyIBfnqD4mSPXeimJNap1HSOw005OUfRe6H6VoUB56yeZ7druGfJNxJS_1g5essJ6KtPmxXcXSeJ5g',
+      'https://img1.daumcdn.net/thumb/R1280x0.fjpg/?fname=http://t1.daumcdn.net/brunch/service/user/9g2Q/image/_SznIDRiJJdKID82JMB-x02W4FM.jpg',
   },
   {
     id: 14,
