@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 public class Scrap {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @JoinColumn(name = "SCRAP_ID")
     private Long id;
 

@@ -190,42 +190,17 @@ public class PostService {
         return id;
     }
 
+
     public List<HomePostListResponseDto> scorePostList(Integer page) {
+        PageRequest preq = PageRequest.of(page, 15);
+        List<Post> trendingAll = postRepository.findTrendingAll(preq);
 
-        // 1주일내 좋아요를 많이 받은 카드 순으로 출력.
-
-        /**
-         * PK, 일자, postId, 점수가 담긴 테이블을 만든다.
-         * 조회시 5점, 좋아요시 40점, 댓글 45점, 스크랩 100점을 부여한다.
-         * 주간 SUM(점수)로 순위를 매겨 받아온다.
-         *
-         * 지금 DB 아껴야하니까 조회는 빼자.
-         */
-
-        // 트렌딩 먼저 출력, 트렌딩 모두 출력한 뒤에는 최근 업로드순으로 출력
-        Integer count = trendingRepository.trendAnalyByDateCount(LocalDateTime.now().minusDays(7));
-        int trendingPageCount = count / 15 + 1;
-
-        List<Post> list = new ArrayList<>();
-        if (trendingPageCount > page) {
-            PageRequest preq = PageRequest.of(page, 15);
-            Page<Post> result = trendingRepository.trendAnalyByDate(LocalDateTime.now().minusDays(7), preq);
-            list = result.getContent();
-
-        } else {
-            page = page - trendingPageCount;
-            PageRequest preq = PageRequest.of(page, 15);
-            Page<Post> result = postRepository.findAll(preq);
-
-            list = result.getContent();
+        List<HomePostListResponseDto> list = new ArrayList<>();
+        for (Post post : trendingAll) {
+            list.add(new HomePostListResponseDto(post));
         }
 
-        List<HomePostListResponseDto> postList = new ArrayList<>();
-        for (Post post : list) {
-            postList.add(new HomePostListResponseDto(post));
-        }
-
-        return postList;
+        return list;
     }
 
     @Transactional
@@ -271,5 +246,49 @@ public class PostService {
         trendingRepository.save(new Trending(post, TrendingType.SCRAP));
 
         return save.getId();
+    }
+
+
+    /**
+     *
+     * 사용하지 않는 코드
+     *
+     */
+    public List<HomePostListResponseDto> scorePostListLegacy(Integer page) {
+
+        // 1주일내 좋아요를 많이 받은 카드 순으로 출력.
+
+        /**
+         * PK, 일자, postId, 점수가 담긴 테이블을 만든다.
+         * 조회시 5점, 좋아요시 40점, 댓글 45점, 스크랩 100점을 부여한다.
+         * 주간 SUM(점수)로 순위를 매겨 받아온다.
+         *
+         * 지금 DB 아껴야하니까 조회는 빼자.
+         */
+
+        // 트렌딩 먼저 출력, 트렌딩 모두 출력한 뒤에는 최근 업로드순으로 출력
+        Integer count = trendingRepository.trendAnalyByDateCount(LocalDateTime.now().minusDays(7));
+        int trendingPageCount = count / 15 + 1;
+
+        List<Post> list = new ArrayList<>();
+        if (trendingPageCount > page) {
+            PageRequest preq = PageRequest.of(page, 15);
+            Page<Post> result = trendingRepository.trendAnalyByDate(LocalDateTime.now().minusDays(7), preq);
+
+            list = result.getContent();
+        } else {
+            page = page - trendingPageCount;
+            PageRequest preq = PageRequest.of(page, 15);
+            Page<Post> result = postRepository.findAll(preq);
+
+            list = result.getContent();
+        }
+
+        List<HomePostListResponseDto> postList = new ArrayList<>();
+        for (Post post : list) {
+            postList.add(new HomePostListResponseDto(post));
+        }
+
+        return postList;
     }
 }

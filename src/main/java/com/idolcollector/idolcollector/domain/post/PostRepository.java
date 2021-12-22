@@ -25,6 +25,10 @@ public interface PostRepository extends JpaRepository<Post, Long> {
     @Query("select p from Post p order by p.id desc")
     Page<Post> findAll(Pageable pageable);
 
+
+    @Query(value = "(SELECT post.id, post.content, post.create_date, post.likes, post.modify_date, post.ori_file_name, post.store_file_name, post.title, post.views, post.member_id FROM trending LEFT JOIN post ON trending.post_id = post.id GROUP BY post_id ORDER BY SUM(score) desc limit 1000000) UNION (SELECT * FROM post ORDER BY post.id desc limit 1000000)", nativeQuery = true)
+    List<Post> findTrendingAll(Pageable pageable);
+
     /**
      *
      * 아래 코드는 사용하지 않는 코드입니다.
@@ -35,5 +39,6 @@ public interface PostRepository extends JpaRepository<Post, Long> {
 
     @Query("select p, c, nc from Comment c, Post p left outer join NestedComment nc on nc.comment.id = c.id where p.id = :postId")
     List<Object[]> multipleQ2(@Param("postId") Long postId);
-
 }
+
+

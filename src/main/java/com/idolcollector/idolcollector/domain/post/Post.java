@@ -20,7 +20,7 @@ import java.util.List;
 public class Post {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @JoinColumn(name = "POST_ID")
     private Long id;
 

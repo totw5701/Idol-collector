@@ -12,7 +12,7 @@ import javax.persistence.*;
 public class Likes {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @JoinColumn(name = "LIKE_ID")
     private Long id;
 

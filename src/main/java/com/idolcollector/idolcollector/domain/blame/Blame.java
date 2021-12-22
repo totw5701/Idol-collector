@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 public class Blame {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @JoinColumn(name = "BLAME_ID")
     private Long id;
 

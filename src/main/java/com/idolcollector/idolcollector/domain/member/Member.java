@@ -22,7 +22,7 @@ import java.util.List;
 @NoArgsConstructor
 public class Member {
 
-    @Id @GeneratedValue
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @JoinColumn(name = "MEMBER_ID")
     private Long id;
 

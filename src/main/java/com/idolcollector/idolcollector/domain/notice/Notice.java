@@ -17,7 +17,7 @@ import java.time.LocalDateTime;
 public class Notice {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @JoinColumn(name = "NOTICE_TAG_ID")
     private Long id;
 

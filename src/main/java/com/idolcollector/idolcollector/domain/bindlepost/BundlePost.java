@@ -12,7 +12,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 public class BundlePost {
 
-    @Id @GeneratedValue
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne

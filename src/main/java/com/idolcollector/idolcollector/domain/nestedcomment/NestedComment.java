@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 public class NestedComment {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @JoinColumn(name = "COMMENT_ID")
     private Long id;
 

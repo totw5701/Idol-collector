@@ -13,7 +13,7 @@ import javax.persistence.*;
 public class PostTag {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @JoinColumn(name = "POST_TAG_ID")
     private Long id;
 
