@@ -1,5 +1,6 @@
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import Nav from './components/Nav';
+import TopBtn from './components/TopBtn';
 import DetailPage from './pages/DetailPage';
 import MainPage from './pages/MainPage';
 
@@ -267,6 +268,7 @@ function App() {
           <MainPage data={dummyDB} />
         </Route>
       </Switch>
+      <TopBtn />
     </BrowserRouter>
   );
 }
