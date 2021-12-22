@@ -3,7 +3,7 @@ import styled from 'styled-components';
 function Button({ children, src }) {
   return (
     <StyledButton>
-      {src && <IconButton src={`./images/${src}`} />}
+      {src && <IconButton src={`images/${src}`} />}
       {children}
     </StyledButton>
   );

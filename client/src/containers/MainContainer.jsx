@@ -10,7 +10,7 @@ function MainContainer({ data }) {
         <CardContainer>
           {data.map(card => {
             return (
-              <Card>
+              <Card key={card.id}>
                 <img src={card.storeFileName} alt={card.title} />
               </Card>
             );
