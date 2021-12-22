@@ -3,6 +3,7 @@ import Nav from './components/Nav';
 import TopBtn from './components/TopBtn';
 import DetailPage from './pages/DetailPage';
 import MainPage from './pages/MainPage';
+import CreatePage from './pages/CreatePage';
 
 const dummyDB = [
   {
@@ -261,6 +262,9 @@ function App() {
     <BrowserRouter>
       <Nav />
       <Switch>
+        <Route path="/create">
+          <CreatePage />
+        </Route>
         <Route path="/card/:cardId">
           <DetailPage />
         </Route>
