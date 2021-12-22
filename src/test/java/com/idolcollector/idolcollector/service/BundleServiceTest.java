@@ -68,7 +68,7 @@ class BundleServiceTest {
 
         bundlePostRepository.save(new BundlePost(bundle, post));
 
-        BundleDeleteCardDto form = new BundleDeleteCardDto(bundle.getId(), post.getId());
+        BundleDeleteCardDto form = new BundleDeleteCardDto(post.getId(), bundle.getId());
 
         // When
         bundleService.deletePost(form);

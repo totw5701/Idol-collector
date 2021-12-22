@@ -20,6 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.servlet.http.HttpSession;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -43,6 +44,8 @@ public class CommentServiceTest {
     PostRepository postRepository;
     @Autowired
     NoticeRepository noticeRepository;
+    @Autowired
+    HttpSession httpSession;
 
     @BeforeEach
     void before() {
@@ -58,9 +61,11 @@ public class CommentServiceTest {
 
         // Given
         Member member = memberRepository.findAll().get(0);
+        httpSession.setAttribute("loginMember", member);
+
         Post post = postRepository.findAll().get(0);
 
-        CommentSaveRequestDto form = new CommentSaveRequestDto(member.getId(), post.getId(), "comment content");
+        CommentSaveRequestDto form = new CommentSaveRequestDto(post.getId(), "comment content");
 
         // When
         Long saveId = commentService.save(form);
@@ -84,6 +89,8 @@ public class CommentServiceTest {
 
         // Given
         Member member = memberRepository.findAll().get(0);
+        httpSession.setAttribute("loginMember", member);
+
         Post post = postRepository.findAll().get(0);
         Comment comment = commentRepository.save(new Comment(member, post, "comment content"));
 
@@ -104,6 +111,8 @@ public class CommentServiceTest {
 
         // Given
         Member member = memberRepository.findAll().get(0);
+        httpSession.setAttribute("loginMember", member);
+
         Post post = postRepository.findAll().get(0);
         Comment comment = commentRepository.save(new Comment(member, post, "comment content"));
 
@@ -125,6 +134,8 @@ public class CommentServiceTest {
 
         // Given
         Member member = memberRepository.findAll().get(0);
+        httpSession.setAttribute("loginMember", member);
+
         Post post = postRepository.findAll().get(0);
         Comment comment = commentRepository.save(new Comment(member, post, "comment content"));
 
@@ -140,6 +151,8 @@ public class CommentServiceTest {
 
         // Given
         Member member = memberRepository.findAll().get(0);
+        httpSession.setAttribute("loginMember", member);
+
         Post post = postRepository.findAll().get(0);
 
         Comment comment = new Comment(member, post, "content");

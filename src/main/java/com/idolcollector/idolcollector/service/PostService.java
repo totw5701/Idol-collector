@@ -1,5 +1,6 @@
 package com.idolcollector.idolcollector.service;
 
+import com.idolcollector.idolcollector.domain.comment.Comment;
 import com.idolcollector.idolcollector.domain.like.LikeType;
 import com.idolcollector.idolcollector.domain.like.Likes;
 import com.idolcollector.idolcollector.domain.like.LikesRepository;
@@ -11,6 +12,7 @@ import com.idolcollector.idolcollector.domain.notice.NoticeRepository;
 import com.idolcollector.idolcollector.domain.notice.NoticeType;
 import com.idolcollector.idolcollector.domain.post.Post;
 import com.idolcollector.idolcollector.domain.post.PostRepository;
+import com.idolcollector.idolcollector.domain.posttag.PostTag;
 import com.idolcollector.idolcollector.domain.scrap.Scrap;
 import com.idolcollector.idolcollector.domain.scrap.ScrapRepository;
 import com.idolcollector.idolcollector.domain.tag.TagRepository;
@@ -18,11 +20,13 @@ import com.idolcollector.idolcollector.domain.trending.Trending;
 import com.idolcollector.idolcollector.domain.trending.TrendingRepository;
 import com.idolcollector.idolcollector.domain.trending.TrendingType;
 import com.idolcollector.idolcollector.file.FileStore;
+import com.idolcollector.idolcollector.web.dto.comment.CommentResponseDto;
 import com.idolcollector.idolcollector.web.dto.file.UploadFile;
 import com.idolcollector.idolcollector.web.dto.post.HomePostListResponseDto;
 import com.idolcollector.idolcollector.web.dto.post.PostResponseDto;
 import com.idolcollector.idolcollector.web.dto.post.PostSaveRequestDto;
 import com.idolcollector.idolcollector.web.dto.post.PostUpdateRequestDto;
+import com.idolcollector.idolcollector.web.dto.tag.TagResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -78,7 +82,9 @@ public class PostService {
         Post savedPost = postRepository.save(new Post(member, form.getTitle(), form.getContent(), uploadFile.getStoreFileName(), uploadFile.getUploadFileName()));
 
         // 태그 저장. // 다른 서비스를 의존하는 좀 그렇지만, tagService는 Post과 Member에 완전히 종속적이니 그냥 하자.
-        tagService.createPostTag(form.getTags(), savedPost);
+        if(form.getTags() != null){
+            tagService.createPostTag(form.getTags(), savedPost);
+        }
 
         return savedPost.getId();
     }
@@ -93,11 +99,32 @@ public class PostService {
 
         PostResponseDto postResponseDto = new PostResponseDto(post);
 
-        /**
-         * 세션유저 좋아요 눌렀는지, 스크랩했는지 유무 확인.
-         */
-        // postResponseDto.didLike();
-        // postResponseDto.didScrap();
+        // 댓글 dto 넣기
+        List<Comment> entComments = post.getComments();
+        List<CommentResponseDto> commentDto = new ArrayList<>();
+        for (Comment entComment : entComments) {
+            commentDto.add(new CommentResponseDto(entComment));
+        }
+        postResponseDto.setCommentsDto(commentDto);
+
+
+        // tag dto 넣기
+        List<PostTag> entPostTags = post.getPostTags();
+        List<TagResponseDto> tagDto = new ArrayList<>();
+        for (PostTag entPostTag : entPostTags) {
+            tagDto.add(new TagResponseDto(entPostTag.getTag()));
+        }
+        postResponseDto.setTagsDto(tagDto);
+
+
+        // 좋아요 유무 체크
+        Member member = (Member) httpSession.getAttribute("loginMember");
+        Optional<Likes> didLike = likesRepository.findLikeByMemberIdPostId(post.getId(), member.getId(), LikeType.POST);
+        if(didLike.isPresent()) postResponseDto.didLike();
+
+        // 스크랩 유무 체크
+        Optional<Scrap> didScrap = scrapRepository.findScrapByMemberIdPostId(post.getId(), member.getId());
+        if(didScrap.isPresent()) postResponseDto.didScrap();
 
         return postResponseDto;
     }
@@ -108,12 +135,18 @@ public class PostService {
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 게시글입니다. id=" + form.getPostId()));
 
         // 세션유저 일치 확인
+        Member member = (Member) httpSession.getAttribute("loginMember");
+        if (post.getMember().getId() != member.getId()) {
+            throw new IllegalArgumentException("작성자 본인만 수정할 수 있습니다. 카드 id =" + form.getPostId());
+        }
 
         post.update(form);
 
+        // tag 수정
         tagRepository.deleteAllByPostId(form.getPostId());
-
-        if (form.getTags() != null) tagService.createPostTag(form.getTags(), post);
+        if (form.getTags() != null) {
+            tagService.createPostTag(form.getTags(), post);
+        }
 
         return post.getId();
     }
@@ -123,7 +156,11 @@ public class PostService {
         Post post = postRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 게시글입니다. id=" + id));
 
-        // 세션 유저일치 확인.
+        // 세션유저 일치 확인
+        Member member = (Member) httpSession.getAttribute("loginMember");
+        if (post.getMember().getId() != member.getId()) {
+            throw new IllegalArgumentException("작성자 본인만 삭제할 수 있습니다. 카드 id =" + post.getId());
+        }
 
         postRepository.delete(post);
 
@@ -142,26 +179,22 @@ public class PostService {
          * 지금 DB 아껴야하니까 조회는 빼자.
          */
 
+        // 트렌딩 먼저 출력, 트렌딩 모두 출력한 뒤에는 최근 업로드순으로 출력
         Integer count = trendingRepository.trendAnalyByDateCount(LocalDateTime.now().minusDays(7));
-        System.out.println("count = " + count);
         int trendingPageCount = count / 15 + 1;
 
         List<Post> list = new ArrayList<>();
         if (trendingPageCount > page) {
-            System.out.println("trendingRepository");
             PageRequest preq = PageRequest.of(page, 15);
             Page<Post> result = trendingRepository.trendAnalyByDate(LocalDateTime.now().minusDays(7), preq);
             list = result.getContent();
 
         } else {
-            System.out.println("postRepository");
             page = page - trendingPageCount;
             PageRequest preq = PageRequest.of(page, 15);
             Page<Post> result = postRepository.findAll(preq);
 
-            System.out.println("result = " + result);
             list = result.getContent();
-
         }
 
         List<HomePostListResponseDto> postList = new ArrayList<>();
@@ -177,11 +210,7 @@ public class PostService {
         Post post = postRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 게시글입니다. id=" + id));
 
-                // 세션에서 로그인유저 받아올 것.
-
-                    // 임시 코드
-                    Member member = new Member(MemberRole.USER, "pressLike", "email", "1111", "pressLike", "dsfsdfdsfdsf", LocalDateTime.now());
-                    memberRepository.save(member);
+        Member member = (Member) httpSession.getAttribute("loginMember");
 
         Optional<Likes> isDup = likesRepository.findLikeByMemberIdPostId(post.getId(), member.getId(), LikeType.POST);
 
@@ -207,10 +236,7 @@ public class PostService {
         Post post = postRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 게시글입니다. id=" + id));
 
-            // 세션에서 회원 정보 받아오기.
-                // 임시 코드
-                Member member = new Member(MemberRole.USER, "scrapper", "email", "1111", "scrapper", "dsfsdfdsfdsf", LocalDateTime.now());
-                memberRepository.save(member);
+        Member member = (Member) httpSession.getAttribute("loginMember");
 
         Scrap scrap = new Scrap(member, post);
         Scrap save = scrapRepository.save(scrap);

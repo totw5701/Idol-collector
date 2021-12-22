@@ -24,6 +24,8 @@ public class CommentResponseDto {
 
     List<NestedCommentResponseDto> nestedComments = new ArrayList<>();
 
+    private boolean didLike = false;
+
     public CommentResponseDto(Comment comment) {
         this.id = comment.getId();
         this.authorId = comment.getMember().getId();
@@ -37,6 +39,10 @@ public class CommentResponseDto {
         for (NestedComment nestedComment : nComment) {
             this.nestedComments.add(new NestedCommentResponseDto(nestedComment));
         }
-
     }
+
+    public void didLike() {
+        this.didLike = true;
+    }
+
 }

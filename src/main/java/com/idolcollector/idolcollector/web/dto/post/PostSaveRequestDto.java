@@ -9,6 +9,8 @@ import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class PostSaveRequestDto {
 
     private String title;

@@ -13,9 +13,6 @@ import javax.validation.constraints.NotNull;
 public class CommentSaveRequestDto {
 
     @NotNull
-    private Long authorId;
-
-    @NotNull
     private Long postId;
 
     @NotBlank

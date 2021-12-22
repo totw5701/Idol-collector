@@ -51,17 +51,14 @@ public class PostResponseDto {
         this.likes = post.getLikes();
         this.storeFileName = post.getStoreFileName();
         this.oriFileName = post.getOriFileName();
+    }
 
-        List<Comment> entComments = post.getComments();
-        for (Comment entComment : entComments) {
-            this.comments.add(new CommentResponseDto(entComment));
-        }
+    public void setCommentsDto(List<CommentResponseDto> list) {
+        this.comments = list;
+    }
 
-        List<PostTag> entPostTags = post.getPostTags();
-        for (PostTag entPostTag : entPostTags) {
-            this.tags.add(new TagResponseDto(entPostTag.getTag()));
-        }
-
+    public void setTagsDto(List<TagResponseDto> list) {
+        this.tags = list;
     }
 
     public void didLike() {

@@ -34,6 +34,7 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpSession;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -60,6 +61,7 @@ class PostServiceTest {
     @Autowired LikesRepository likesRepository;
     @Autowired TrendingRepository trendingRepository;
     @Autowired NoticeRepository noticeRepository;
+    @Autowired HttpSession httpSession;
 
     @BeforeEach
     void before() {
@@ -131,48 +133,53 @@ class PostServiceTest {
     }
 
 
-//    @Test
-//    void 생성() throws IOException {
-//
-//        // Given
-//        Member member = memberRepository.findAll().get(0);
-//        tagRepository.save(new Tag("예쁨"));
-//        tagRepository.save(new Tag("beautiful"));
-//        tagRepository.save(new Tag("김소담"));
-//
-//        List<String> tags = new ArrayList<>();
-//        tags.add("이하늬");
-//        tags.add("예쁨");
-//        tags.add("BEautiful");
-//
-//        // 사진 파일
-//        File img = new File("/Users/totheworld/Desktop/idol-collector/test.png");
-//        MultipartFile mf = new MockMultipartFile("image","test.png", "img",new FileInputStream(img));
-//
-//        PostSaveRequestDto form = new PostSaveRequestDto(member.getId(),
-//                "예쁜이하늬",
-//                "이하늬 예쁘다 헤헤",
-//                mf,
-//                tags);
-//
-//        // When
-//        Long postId = postService.create(form);
-//
-//        // Then
-//        Post findPost = postRepository.findById(postId).get();
-//        List<Tag> findTags = tagRepository.findAll();
-//        List<PostTag> findPostTags = postTagRepository.findAll();
-//
-//        assertThat(findPost.getId()).isEqualTo(postId);
-//        assertThat(findTags.size()).isEqualTo(4);
-//        assertThat(findPostTags.size()).isEqualTo(3);
-//    }
+    @Test
+    void 생성() throws IOException {
+
+        // Given
+        Member member = memberRepository.findAll().get(0);
+
+        httpSession.setAttribute("loginMember", member);
+
+        tagRepository.save(new Tag("예쁨"));
+        tagRepository.save(new Tag("beautiful"));
+        tagRepository.save(new Tag("김소담"));
+
+        List<String> tags = new ArrayList<>();
+        tags.add("이하늬");
+        tags.add("예쁨");
+        tags.add("BEautiful");
+
+        // 사진 파일
+        File img = new File("/Users/totheworld/Desktop/idol-collector/test.png");
+        MultipartFile mf = new MockMultipartFile("image","test.png", "img",new FileInputStream(img));
+
+        PostSaveRequestDto form = new PostSaveRequestDto(
+                "예쁜이하늬",
+                "이하늬 예쁘다 헤헤",
+                mf,
+                tags);
+
+        // When
+        Long postId = postService.create(form);
+
+        // Then
+        Post findPost = postRepository.findById(postId).get();
+        List<Tag> findTags = tagRepository.findAll();
+        List<PostTag> findPostTags = postTagRepository.findAll();
+
+        assertThat(findPost.getId()).isEqualTo(postId);
+        assertThat(findTags.size()).isEqualTo(4);
+        assertThat(findPostTags.size()).isEqualTo(3);
+    }
 
     @Test
     void 상세보기() {
 
         // Given
         Member member = memberRepository.findAll().get(0);
+        httpSession.setAttribute("loginMember", member);
+
         Post post = postRepository.save(new Post(member, "title", "content", "storeFilename", "oriFileName"));
         Comment comment = commentRepository.save(new Comment(member, post, "content"));
         Comment comment2 = commentRepository.save(new Comment(member, post, "content2"));
@@ -191,56 +198,59 @@ class PostServiceTest {
         assertThat(post.getViews()).isEqualTo(1);
     }
 
-//    @Test
-//    void 수정() throws IOException {
-//
-//        // Given
-//        Member member = memberRepository.findAll().get(0);
-//
-//        List<String> tags = new ArrayList<>();
-//        tags.add("이하늬");
-//        tags.add("예쁨");
-//        tags.add("BEautiful");
-//
-//        // 사진 파일
-//        File img = new File("/Users/totheworld/Desktop/idol-collector/test.png");
-//        MultipartFile mf = new MockMultipartFile("image","test.png", "img",new FileInputStream(img));
-//
-//        PostSaveRequestDto saveForm = new PostSaveRequestDto(member.getId(),
-//                "예쁜이하늬",
-//                "이하늬 예쁘다 lol 헤헤",
-//                mf,
-//                tags);
-//
-//        Long postId = postService.create(saveForm);
-//
-//        // When
-//        List<String> updateTags = new ArrayList<>();
-//        updateTags.add("이하늬");
-//        updateTags.add("타짜2");
-//
-//        PostUpdateRequestDto form = new PostUpdateRequestDto(postId,
-//                "2하2",
-//                "타짜에서 나왔구나.",
-//                updateTags);
-//
-//        Long updateId = postService.update(form);
-//
-//
-//        // Then
-//        Post updated = postRepository.findById(updateId).get();
-//
-//        assertThat(updated.getTitle()).isEqualTo("2하2");
-//        assertThat(updated.getContent()).isEqualTo("타짜에서 나왔구나.");
-//        assertThat(updated.getModifyDate()).isNotEqualTo(updated.getCreateDate());
-//        assertThat(updated.getOriFileName()).isEqualTo("test.png");
-//        assertThat(updated.getStoreFileName()).isNotNull();
-//
-//        List<Tag> findTags = tagRepository.findAllByPostId(updated.getId());
-//
-//        assertThat(findTags.size()).isEqualTo(2);
-//        assertThat(findTags.get(0).getName()).isEqualTo("이하늬");
-//    }
+    @Test
+    void 수정() throws IOException {
+
+        // Given
+        Member member = memberRepository.findAll().get(0);
+
+        httpSession.setAttribute("loginMember", member);
+
+
+        List<String> tags = new ArrayList<>();
+        tags.add("이하늬");
+        tags.add("예쁨");
+        tags.add("BEautiful");
+
+        // 사진 파일
+        File img = new File("/Users/totheworld/Desktop/idol-collector/test.png");
+        MultipartFile mf = new MockMultipartFile("image","test.png", "img",new FileInputStream(img));
+
+        PostSaveRequestDto saveForm = new PostSaveRequestDto(
+                "예쁜이하늬",
+                "이하늬 예쁘다 lol 헤헤",
+                mf,
+                tags);
+
+        Long postId = postService.create(saveForm);
+
+        // When
+        List<String> updateTags = new ArrayList<>();
+        updateTags.add("이하늬");
+        updateTags.add("타짜2");
+
+        PostUpdateRequestDto form = new PostUpdateRequestDto(postId,
+                "2하2",
+                "타짜에서 나왔구나.",
+                updateTags);
+
+        Long updateId = postService.update(form);
+
+
+        // Then
+        Post updated = postRepository.findById(updateId).get();
+
+        assertThat(updated.getTitle()).isEqualTo("2하2");
+        assertThat(updated.getContent()).isEqualTo("타짜에서 나왔구나.");
+        assertThat(updated.getModifyDate()).isNotEqualTo(updated.getCreateDate());
+        assertThat(updated.getOriFileName()).isEqualTo("test.png");
+        assertThat(updated.getStoreFileName()).isNotNull();
+
+        List<Tag> findTags = tagRepository.findAllByPostId(updated.getId());
+
+        assertThat(findTags.size()).isEqualTo(2);
+        assertThat(findTags.get(0).getName()).isEqualTo("이하늬");
+    }
 
     @Test
     void 삭제() {
@@ -295,6 +305,8 @@ class PostServiceTest {
 
         // Given
         Member member = memberRepository.findAll().get(0);
+        httpSession.setAttribute("loginMember", member);
+
         Post post = postRepository.save(new Post(member, "title", "content", "storeFilename", "oriFileName"));
 
         // When
@@ -316,6 +328,8 @@ class PostServiceTest {
         Member member = new Member(MemberRole.USER, "nick", "email", "1111", "david", "dsfsdfdsfdsf", LocalDateTime.now());
         memberRepository.save(member);
 
+        httpSession.setAttribute("loginMember", member);
+
         Post post = postRepository.save(new Post(member, "title", "content", "storeFilename", "oriFileName"));
 
         // When
@@ -325,7 +339,7 @@ class PostServiceTest {
         Scrap scrap1 = scrapRepository.findAll().get(0);
 
         assertThat(scrap1.getPost().getTitle()).isEqualTo("title");
-        assertThat(scrap1.getMember().getNickName()).isEqualTo("scrapper");
+        assertThat(scrap1.getMember().getNickName()).isEqualTo("nick");
 
         List<Notice> notices = noticeRepository.findAll();
         assertThat(notices.size()).isEqualTo(1);

@@ -2,6 +2,9 @@ package com.idolcollector.idolcollector.service;
 
 import com.idolcollector.idolcollector.domain.comment.Comment;
 import com.idolcollector.idolcollector.domain.comment.CommentRepository;
+import com.idolcollector.idolcollector.domain.like.LikeType;
+import com.idolcollector.idolcollector.domain.like.Likes;
+import com.idolcollector.idolcollector.domain.like.LikesRepository;
 import com.idolcollector.idolcollector.domain.member.Member;
 import com.idolcollector.idolcollector.domain.member.MemberRepository;
 import com.idolcollector.idolcollector.domain.member.MemberRole;
@@ -21,9 +24,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.servlet.http.HttpSession;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
@@ -36,6 +41,8 @@ public class CommentService {
     private final PostRepository postRepository;
     private final NoticeRepository noticeRepository;
     private final TrendingRepository trendingRepository;
+    private final HttpSession httpSession;
+    private final LikesRepository likesRepository;
 
     public CommentResponseDto findById(Long id) {
         Comment comment = commentRepository.findById(id)
@@ -50,9 +57,7 @@ public class CommentService {
         Post post = postRepository.findById(form.getPostId())
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 게시글입니다. id=" + form.getPostId()));
 
-            // 지금은 form에 memberId가 있지만 세션에서 받아오는 걸로 수정 할 것,
-                Member member = memberRepository.findById(form.getAuthorId())
-                    .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 사용자입니다. id=" + form.getAuthorId()));
+        Member member = (Member) httpSession.getAttribute("loginMember");
 
         // Notice 만들기
         noticeRepository.save(new Notice(post.getMember(), member, post, NoticeType.COMMENT));
@@ -69,7 +74,10 @@ public class CommentService {
         Comment comment = commentRepository.findById(form.getId())
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 댓글입니다. id=" + form.getId()));
 
-        // 세션유저 일치 확인.
+        Member member = (Member) httpSession.getAttribute("loginMember");
+        if (member.getId() != comment.getMember().getId()) {
+            throw new IllegalArgumentException("작성자 본인만 수정할 수 있습니다. commentId = " + comment.getId());
+        }
 
         return comment.update(form.getContent());
     }
@@ -80,7 +88,10 @@ public class CommentService {
         Comment comment = commentRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 댓글입니다. id=" + id));
 
-        // 세션유저 일치 확인.
+        Member member = (Member) httpSession.getAttribute("loginMember");
+        if (member.getId() != comment.getMember().getId()) {
+            throw new IllegalArgumentException("작성자 본인만 삭제할 수 있습니다. commentId = " + comment.getId());
+        }
 
         commentRepository.delete(comment);
         return comment.getId();
@@ -92,8 +103,10 @@ public class CommentService {
         Comment comment = commentRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 댓글입니다. id=" + id));
 
-        // 세션유저 좋아요 중복확인.
-            Member member = new Member(MemberRole.USER, "nick", "email", "1111", "steve", "dsfsdfdsfdsf", LocalDateTime.now());
+        // 좋아요 유무 체크
+        Member member = (Member) httpSession.getAttribute("loginMember");
+        Optional<Likes> didLike = likesRepository.findLikeByMemberIdPostId(comment.getId(), member.getId(), LikeType.COMMENT);
+        if(didLike.isPresent()) throw new IllegalArgumentException("이미 좋아요한 댓글입니다. commentId = " + comment.getId());
 
         // Notice 만들기
         noticeRepository.save(new Notice(comment.getMember(), member, comment, NoticeType.LIKE));
@@ -108,13 +121,22 @@ public class CommentService {
 
         List<CommentResponseDto> list = new ArrayList<>();
 
+        Member member = (Member) httpSession.getAttribute("loginMember");
+
         for (Comment comment : comments) {
-            list.add(new CommentResponseDto(comment));
+            CommentResponseDto dto = new CommentResponseDto(comment);
+
+            Optional<Likes> didLike = likesRepository.findLikeByMemberIdPostId(comment.getId(), member.getId(), LikeType.COMMENT);
+            if(didLike.isPresent()) dto.didLike();
+
+            list.add(dto);
         }
 
         return list;
     }
 
+
+    // 사용하지 않음.
     public List<CommentResponseDto> findAllInMember(Long memberId) {
 
         List<Comment> comments = commentRepository.findAllByMemberId(memberId);
