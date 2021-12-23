@@ -7,10 +7,10 @@ function UploadContainer() {
     photo: [],
     photoPreview: null,
   });
+  const [tag, setTag] = useState(['bts', 'stb', 'sbt']);
 
-  const handleDeletePhoto = e => {
+  const handleDeletePhoto = () => {
     setIsSelected(false);
-    console.log(selectedPhoto);
   };
 
   const handleSelectPhoto = e => {
@@ -51,7 +51,34 @@ function UploadContainer() {
         )}
       </UploadLeft>
       <CenterLine />
-      <UploadRight>Form area</UploadRight>
+      <UploadRight>
+        <InputField>
+          <input type="text" placeholder="카드 타이틀을 입력하세요 (10자)" />
+        </InputField>
+        <InputField>
+          <input type="text" placeholder="카드 타이틀을 입력하세요 (30자)" />
+        </InputField>
+        <InputField>
+          <input
+            type="text"
+            placeholder="alt 텍스트를 추가하여 스크린리더가 읽게 해주세요 (선택, 30자)"
+          />
+        </InputField>
+        <InputField>
+          <input type="text" placeholder="태그를 넣어 주세요 (최대 5개)" />
+        </InputField>
+        {tag && (
+          <TagField>
+            {tag.map(cur => (
+              <h3>
+                <span>❌</span>
+                {cur}
+              </h3>
+            ))}
+          </TagField>
+        )}
+        <CreateBtn>만들기</CreateBtn>
+      </UploadRight>
     </UploadWrap>
   );
 }
@@ -67,6 +94,8 @@ const UploadWrap = styled.div`
   justify-content: center;
 `;
 
+/////////////////
+// 업로드 왼쪽 영역
 const UploadLeft = styled.div`
   width: 40%;
   height: 100%;
@@ -105,17 +134,21 @@ const PhotoHolder = styled.div`
   }
 `;
 
-const CenterLine = styled.div`
-  width: 2px;
-  height: 100%;
-  background: #b580d1;
-  margin: auto 3rem;
-`;
+const SelectImgLabel = styled.label`
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
 
-const UploadRight = styled.div`
-  width: 40%;
-  height: 100%;
-  background: lightgrey;
+  &:hover {
+    cursor: pointer;
+    opacity: 0.8;
+  }
+
+  img {
+    height: 4rem;
+    width: 5rem;
+  }
 `;
 
 const DeleteBtn = styled.div`
@@ -139,19 +172,81 @@ const DeleteBtn = styled.div`
   }
 `;
 
-const SelectImgLabel = styled.label`
+const CenterLine = styled.div`
+  width: 2px;
+  height: 100%;
+  background: #b580d1;
+  margin: auto 3rem;
+`;
+
+/////////////////
+// 업로드 오른쪽 영역
+const UploadRight = styled.div`
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  width: 40%;
+  height: 100%;
+`;
+
+const InputField = styled.div`
+  width: 100%;
+  border: 2px solid #b580d1;
+  padding: 1rem 1.5rem;
+  border-radius: 2rem;
+  margin: 1.5rem auto;
+
+  input {
+    width: 100%;
+    font-size: 1rem;
+    border: none;
+    background: none;
+
+    &:focus {
+      outline: none;
+    }
+  }
+`;
+
+const TagField = styled.div`
+  display: flex;
+
+  h3 {
+    position: relative;
+    padding: 0.4rem 0.6rem;
+    border: 1px solid #b580d1;
+    border-radius: 1rem;
+    margin: auto 0.5rem;
+
+    span {
+      cursor: pointer;
+      position: absolute;
+      right: -10px;
+      top: -2px;
+    }
+  }
+`;
+
+const CreateBtn = styled.button`
   position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
+  right: 0;
+  bottom: 0;
+  border: none;
+  border-radius: 1.2rem;
+
+  font-size: 1.2rem;
+  padding: 0.4rem 1rem;
+  color: #fff;
+  background: #b580d1;
 
   &:hover {
     cursor: pointer;
     opacity: 0.8;
   }
-
-  img {
-    height: 4rem;
-    width: 5rem;
-  }
 `;
+
+// 참고한 사이트
+// https://codeat21.com/react-image-upload-and-preview/
+// https://chooworld.com/2021/05/26/react%EC%97%90%EC%84%9C-%ED%8C%8C%EC%9D%BC%EC%98%AC%EB%A6%AC%EA%B8%B0-%EA%B8%B0%EB%8A%A5-%EA%B5%AC%ED%98%84-2021-04-16-%EA%B8%88/
