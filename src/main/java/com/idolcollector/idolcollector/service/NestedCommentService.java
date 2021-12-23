@@ -52,7 +52,7 @@ public class NestedCommentService {
         Member member = memberRepository.findById((Long) httpSession.getAttribute("loginMember")).get();
 
         // Notice 만들기
-        noticeRepository.save(new Notice(comment.getMember(), member, comment, NoticeType.COMMENT));
+        noticeRepository.save(new Notice(comment.getMember(), member, comment.getPost(), comment, NoticeType.COMMENT));
 
         NestedComment save = nestedCommentRepository.save(new NestedComment(member, comment, form.getContent()));
         return save.getId();

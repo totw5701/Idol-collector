@@ -3,6 +3,8 @@ package com.idolcollector.idolcollector.service;
 import com.idolcollector.idolcollector.domain.member.Member;
 import com.idolcollector.idolcollector.domain.member.MemberRepository;
 import com.idolcollector.idolcollector.domain.member.MemberRole;
+import com.idolcollector.idolcollector.domain.notice.Notice;
+import com.idolcollector.idolcollector.domain.notice.NoticeRepository;
 import com.idolcollector.idolcollector.web.dto.member.MemberResponseDto;
 import com.idolcollector.idolcollector.web.dto.member.MemberSaveRequestDto;
 import com.idolcollector.idolcollector.web.dto.member.MemberUpdateRequestDto;
@@ -10,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.servlet.http.HttpSession;
 import java.time.LocalDateTime;
 
 
@@ -19,6 +22,8 @@ import java.time.LocalDateTime;
 public class MemberService {
 
     private final MemberRepository memberRepository;
+    private final NoticeRepository noticeRepository;
+    private final HttpSession httpSession;
 
     @Transactional
     public Long join(MemberSaveRequestDto form) {
@@ -51,6 +56,14 @@ public class MemberService {
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 회원입니다. id=" + id));
 
         return member;
+    }
+
+    @Transactional
+    public void noticeConfirm() {
+        Member member = memberRepository.findById((Long) httpSession.getAttribute("loginMember"))
+                .orElseThrow(() -> new IllegalArgumentException("로그인이 필요한 서비스입니다."));
+
+        noticeRepository.deleteAll(member.getNotices());
     }
 
     public MemberResponseDto testMember() {

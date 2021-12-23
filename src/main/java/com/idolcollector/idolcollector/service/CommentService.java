@@ -126,7 +126,11 @@ public class CommentService {
         if(didLike.isPresent()) throw new IllegalArgumentException("이미 좋아요한 댓글입니다. commentId = " + comment.getId());
 
         // Notice 만들기
-        noticeRepository.save(new Notice(comment.getMember(), member, comment, NoticeType.LIKE));
+        noticeRepository.save(new Notice(comment.getMember(), member, comment.getPost(), comment, NoticeType.LIKE));
+
+        //
+        Likes likes = new Likes(comment.getId(), member, LikeType.COMMENT);
+        likesRepository.save(likes);
 
 
         return comment.addLike();

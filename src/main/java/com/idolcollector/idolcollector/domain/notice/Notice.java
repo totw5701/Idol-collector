@@ -55,10 +55,11 @@ public class Notice {
         construct(member);
     }
 
-    public Notice(Member member, Member targetMember, Comment targetComment, NoticeType type) {
+    public Notice(Member member, Member targetMember, Post targetPost, Comment targetComment, NoticeType type) {
 
         this.member = member;
         this.targetMember = targetMember;
+        this.targetPost = targetPost;
         this.targetComment = targetComment;
         this.noticeType = type;
         this.createDate = LocalDateTime.now();

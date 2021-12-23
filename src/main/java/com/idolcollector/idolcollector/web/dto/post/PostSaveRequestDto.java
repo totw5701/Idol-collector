@@ -13,10 +13,12 @@ import java.util.List;
 @NoArgsConstructor
 public class PostSaveRequestDto {
 
+    @NotNull
     private String title;
     private String content;
 
     // 사진
+    @NotNull
     private MultipartFile attachFile;
 
     @Nullable
