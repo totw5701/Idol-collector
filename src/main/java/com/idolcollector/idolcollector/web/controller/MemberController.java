@@ -1,12 +1,12 @@
 package com.idolcollector.idolcollector.web.controller;
 
+import com.idolcollector.idolcollector.domain.blame.Blame;
 import com.idolcollector.idolcollector.domain.notice.NoticeRepository;
 import com.idolcollector.idolcollector.service.MemberService;
+import com.idolcollector.idolcollector.web.dto.blame.BlameRequestDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @Slf4j
 @RestController
@@ -19,6 +19,11 @@ public class MemberController {
     @GetMapping("/notice")
     public void noticeConfirm() {
         memberService.noticeConfirm();
+    }
+
+    @PostMapping("/blame")
+    public void blame(@RequestBody BlameRequestDto form) {
+        memberService.blame(form);
     }
 
 }

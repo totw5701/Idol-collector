@@ -4,6 +4,7 @@ import com.idolcollector.idolcollector.domain.comment.Comment;
 import com.idolcollector.idolcollector.domain.member.Member;
 import com.idolcollector.idolcollector.domain.post.Post;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.springframework.lang.Nullable;
 
 import javax.persistence.*;
@@ -11,6 +12,7 @@ import java.time.LocalDateTime;
 
 @Entity
 @Getter
+@NoArgsConstructor
 public class Blame {
 
     @Id
@@ -23,19 +25,25 @@ public class Blame {
     private Member member;
 
     @ManyToOne
-    @JoinColumn(name = "POST_ID")
-    @Nullable
-    private Post post;
-
-    @ManyToOne
-    @JoinColumn(name = "COMMENT_ID")
-    @Nullable
-    private Comment comment;
-
-    @ManyToOne
     @JoinColumn(name = "TARGET_MEMBER_ID")
     private Member targetMember;
 
+    private Long targetId;
+
+    @Enumerated(EnumType.STRING)
+    private BlameTargetType type;
+
     private String message;
     private LocalDateTime createDate;
+
+
+    public Blame(Member member, Member targetMember, Long targetId, BlameTargetType type, String message) {
+
+        this.member = member;
+        this.targetMember = targetMember;
+        this.targetId = targetId;
+        this.type = type;
+        this.message = message;
+        this.createDate = LocalDateTime.now();
+    }
 }
