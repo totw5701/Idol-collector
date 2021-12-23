@@ -15,6 +15,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -28,6 +29,7 @@ public class BundleService {
     private final MemberRepository memberRepository;
     private final PostRepository postRepository;
     private final BundlePostRepository bundlePostRepository;
+    private final HttpSession httpSession;
 
     public BundleResponseDto findById(Long id) {
         Bundle bundle = bundleRepository.findById(id)
@@ -37,8 +39,6 @@ public class BundleService {
     }
 
     public List<BundleResponseDto> findAllInMember(Long memberId) {
-        Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 회원입니다. id=" + memberId));
 
         List<Bundle> byMemberId = bundleRepository.findByMemberId(memberId);
         List<BundleResponseDto> list = new ArrayList<>();
@@ -50,8 +50,7 @@ public class BundleService {
 
     @Transactional
     public Long save(BundleSaveDto form) {
-        Member member = memberRepository.findById(form.getMemberId())
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 회원입니다. id=" + form.getMemberId()));
+        Member member = memberRepository.findById((Long) httpSession.getAttribute("loginMember")).get();
 
         Bundle save = bundleRepository.save(new Bundle(member, form.getTitle(), form.getDescription()));
         return save.getId();
@@ -61,6 +60,8 @@ public class BundleService {
     public Long delete(Long id) {
         Bundle bundle = bundleRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 카드집입니다. id=" + id));
+
+        // 세션 회원과 일치 확인
 
         bundleRepository.delete(bundle);
 

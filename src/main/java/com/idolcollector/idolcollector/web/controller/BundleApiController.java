@@ -28,8 +28,6 @@ public class BundleApiController {
     @PostMapping("/create")
     public String create(@RequestBody BundleSaveDto form) {
 
-        System.out.println("form = " + form);
-
         bundleService.save(form);
         return "redirect:/member";
     }

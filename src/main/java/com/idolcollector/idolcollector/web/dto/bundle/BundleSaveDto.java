@@ -13,8 +13,6 @@ import javax.validation.constraints.NotBlank;
 @ToString
 public class BundleSaveDto {
 
-    private Long memberId;
-
     @NotBlank
     private String title;
     private String description;

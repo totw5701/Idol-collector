@@ -2,8 +2,10 @@ package com.idolcollector.idolcollector.web.controller;
 
 import com.idolcollector.idolcollector.file.FileStore;
 import com.idolcollector.idolcollector.service.PostService;
+import com.idolcollector.idolcollector.web.dto.comment.CommentUpdateRequestDto;
 import com.idolcollector.idolcollector.web.dto.file.UploadFile;
 import com.idolcollector.idolcollector.web.dto.post.PostSaveRequestDto;
+import com.idolcollector.idolcollector.web.dto.post.PostUpdateRequestDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.Resource;
@@ -19,7 +21,7 @@ import java.net.MalformedURLException;
 import java.util.ArrayList;
 
 @Slf4j
-@Controller
+@RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/card")
 public class CardController {
@@ -28,31 +30,33 @@ public class CardController {
     private final FileStore fileStore;
 
     @PostMapping(value = "/create")
-    public String create(@ModelAttribute PostSaveRequestDto form) throws IOException {
+    public Long create(@ModelAttribute PostSaveRequestDto form) throws IOException {
 
-        Long cardId = postService.create(form);
-        return "redirect:/card/" + cardId;
+        return postService.create(form);
     }
 
-    @ResponseBody
+    @PutMapping("/update")
+    public Long update(@RequestBody PostUpdateRequestDto form) {
+
+        return postService.update(form);
+    }
+
     @DeleteMapping("/delete/{id}")
     public Long delete(@PathVariable("id") Long id) {
         return postService.delete(id);
     }
 
-    @ResponseBody
     @PutMapping("/like/{id}")
     public int addLike(@PathVariable("id") Long id) {
         return postService.like(id);
     }
 
     @PutMapping("/scrap/{id}")
-    public void scrap(@PathVariable("id") Long id) {
-        postService.scrap(id);
+    public Long scrap(@PathVariable("id") Long id) {
+        return postService.scrap(id);
     }
 
 
-    @ResponseBody
     @GetMapping("/image/{fileName}")
     public Resource imageFile(@PathVariable String fileName) throws MalformedURLException {
         return new UrlResource("file:" + fileStore.getFullPath(fileName));
