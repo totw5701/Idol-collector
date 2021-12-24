@@ -1,13 +1,14 @@
 import { useState } from 'react';
 import styled from 'styled-components';
+import CloseIcon from '@material-ui/icons/Close';
 
-function UploadContainer() {
+function CreateContainer() {
   const [isSelected, setIsSelected] = useState(false);
   const [selectedPhoto, setSelectedPhoto] = useState({
     photo: [],
     photoPreview: null,
   });
-  const [tag, setTag] = useState(['bts', 'stb', 'sbt']);
+  const [tag, setTag] = useState(['bts', 'tbs', 'stb']);
 
   const handleDeletePhoto = () => {
     setIsSelected(false);
@@ -23,8 +24,8 @@ function UploadContainer() {
   };
 
   return (
-    <UploadWrap>
-      <UploadLeft>
+    <CreateWrap>
+      <CreateLeft>
         {isSelected ? (
           <>
             <DeleteBtn onClick={handleDeletePhoto}>
@@ -44,48 +45,54 @@ function UploadContainer() {
               onChange={handleSelectPhoto}
             />
             <SelectImgLabel htmlFor="card-input">
-              <img src="images/이미지.png" alt="uploading card" />
+              <img src="images/이미지.png" alt="Createing card" />
             </SelectImgLabel>
             <h3>권장파일사양: </h3>
           </>
         )}
-      </UploadLeft>
+      </CreateLeft>
+
       <CenterLine />
-      <UploadRight>
+
+      <CreateRight>
         <InputField>
-          <input type="text" placeholder="카드 타이틀을 입력하세요 (10자)" />
+          <input type="text" placeholder="카드 타이틀을 입력하세요(10자)" />
         </InputField>
         <InputField>
-          <input type="text" placeholder="카드 타이틀을 입력하세요 (30자)" />
+          <input type="text" placeholder="카드를 간단하게 설명해주세요(30자)" />
         </InputField>
         <InputField>
           <input
             type="text"
-            placeholder="alt 텍스트를 추가하여 스크린리더가 읽게 해주세요 (선택, 30자)"
+            placeholder="alt 텍스트를 추가하여 스크린리더가 읽게 해주세요(선택, 30자)"
           />
         </InputField>
         <InputField>
-          <input type="text" placeholder="태그를 넣어 주세요 (최대 5개)" />
+          {/* 태그 기능 작업할 때 정규식으로 한글 영어만 가져오기 (띄어쓰기, 특수문자, 숫자 제거) */}
+          <input
+            type="text"
+            placeholder="태그를 넣어 주세요(최대 5개, 띄어쓰기 없이 한글 영어만 가능)"
+          />
         </InputField>
         {tag && (
           <TagField>
-            {tag.map(cur => (
-              <h3>
-                <span>❌</span>
+            {tag.map((cur, i) => (
+              <Tag key={i}>
                 {cur}
-              </h3>
+                <CloseIcon />
+              </Tag>
             ))}
           </TagField>
         )}
         <CreateBtn>만들기</CreateBtn>
-      </UploadRight>
-    </UploadWrap>
+      </CreateRight>
+    </CreateWrap>
   );
 }
 
-export default UploadContainer;
+export default CreateContainer;
 
-const UploadWrap = styled.div`
+const CreateWrap = styled.div`
   width: 90%;
   height: 70vh;
   margin: 3.5rem auto;
@@ -96,8 +103,8 @@ const UploadWrap = styled.div`
 
 /////////////////
 // 업로드 왼쪽 영역
-const UploadLeft = styled.div`
-  width: 40%;
+const CreateLeft = styled.div`
+  width: 50%;
   height: 100%;
 
   position: relative;
@@ -181,11 +188,11 @@ const CenterLine = styled.div`
 
 /////////////////
 // 업로드 오른쪽 영역
-const UploadRight = styled.div`
+const CreateRight = styled.div`
   position: relative;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-content: flex-start;
 
   width: 40%;
   height: 100%;
@@ -200,7 +207,7 @@ const InputField = styled.div`
 
   input {
     width: 100%;
-    font-size: 1rem;
+    font-size: 0.9rem;
     border: none;
     background: none;
 
@@ -212,20 +219,26 @@ const InputField = styled.div`
 
 const TagField = styled.div`
   display: flex;
+`;
 
-  h3 {
+const Tag = styled.span`
     position: relative;
     padding: 0.4rem 0.6rem;
     border: 1px solid #b580d1;
     border-radius: 1rem;
-    margin: auto 0.5rem;
+    margin-right: 1rem;
 
-    span {
-      cursor: pointer;
-      position: absolute;
-      right: -10px;
-      top: -2px;
-    }
+      svg {
+        position: absolute;
+        right: -10px;
+        top: -5px;
+
+        font-size: 18px;
+        padding: 2px;
+        background: #f0f0f0;
+        border-radius: 50%;
+        cursor: pointer;
+      }
   }
 `;
 
