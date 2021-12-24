@@ -2,7 +2,6 @@ package com.idolcollector.idolcollector.domain.bundle;
 
 import com.idolcollector.idolcollector.domain.bindlepost.BundlePost;
 import com.idolcollector.idolcollector.domain.member.Member;
-import com.idolcollector.idolcollector.domain.post.Post;
 import com.idolcollector.idolcollector.web.dto.bundle.BundleUpdateDto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

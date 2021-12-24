@@ -8,12 +8,13 @@ import com.idolcollector.idolcollector.web.dto.post.PostSaveRequestDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 
 @Slf4j
-@Controller
+@RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/comment")
 public class CommentController {
@@ -21,24 +22,18 @@ public class CommentController {
     private final CommentService commentService;
     private final NestedCommentService nestedCommentService;
 
-    @ResponseBody
     @PostMapping(value = "/create")
-    public Long create(@RequestBody CommentSaveRequestDto form) throws IOException {
-
+    public Long create(@Validated @RequestBody CommentSaveRequestDto form) throws IOException {
         return commentService.save(form);
     }
 
-    @ResponseBody
     @PutMapping("/update")
-    public Long update(@RequestBody CommentUpdateRequestDto form) {
-
+    public Long update(@Validated @RequestBody CommentUpdateRequestDto form) {
         return commentService.update(form);
     }
 
-    @ResponseBody
-    @DeleteMapping("/delete")
-    public Long delete(@RequestParam Long id) {
-
+    @DeleteMapping("/delete/{id}")
+    public Long delete(@PathVariable("id") Long id) {
         return commentService.delete(id);
     }
 

@@ -26,8 +26,13 @@ public interface PostRepository extends JpaRepository<Post, Long> {
     Page<Post> findAll(Pageable pageable);
 
 
-    @Query(value = "(SELECT post.id, post.content, post.create_date, post.likes, post.modify_date, post.ori_file_name, post.store_file_name, post.title, post.views, post.member_id FROM trending LEFT JOIN post ON trending.post_id = post.id GROUP BY post_id ORDER BY SUM(score) desc, post.id desc limit 1000000) UNION (SELECT * FROM post ORDER BY post.create_date desc limit 1000000)", nativeQuery = true)
+    @Query(value = "(SELECT post.id, post.content, post.create_date, post.likes, post.modify_date, post.ori_file_name, post.store_file_name, post.title, post.views, post.member_id FROM trending LEFT JOIN post ON trending.post_id = post.id GROUP BY post_id ORDER BY SUM(score) desc, post.id desc limit 1000000) UNION (SELECT * FROM post ORDER BY post.create_date desc limit 1000000)",
+            nativeQuery = true)
     List<Post> findTrendingAll(Pageable pageable);
+
+    @Query(value = "select post.id, post.content, post.create_date, post.likes, post.modify_date, post.ori_file_name, post.store_file_name, post.title, post.views, post.member_id from post_tag left join tag on post_tag.tag_id = tag.id left join post on post.id = post_tag.post_id left join trending on trending.post_id = post.id where tag.name in :keywords group by post_tag.post_id ORDER BY SUM(score) desc, post_tag.post_id desc",
+            nativeQuery = true)
+    List<Post> findTrendingSearch(@Param("keywords") List<String> keywords, Pageable pageable);
 
     /**
      *

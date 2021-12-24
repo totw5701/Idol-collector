@@ -31,7 +31,6 @@ public class OAuthAttributes {
                 (String) attributes.get("picture"));
     }
 
-
     public Member toEntity() {
         return new Member(MemberRole.USER, name, email, "", name, picture, LocalDateTime.now());
     }

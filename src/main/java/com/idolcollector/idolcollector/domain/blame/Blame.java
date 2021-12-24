@@ -1,11 +1,8 @@
 package com.idolcollector.idolcollector.domain.blame;
 
-import com.idolcollector.idolcollector.domain.comment.Comment;
 import com.idolcollector.idolcollector.domain.member.Member;
-import com.idolcollector.idolcollector.domain.post.Post;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.lang.Nullable;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;

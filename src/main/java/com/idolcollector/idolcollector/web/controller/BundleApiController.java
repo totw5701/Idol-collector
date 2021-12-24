@@ -8,6 +8,7 @@ import com.idolcollector.idolcollector.web.dto.bundle.BundleSaveDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 @Slf4j
@@ -26,7 +27,7 @@ public class BundleApiController {
     }
 
     @PostMapping("/create")
-    public String create(@RequestBody BundleSaveDto form) {
+    public String create(@Validated @RequestBody BundleSaveDto form) {
 
         bundleService.save(form);
         return "redirect:/member";
@@ -34,13 +35,13 @@ public class BundleApiController {
 
     @ResponseBody
     @PostMapping("/add-card")
-    public Long addCard(BundleAddCardDto form) {
+    public Long addCard(@Validated @RequestBody BundleAddCardDto form) {
         return bundleService.addPost(form);
     }
 
     @ResponseBody
     @PostMapping("/delete-card")
-    public Long addCard(BundleDeleteCardDto form) {
+    public Long addCard(@Validated @RequestBody BundleDeleteCardDto form) {
         return bundleService.deletePost(form);
     }
 }

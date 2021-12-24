@@ -13,6 +13,7 @@ import org.springframework.core.io.UrlResource;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -30,14 +31,12 @@ public class CardController {
     private final FileStore fileStore;
 
     @PostMapping(value = "/create")
-    public Long create(@ModelAttribute PostSaveRequestDto form) throws IOException {
-
+    public Long create(@Validated @ModelAttribute PostSaveRequestDto form) throws IOException {
         return postService.create(form);
     }
 
     @PutMapping("/update")
-    public Long update(@RequestBody PostUpdateRequestDto form) {
-
+    public Long update(@Validated @RequestBody PostUpdateRequestDto form) {
         return postService.update(form);
     }
 

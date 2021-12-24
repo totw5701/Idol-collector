@@ -189,10 +189,23 @@ public class PostService {
 
     public List<HomePostListResponseDto> scorePostList(Integer page) {
         PageRequest preq = PageRequest.of(page, 15);
-        List<Post> trendingAll = postRepository.findTrendingAll(preq);
+        List<Post> result = postRepository.findTrendingAll(preq);
 
         List<HomePostListResponseDto> list = new ArrayList<>();
-        for (Post post : trendingAll) {
+        for (Post post : result) {
+            list.add(new HomePostListResponseDto(post));
+        }
+
+        return list;
+    }
+
+    public List<HomePostListResponseDto> scorePostListSearch(Integer page, List<String> keywords) {
+        PageRequest preq = PageRequest.of(page, 15);
+
+        List<Post> result = postRepository.findTrendingSearch(keywords, preq);
+
+        List<HomePostListResponseDto> list = new ArrayList<>();
+        for (Post post : result) {
             list.add(new HomePostListResponseDto(post));
         }
 

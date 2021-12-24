@@ -13,7 +13,7 @@ import java.util.List;
 @NoArgsConstructor
 public class PostSaveRequestDto {
 
-    @NotNull
+    @NotBlank
     private String title;
     private String content;
 

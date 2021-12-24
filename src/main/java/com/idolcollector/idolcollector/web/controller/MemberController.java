@@ -6,6 +6,7 @@ import com.idolcollector.idolcollector.service.MemberService;
 import com.idolcollector.idolcollector.web.dto.blame.BlameRequestDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 @Slf4j
@@ -22,7 +23,7 @@ public class MemberController {
     }
 
     @PostMapping("/blame")
-    public void blame(@RequestBody BlameRequestDto form) {
+    public void blame(@Validated @RequestBody BlameRequestDto form) {
         memberService.blame(form);
     }
 

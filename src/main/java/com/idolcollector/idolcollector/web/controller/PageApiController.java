@@ -1,6 +1,5 @@
 package com.idolcollector.idolcollector.web.controller;
 
-import com.idolcollector.idolcollector.domain.member.Member;
 import com.idolcollector.idolcollector.service.BundleService;
 import com.idolcollector.idolcollector.service.MemberService;
 import com.idolcollector.idolcollector.service.PostService;
@@ -13,10 +12,7 @@ import com.idolcollector.idolcollector.web.dto.post.HomePostListResponseDto;
 import com.idolcollector.idolcollector.web.dto.post.PostResponseDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 import java.util.List;
@@ -47,7 +43,22 @@ public class PageApiController {
         MemberResponseDto memberResponseDto = memberService.findById((Long) httpSession.getAttribute("loginMember"));
 
         String s = memberResponseDto.getNotices().toString();
-        System.out.println("noticeREsponse dto = " + s);
+        return new RootPageDto(homePostListResponseDtos, memberResponseDto);
+    }
+
+    @GetMapping({"/search/{page}", "/search"})
+    public RootPageDto homePageListSearch(@PathVariable(name = "page", required = false) Optional<Integer> page,
+                                          @RequestParam(value = "keywords", required = true) List<String> keywords) {
+
+        int pageNum = 0;
+        if (page.isPresent()) pageNum = page.get();
+
+        List<HomePostListResponseDto> homePostListResponseDtos = postService.scorePostListSearch(pageNum, keywords);
+
+        // 세션에서 멤버정보 받아오기
+        MemberResponseDto memberResponseDto = memberService.findById((Long) httpSession.getAttribute("loginMember"));
+
+        String s = memberResponseDto.getNotices().toString();
         return new RootPageDto(homePostListResponseDtos, memberResponseDto);
     }
 
