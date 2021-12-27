@@ -8,12 +8,18 @@ function CreateContainer() {
     photo: [],
     photoPreview: null,
   });
-  const [tag, setTag] = useState(['1', '2', '3']);
+  const [tag, setTag] = useState([]);
 
   // const handleCreate = async () => {
   //   const formdata = new FormData();
   //   formdata.append('newcard', )
   // }
+
+  const handleInputTag = e => {
+    e.preventDefault();
+    setTag([...tag, e.target[0].value]);
+    e.target[0].value = '';
+  };
 
   const handleCloseTag = index => {
     setTag(tag.filter((cur, i) => i !== index));
@@ -86,11 +92,13 @@ function CreateContainer() {
         </InputField>
         <InputField>
           {/* 태그 기능 작업할 때 정규식으로 한글 영어만 가져오기 (띄어쓰기, 특수문자, 숫자 제거) */}
-          <input
-            type="text"
-            placeholder="태그를 넣어 주세요 (최대 5개, 띄어쓰기 없이 한글 영어만 가능)"
-            required
-          />
+          <form onSubmit={handleInputTag}>
+            <input
+              type="text"
+              placeholder="태그를 넣어 주세요 (최대 5개, 띄어쓰기 없이 한글 영어만 가능)"
+              required
+            />
+          </form>
         </InputField>
         {tag && (
           <TagField>
