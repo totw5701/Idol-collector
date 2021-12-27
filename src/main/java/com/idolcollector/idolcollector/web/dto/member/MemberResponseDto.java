@@ -42,7 +42,6 @@ public class MemberResponseDto {
         if (!member.getNotices().isEmpty()) {
             List<Notice> notices = member.getNotices();
             for (Notice notice : notices) {
-                System.out.println("notice.toString() = " + notice.toString());
                 this.notices.add(new NoticeResponseDto(notice));
             }
         }

@@ -12,6 +12,8 @@ import com.idolcollector.idolcollector.domain.nestedcomment.NestedCommentReposit
 import com.idolcollector.idolcollector.domain.notice.Notice;
 import com.idolcollector.idolcollector.domain.notice.NoticeRepository;
 import com.idolcollector.idolcollector.domain.notice.NoticeType;
+import com.idolcollector.idolcollector.domain.trending.Trending;
+import com.idolcollector.idolcollector.domain.trending.TrendingType;
 import com.idolcollector.idolcollector.web.dto.nestedcomment.NestedCommentResponseDto;
 import com.idolcollector.idolcollector.web.dto.nestedcomment.NestedCommentSaveRequestDto;
 import com.idolcollector.idolcollector.web.dto.nestedcomment.NestedCommentUpdateRequestDto;
@@ -94,6 +96,8 @@ public class NestedCommentService {
         Optional<Likes> didLike = likesRepository.findLikeByMemberIdPostId(nestedComment.getId(), member.getId(), LikeType.NESTED_COMMENT);
         if(didLike.isPresent()) throw new IllegalArgumentException("이미 좋아요한 대댓글입니다. commentId = " + nestedComment.getId());
 
+        // 좋아요
+        likesRepository.save(new Likes(id, member, LikeType.NESTED_COMMENT));
 
         return nestedComment.addLike();
     }

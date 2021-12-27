@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 @Controller
 @RequestMapping("/api/bundle")
 @RequiredArgsConstructor
-public class BundleApiController {
+public class BundleController {
 
     private final BundleService bundleService;
 
