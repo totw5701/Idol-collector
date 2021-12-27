@@ -11,7 +11,7 @@ function Nav() {
     <>
       <Navbar>
         <Link to="/">
-          <Logo src="images/로고.png" alt="" />
+          <Logo src="images/로고.png" alt="homepage logo" />
         </Link>
         <LoginRight>
           <LoginMakeCard>

@@ -8,12 +8,16 @@ function CreateContainer() {
     photo: [],
     photoPreview: null,
   });
-  const [tag, setTag] = useState(['bts', 'tbs', 'stb']);
+  const [tag, setTag] = useState(['1', '2', '3']);
 
   // const handleCreate = async () => {
   //   const formdata = new FormData();
   //   formdata.append('newcard', )
   // }
+
+  const handleCloseTag = index => {
+    setTag(tag.filter((cur, i) => i !== index));
+  };
 
   const handleDeletePhoto = () => {
     setIsSelected(false);
@@ -63,28 +67,28 @@ function CreateContainer() {
         <InputField>
           <input
             type="text"
-            placeholder="카드 타이틀을 입력하세요(10자)"
+            placeholder="카드 타이틀을 입력하세요 (10자)"
             required
           />
         </InputField>
         <InputField>
           <input
             type="text"
-            placeholder="카드를 간단하게 설명해주세요(30자)"
+            placeholder="카드를 간단하게 설명해주세요 (30자)"
             required
           />
         </InputField>
         <InputField>
           <input
             type="text"
-            placeholder="alt 텍스트를 추가하여 스크린리더가 읽게 해주세요(선택, 30자)"
+            placeholder="alt 텍스트를 추가하여 스크린리더가 읽게 해주세요 (선택, 30자)"
           />
         </InputField>
         <InputField>
           {/* 태그 기능 작업할 때 정규식으로 한글 영어만 가져오기 (띄어쓰기, 특수문자, 숫자 제거) */}
           <input
             type="text"
-            placeholder="태그를 넣어 주세요(최대 5개, 띄어쓰기 없이 한글 영어만 가능)"
+            placeholder="태그를 넣어 주세요 (최대 5개, 띄어쓰기 없이 한글 영어만 가능)"
             required
           />
         </InputField>
@@ -93,7 +97,7 @@ function CreateContainer() {
             {tag.map((cur, i) => (
               <Tag key={i}>
                 {cur}
-                <CloseIcon />
+                <CloseIcon onClick={() => handleCloseTag(i)} />
               </Tag>
             ))}
           </TagField>
