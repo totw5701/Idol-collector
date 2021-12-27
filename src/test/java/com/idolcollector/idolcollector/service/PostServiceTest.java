@@ -120,15 +120,6 @@ class PostServiceTest {
         for (HomePostListResponseDto homePostListResponseDto : list) {
             System.out.println("homePostListResponseDto.getTitle() = " + homePostListResponseDto.getTitle());
         }
-
-
-
-//        HomePostListResponseDto first = list.get(0);
-//        HomePostListResponseDto second = list.get(1);
-//
-//        // Then
-//        assertThat(first.getId()).isEqualTo(p1.getId());
-//        assertThat(second.getId()).isEqualTo(p2.getId());
     }
 
 

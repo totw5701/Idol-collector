@@ -13,6 +13,11 @@ import java.util.List;
 
 public interface TrendingRepository extends JpaRepository<Trending, Long> {
 
+    /**
+     *
+     * 사용하지 않는 코드
+     *
+     */
 
     @Query("select t.post from Trending t where t.createDate > :period group by t.post order by sum(t.score) desc")
     List<Post> trendAnalyByDateAll(@Param("period")LocalDateTime period);
@@ -22,6 +27,9 @@ public interface TrendingRepository extends JpaRepository<Trending, Long> {
 
     @Query("select t.post from Trending t where t.createDate > :period group by t.post order by sum(t.score) desc, t.post.id desc")
     Page<Post> trendAnalyByDate(@Param("period")LocalDateTime period, Pageable pageable);
+
+
+
 
     /**
      *

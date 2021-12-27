@@ -55,6 +55,10 @@ public class CardController {
         return postService.scrap(id);
     }
 
+    @DeleteMapping("/unscrap/{id}")
+    public Long unscrap(@PathVariable("id") Long id) {
+        return postService.cancelScrap(id);
+    }
 
     @GetMapping("/image/{fileName}")
     public Resource imageFile(@PathVariable String fileName) throws MalformedURLException {

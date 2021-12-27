@@ -12,4 +12,5 @@ public interface ScrapRepository extends JpaRepository<Scrap, Long> {
 
     @Query("select s from Scrap s where s.member.id = :memberId and s.post.id = :postId")
     Optional<Scrap> findScrapByMemberIdPostId(@Param("postId") Long targetId, @Param("memberId") Long memberId);
+
 }

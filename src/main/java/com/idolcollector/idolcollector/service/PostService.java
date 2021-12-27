@@ -269,7 +269,22 @@ public class PostService {
 
         return save.getId();
     }
-    
+
+    @Transactional
+    public Long cancelScrap(Long id) {
+        Post post = postRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 게시글입니다. id=" + id));
+
+        Member member = memberRepository.findById((Long) httpSession.getAttribute("loginMember")).get();
+
+        Optional<Scrap> opt = scrapRepository.findScrapByMemberIdPostId(post.getId(), member.getId());
+
+        if(opt.isEmpty()) throw new IllegalArgumentException("스크랩하지 않은 카드입니다. id=" + id);
+
+        scrapRepository.delete(opt.get());
+
+        return id;
+    }
 
 
     /**
