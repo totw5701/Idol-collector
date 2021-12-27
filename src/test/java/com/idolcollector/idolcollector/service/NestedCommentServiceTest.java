@@ -54,7 +54,7 @@ class NestedCommentServiceTest {
 
         // Given
         Member member = memberRepository.findAll().get(0);
-        httpSession.setAttribute("loginMember", member);
+        httpSession.setAttribute("loginMember", member.getId());
         Comment comment = commentRepository.findAll().get(0);
 
         NestedCommentSaveRequestDto form = new NestedCommentSaveRequestDto(comment.getId(), "nest comment test");
@@ -76,7 +76,7 @@ class NestedCommentServiceTest {
 
         // Given
         Member member = memberRepository.findAll().get(0);
-        httpSession.setAttribute("loginMember", member);
+        httpSession.setAttribute("loginMember", member.getId());
         Comment comment = commentRepository.findAll().get(0);
         NestedComment saved = nestedCommentRepository.save(new NestedComment(member, comment, "nest comment test"));
 
@@ -97,7 +97,7 @@ class NestedCommentServiceTest {
 
         // Given
         Member member = memberRepository.findAll().get(0);
-        httpSession.setAttribute("loginMember", member);
+        httpSession.setAttribute("loginMember", member.getId());
         Comment comment = commentRepository.findAll().get(0);
         NestedComment saved = nestedCommentRepository.save(new NestedComment(member, comment, "nest comment test"));
 

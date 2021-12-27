@@ -177,6 +177,7 @@ public class PostService {
 
         // 세션유저 일치 확인
         Member member = memberRepository.findById((Long) httpSession.getAttribute("loginMember")).get();
+
         if (post.getMember().getId() != member.getId()) {
             throw new IllegalArgumentException("작성자 본인만 삭제할 수 있습니다. 카드 id =" + post.getId());
         }
@@ -189,7 +190,7 @@ public class PostService {
 
     public List<HomePostListResponseDto> scorePostList(Integer page) {
         PageRequest preq = PageRequest.of(page, 15);
-        List<Post> result = postRepository.findTrendingAll(preq);
+        List<Post> result = postRepository.findTrendingAll(LocalDateTime.now().minusDays(7), preq);
 
         List<HomePostListResponseDto> list = new ArrayList<>();
         for (Post post : result) {
@@ -202,7 +203,19 @@ public class PostService {
     public List<HomePostListResponseDto> scorePostListSearch(Integer page, List<String> keywords) {
         PageRequest preq = PageRequest.of(page, 15);
 
-        List<Post> result = postRepository.findTrendingSearch(keywords, preq);
+        List<Post> result = postRepository.findTrendingSearch(LocalDateTime.now().minusDays(7), keywords, preq);
+
+        List<HomePostListResponseDto> list = new ArrayList<>();
+        for (Post post : result) {
+            list.add(new HomePostListResponseDto(post));
+        }
+
+        return list;
+    }
+
+    public List<HomePostListResponseDto> memberPostList(Long memberId, Integer page) {
+        PageRequest preq = PageRequest.of(page, 15);
+        List<Post> result = postRepository.findAllInMember(memberId, preq);
 
         List<HomePostListResponseDto> list = new ArrayList<>();
         for (Post post : result) {
@@ -264,16 +277,6 @@ public class PostService {
      *
      */
     public List<HomePostListResponseDto> scorePostListLegacy(Integer page) {
-
-        // 1주일내 좋아요를 많이 받은 카드 순으로 출력.
-
-        /**
-         * PK, 일자, postId, 점수가 담긴 테이블을 만든다.
-         * 조회시 5점, 좋아요시 40점, 댓글 45점, 스크랩 100점을 부여한다.
-         * 주간 SUM(점수)로 순위를 매겨 받아온다.
-         *
-         * 지금 DB 아껴야하니까 조회는 빼자.
-         */
 
         // 트렌딩 먼저 출력, 트렌딩 모두 출력한 뒤에는 최근 업로드순으로 출력
         Integer count = trendingRepository.trendAnalyByDateCount(LocalDateTime.now().minusDays(7));

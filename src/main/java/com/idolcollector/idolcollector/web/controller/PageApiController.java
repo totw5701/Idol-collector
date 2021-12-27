@@ -73,15 +73,21 @@ public class PageApiController {
         return new CardDetailPageDto(post, member);
     }
 
-    @GetMapping("/member/{id}")
-    public MemberDetailPageDto myInfo() {
-        // 세션에서 멤버정보 받아오기
-        MemberResponseDto member = memberService.findById((Long) httpSession.getAttribute("loginMember"));
+    @GetMapping({"/member/{id}/{page}", "/member/{id}"})
+    public MemberDetailPageDto myInfo(@PathVariable(name = "page", required = false) Optional<Integer> page,
+                                      @PathVariable(name = "id") Long memberId) {
 
+        int pageNum = 0;
+        if (page.isPresent()) pageNum = page.get();
+
+        // 세션에서 멤버정보 받아오기
+        MemberResponseDto member = memberService.findById(memberId);
+
+        List<HomePostListResponseDto> cards = postService.memberPostList(memberId, pageNum);
 
         List<BundleResponseDto> bundles = bundleService.findAllInMember(member.getId());
 
-        return new MemberDetailPageDto(member, bundles);
+        return new MemberDetailPageDto(member, bundles, cards);
     }
 
 }

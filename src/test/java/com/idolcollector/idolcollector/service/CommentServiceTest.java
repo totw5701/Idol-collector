@@ -61,7 +61,7 @@ public class CommentServiceTest {
 
         // Given
         Member member = memberRepository.findAll().get(0);
-        httpSession.setAttribute("loginMember", member);
+        httpSession.setAttribute("loginMember", member.getId());
 
         Post post = postRepository.findAll().get(0);
 
@@ -89,7 +89,7 @@ public class CommentServiceTest {
 
         // Given
         Member member = memberRepository.findAll().get(0);
-        httpSession.setAttribute("loginMember", member);
+        httpSession.setAttribute("loginMember", member.getId());
 
         Post post = postRepository.findAll().get(0);
         Comment comment = commentRepository.save(new Comment(member, post, "comment content"));
@@ -111,7 +111,7 @@ public class CommentServiceTest {
 
         // Given
         Member member = memberRepository.findAll().get(0);
-        httpSession.setAttribute("loginMember", member);
+        httpSession.setAttribute("loginMember", member.getId());
 
         Post post = postRepository.findAll().get(0);
         Comment comment = commentRepository.save(new Comment(member, post, "comment content"));
@@ -151,7 +151,7 @@ public class CommentServiceTest {
 
         // Given
         Member member = memberRepository.findAll().get(0);
-        httpSession.setAttribute("loginMember", member);
+        httpSession.setAttribute("loginMember", member.getId());
 
         Post post = postRepository.findAll().get(0);
 

@@ -138,7 +138,7 @@ class PostServiceTest {
         // Given
         Member member = memberRepository.findAll().get(0);
 
-        httpSession.setAttribute("loginMember", member);
+        httpSession.setAttribute("loginMember", member.getId());
 
         tagRepository.save(new Tag("예쁨"));
         tagRepository.save(new Tag("beautiful"));
@@ -177,7 +177,7 @@ class PostServiceTest {
 
         // Given
         Member member = memberRepository.findAll().get(0);
-        httpSession.setAttribute("loginMember", member);
+        httpSession.setAttribute("loginMember", member.getId());
 
         Post post = postRepository.save(new Post(member, "title", "content", "storeFilename", "oriFileName"));
         Comment comment = commentRepository.save(new Comment(member, post, "content"));
@@ -203,7 +203,7 @@ class PostServiceTest {
         // Given
         Member member = memberRepository.findAll().get(0);
 
-        httpSession.setAttribute("loginMember", member);
+        httpSession.setAttribute("loginMember", member.getId());
 
 
         List<String> tags = new ArrayList<>();
@@ -304,7 +304,7 @@ class PostServiceTest {
 
         // Given
         Member member = memberRepository.findAll().get(0);
-        httpSession.setAttribute("loginMember", member);
+        httpSession.setAttribute("loginMember", member.getId());
 
         Post post = postRepository.save(new Post(member, "title", "content", "storeFilename", "oriFileName"));
 
@@ -327,7 +327,7 @@ class PostServiceTest {
         Member member = new Member(MemberRole.USER, "nick", "email", "1111", "david", "dsfsdfdsfdsf", LocalDateTime.now());
         memberRepository.save(member);
 
-        httpSession.setAttribute("loginMember", member);
+        httpSession.setAttribute("loginMember", member.getId());
 
         Post post = postRepository.save(new Post(member, "title", "content", "storeFilename", "oriFileName"));
 

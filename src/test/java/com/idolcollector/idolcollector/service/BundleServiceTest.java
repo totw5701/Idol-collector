@@ -19,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.servlet.http.HttpSession;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -37,6 +38,7 @@ class BundleServiceTest {
     @Autowired PostRepository postRepository;
     @Autowired BundleRepository bundleRepository;
     @Autowired BundlePostRepository bundlePostRepository;
+    @Autowired HttpSession httpSession;
 
     @BeforeEach
     void before() {
@@ -105,8 +107,10 @@ class BundleServiceTest {
 
         // Given
         Member member = memberRepository.findAll().get(0);
+        httpSession.setAttribute("loginMember", member.getId());
 
-        BundleSaveDto form = new BundleSaveDto(member.getId(), "title", "description");
+
+        BundleSaveDto form = new BundleSaveDto("title", "description");
 
         // When
         Long save = bundleService.save(form);

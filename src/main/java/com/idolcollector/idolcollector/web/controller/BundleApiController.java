@@ -30,7 +30,7 @@ public class BundleApiController {
     public String create(@Validated @RequestBody BundleSaveDto form) {
 
         bundleService.save(form);
-        return "redirect:/member";
+        return "redirect:/";
     }
 
     @ResponseBody

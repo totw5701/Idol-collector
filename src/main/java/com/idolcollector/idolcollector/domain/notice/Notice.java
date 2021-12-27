@@ -8,6 +8,8 @@ import com.idolcollector.idolcollector.domain.tag.Tag;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -32,10 +34,12 @@ public class Notice {
     private Member targetMember;   // 이 알림을 유발한 사용자.
 
     @ManyToOne
+    @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "TARGET_POST_ID")
     private Post targetPost;
 
     @ManyToOne
+    @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "TARGET_COMMENT_ID")
     private Comment targetComment;
 

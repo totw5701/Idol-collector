@@ -17,6 +17,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
@@ -99,7 +100,7 @@ class PostRepositoryTest {
         postRepository.save(post2);
 
         //When
-        List<Post> posts = postRepository.findAllInMember(member.getId());
+        List<Post> posts = postRepository.findAllInMember(member.getId(), PageRequest.of(0, 15));
 
         //Then
         assertThat(posts.size()).isEqualTo(2);

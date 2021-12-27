@@ -3,6 +3,8 @@ package com.idolcollector.idolcollector.domain.trending;
 import com.idolcollector.idolcollector.domain.post.Post;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -16,6 +18,7 @@ public class Trending {
     @JoinColumn(name = "TRENDING_ID")
     private Long id;
 
+    @OnDelete(action = OnDeleteAction.CASCADE)
     @ManyToOne
     private Post post;
 
