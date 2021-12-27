@@ -4,6 +4,9 @@ import CloseIcon from '@material-ui/icons/Close';
 
 function CreateContainer() {
   const [isSelected, setIsSelected] = useState(false);
+  const [title, setTitle] = useState();
+  const [description, setDescription] = useState();
+  const [alt, setAlt] = useState();
   const [selectedPhoto, setSelectedPhoto] = useState({
     photo: [],
     photoPreview: null,
@@ -14,6 +17,22 @@ function CreateContainer() {
   //   const formdata = new FormData();
   //   formdata.append('newcard', )
   // }
+
+  const handleCreateCard = () => {
+    console.log(tag, title, description, alt);
+  };
+
+  const handleAlt = e => {
+    setAlt(e.target.value);
+  };
+
+  const handleDescription = e => {
+    setDescription(e.target.value);
+  };
+
+  const handleTitle = e => {
+    setTitle(e.target.value);
+  };
 
   const handleInputTag = e => {
     e.preventDefault();
@@ -75,6 +94,7 @@ function CreateContainer() {
             type="text"
             placeholder="카드 타이틀을 입력하세요 (10자)"
             required
+            onChange={handleTitle}
           />
         </InputField>
         <InputField>
@@ -82,12 +102,14 @@ function CreateContainer() {
             type="text"
             placeholder="카드를 간단하게 설명해주세요 (30자)"
             required
+            onChange={handleDescription}
           />
         </InputField>
         <InputField>
           <input
             type="text"
             placeholder="alt 텍스트를 추가하여 스크린리더가 읽게 해주세요 (선택, 30자)"
+            onChange={handleAlt}
           />
         </InputField>
         <InputField>
@@ -110,7 +132,7 @@ function CreateContainer() {
             ))}
           </TagField>
         )}
-        <CreateBtn>만들기</CreateBtn>
+        <CreateBtn onClick={handleCreateCard}>만들기</CreateBtn>
       </CreateRight>
     </CreateWrap>
   );
