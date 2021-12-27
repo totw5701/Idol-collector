@@ -10,6 +10,11 @@ function CreateContainer() {
   });
   const [tag, setTag] = useState(['bts', 'tbs', 'stb']);
 
+  // const handleCreate = async () => {
+  //   const formdata = new FormData();
+  //   formdata.append('newcard', )
+  // }
+
   const handleDeletePhoto = () => {
     setIsSelected(false);
   };
@@ -56,10 +61,18 @@ function CreateContainer() {
 
       <CreateRight>
         <InputField>
-          <input type="text" placeholder="카드 타이틀을 입력하세요(10자)" />
+          <input
+            type="text"
+            placeholder="카드 타이틀을 입력하세요(10자)"
+            required
+          />
         </InputField>
         <InputField>
-          <input type="text" placeholder="카드를 간단하게 설명해주세요(30자)" />
+          <input
+            type="text"
+            placeholder="카드를 간단하게 설명해주세요(30자)"
+            required
+          />
         </InputField>
         <InputField>
           <input
@@ -72,6 +85,7 @@ function CreateContainer() {
           <input
             type="text"
             placeholder="태그를 넣어 주세요(최대 5개, 띄어쓰기 없이 한글 영어만 가능)"
+            required
           />
         </InputField>
         {tag && (
