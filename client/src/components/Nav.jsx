@@ -31,7 +31,9 @@ function Nav() {
                 <Button src={'나의카드.png'}>나의 카드</Button>
               </li>
               <li>
-                <Button src={'설정.png'}>설정</Button>
+                <Link to="/setting">
+                  <Button src={'설정.png'}>설정</Button>
+                </Link>
               </li>
               <li>
                 <Button src={'로그아웃.png'}>로그아웃</Button>

@@ -4,6 +4,7 @@ import TopBtn from './components/TopBtn';
 import DetailPage from './pages/DetailPage';
 import MainPage from './pages/MainPage';
 import CreatePage from './pages/CreatePage';
+import SettingPage from './pages/SettingPage';
 
 const dummyDB = [
   {
@@ -262,6 +263,9 @@ function App() {
     <BrowserRouter>
       <Nav />
       <Switch>
+        <Route path="/setting">
+          <SettingPage />
+        </Route>
         <Route path="/create">
           <CreatePage />
         </Route>
