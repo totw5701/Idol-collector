@@ -1,7 +1,19 @@
+import { useEffect } from 'react';
+import Axios from 'axios';
 import styled from 'styled-components';
 import Jumbotron from '../components/Jumbotron';
 
 function MainContainer({ data }) {
+  useEffect(() => {
+    Axios.get('http://localhost:8080/api/home/')
+      .then(response => {
+        console.log(response.data);
+      })
+      .catch(() => {
+        alert('ERROR OCCURRED');
+      });
+  }, []);
+
   console.log(data);
   return (
     <>
