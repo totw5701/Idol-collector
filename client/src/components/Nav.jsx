@@ -1,5 +1,6 @@
 import { ArrowDropDown, ArrowDropUp } from '@material-ui/icons';
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import styled from 'styled-components/macro';
 import Button from './Button';
 
@@ -9,10 +10,14 @@ function Nav() {
   return (
     <>
       <Navbar>
-        <Logo src="./images/로고.png" alt="" />
+        <Link to="/">
+          <Logo src="images/로고.png" alt="homepage logo" />
+        </Link>
         <LoginRight>
           <LoginMakeCard>
-            <Button src={'카드만들기.png'}>카드만들기</Button>
+            <Link to="/create">
+              <Button src={'카드만들기.png'}>카드만들기</Button>
+            </Link>
           </LoginMakeCard>
 
           <LoginNickname onClick={() => setDropdown(!dropdown)}>
@@ -26,7 +31,9 @@ function Nav() {
                 <Button src={'나의카드.png'}>나의 카드</Button>
               </li>
               <li>
-                <Button src={'설정.png'}>설정</Button>
+                <Link to="/setting">
+                  <Button src={'설정.png'}>설정</Button>
+                </Link>
               </li>
               <li>
                 <Button src={'로그아웃.png'}>로그아웃</Button>

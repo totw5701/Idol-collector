@@ -10,7 +10,7 @@ function MainContainer({ data }) {
         <CardContainer>
           {data.map(card => {
             return (
-              <Card>
+              <Card key={card.id}>
                 <img src={card.storeFileName} alt={card.title} />
               </Card>
             );
@@ -30,10 +30,8 @@ const MainArea = styled.main`
 `;
 
 const CardContainer = styled.div`
-  -moz-column-width: 15em;
-  -webkit-column-width: 15em;
-  -moz-column-gap: 1em;
-  -webkit-column-gap: 1em;
+  column-width: 15em;
+  column-gap: 1em;
 `;
 
 const Card = styled.div`
