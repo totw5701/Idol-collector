@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import CloseIcon from '@material-ui/icons/Close';
 
 function CreateContainer() {
-  const [isSelected, setIsSelected] = useState(false);
+  const [isPhotoSelected, setIsPhotoSelected] = useState(false);
   const [title, setTitle] = useState();
   const [description, setDescription] = useState();
   const [alt, setAlt] = useState();
@@ -45,11 +45,11 @@ function CreateContainer() {
   };
 
   const handleDeletePhoto = () => {
-    setIsSelected(false);
+    setIsPhotoSelected(false);
   };
 
   const handleSelectPhoto = e => {
-    setIsSelected(true);
+    setIsPhotoSelected(true);
     setSelectedPhoto({
       ...selectedPhoto,
       photo: e.target.files[0],
@@ -60,7 +60,7 @@ function CreateContainer() {
   return (
     <CreateWrap>
       <CreateLeft>
-        {isSelected ? (
+        {isPhotoSelected ? (
           <>
             <DeleteBtn onClick={handleDeletePhoto}>
               <img src="images/휴지통.png" alt="delete preview card button" />
