@@ -1,10 +1,13 @@
-import { useParams } from 'react-router-dom';
 import DetailContainer from '../containers/DetailContainer';
+import SimilarContainer from '../containers/SimilarContainer';
 
 function DetailPage() {
-  const { cardId } = useParams();
-
-  return <DetailContainer />;
+  return (
+    <>
+      <DetailContainer />
+      <SimilarContainer />
+    </>
+  );
 }
 
 export default DetailPage;

@@ -6,7 +6,7 @@ import MainPage from './pages/MainPage';
 import CreatePage from './pages/CreatePage';
 import SettingPage from './pages/SettingPage';
 
-const dummyDB = [
+export const dummyDB = [
   {
     id: 0,
     authorNickName: 'nickname0',

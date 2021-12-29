@@ -11,7 +11,7 @@ function Nav() {
     <>
       <Navbar>
         <Link to="/">
-          <Logo src="images/로고.png" alt="homepage logo" />
+          <Logo src="/images/로고.png" alt="homepage logo" />
         </Link>
         <LoginRight>
           <LoginMakeCard>
@@ -108,5 +108,5 @@ const DropdownBar = styled.ul`
 `;
 
 const Space = styled.div`
-  height: 65px;
+  height: 70px;
 `;

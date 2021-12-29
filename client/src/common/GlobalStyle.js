@@ -54,6 +54,16 @@ const GlobalStyle = createGlobalStyle`
   * {
     box-sizing: border-box;
   }
+  button {
+    outline: none;
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+  }
+  a {
+    text-decoration: none;
+    color: inherit;
+  }
 `;
 
 export default GlobalStyle;

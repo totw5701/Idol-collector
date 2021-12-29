@@ -3,7 +3,7 @@ import styled from 'styled-components';
 function Button({ children, src }) {
   return (
     <StyledButton>
-      {src && <IconButton src={`images/${src}`} />}
+      {src && <IconButton src={`/images/${src}`} />}
       {children}
     </StyledButton>
   );
@@ -12,9 +12,6 @@ function Button({ children, src }) {
 export default Button;
 
 const StyledButton = styled.button`
-  cursor: pointer;
-  border: none;
-  background: transparent;
   padding: 5px 10px;
   border-radius: 8px;
 
