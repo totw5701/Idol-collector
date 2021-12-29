@@ -1,7 +1,10 @@
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import Nav from './components/Nav';
+import TopBtn from './components/TopBtn';
 import DetailPage from './pages/DetailPage';
 import MainPage from './pages/MainPage';
+import CreatePage from './pages/CreatePage';
+import SettingPage from './pages/SettingPage';
 
 export const dummyDB = [
   {
@@ -168,7 +171,7 @@ export const dummyDB = [
     views: 1300,
     likes: 130,
     storeFileName:
-      'https://lh3.googleusercontent.com/proxy/RBOVnr34VSCJDfClV26y-ulbuyIBfnqD4mSPXeimJNap1HSOw005OUfRe6H6VoUB56yeZ7druGfJNxJS_1g5essJ6KtPmxXcXSeJ5g',
+      'https://img1.daumcdn.net/thumb/R1280x0.fjpg/?fname=http://t1.daumcdn.net/brunch/service/user/9g2Q/image/_SznIDRiJJdKID82JMB-x02W4FM.jpg',
   },
   {
     id: 14,
@@ -260,6 +263,12 @@ function App() {
     <BrowserRouter>
       <Nav />
       <Switch>
+        <Route path="/setting">
+          <SettingPage />
+        </Route>
+        <Route path="/create">
+          <CreatePage />
+        </Route>
         <Route path="/card/:cardId">
           <DetailPage />
         </Route>
@@ -267,6 +276,7 @@ function App() {
           <MainPage data={dummyDB} />
         </Route>
       </Switch>
+      <TopBtn />
     </BrowserRouter>
   );
 }
