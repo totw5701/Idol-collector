@@ -9,7 +9,7 @@ function Nav() {
   return (
     <>
       <Navbar>
-        <Logo src="./images/로고.png" alt="" />
+        <Logo src="/images/로고.png" alt="" />
         <LoginRight>
           <LoginMakeCard>
             <Button src={'카드만들기.png'}>카드만들기</Button>
@@ -101,5 +101,5 @@ const DropdownBar = styled.ul`
 `;
 
 const Space = styled.div`
-  height: 65px;
+  height: 70px;
 `;

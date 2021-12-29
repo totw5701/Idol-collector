@@ -1,52 +1,13 @@
-import styled from 'styled-components';
+import Columns from '../components/Columns';
 import Jumbotron from '../components/Jumbotron';
 
 function MainContainer({ data }) {
-  console.log(data);
   return (
     <>
       <Jumbotron />
-      <MainArea>
-        <CardContainer>
-          {data.map(card => {
-            return (
-              <Card>
-                <img src={card.storeFileName} alt={card.title} />
-              </Card>
-            );
-          })}
-        </CardContainer>
-      </MainArea>
+      <Columns data={data} />
     </>
   );
 }
 
 export default MainContainer;
-
-const MainArea = styled.main`
-  margin: auto;
-  width: 90%;
-  max-width: 2000px;
-`;
-
-const CardContainer = styled.div`
-  -moz-column-width: 15em;
-  -webkit-column-width: 15em;
-  -moz-column-gap: 1em;
-  -webkit-column-gap: 1em;
-`;
-
-const Card = styled.div`
-  display: inline-block;
-  padding: 0.4rem;
-  width: 100%;
-
-  &:hover {
-    cursor: pointer;
-  }
-
-  img {
-    border-radius: 10px;
-    width: 100%;
-  }
-`;

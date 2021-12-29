@@ -3,7 +3,7 @@ import Nav from './components/Nav';
 import DetailPage from './pages/DetailPage';
 import MainPage from './pages/MainPage';
 
-const dummyDB = [
+export const dummyDB = [
   {
     id: 0,
     authorNickName: 'nickname0',
