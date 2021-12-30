@@ -26,7 +26,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .headers().frameOptions().disable()
                 .and()
                     .authorizeRequests()
-                    .antMatchers("/", "/css/**", "/images/**", "/js/**", "/api/login-url").permitAll()
+                    .antMatchers("/", "/css/**", "/images/**", "/js/**", "/api/login-url", "/api/exception/login").permitAll()
                     .antMatchers("/manager").hasAnyRole(MemberRole.MANAGER.name(), MemberRole.ADMIN.name())
                     .antMatchers("/admin").hasRole(MemberRole.ADMIN.name())
                     .anyRequest().authenticated()
@@ -37,8 +37,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         .logoutSuccessUrl("/")
                 .and()
                     .oauth2Login()
-                .loginPage("/api/login-url")
-                .defaultSuccessUrl("/api/login-success")
+                        .loginPage("/api/exception/login")
+                        .defaultSuccessUrl("/api/login-success")
                         .userInfoEndpoint()
                             .userService(customOAuth2UserService);
     }

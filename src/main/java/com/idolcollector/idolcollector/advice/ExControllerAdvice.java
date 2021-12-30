@@ -2,6 +2,7 @@ package com.idolcollector.idolcollector.advice;
 
 import com.idolcollector.idolcollector.advice.exception.CBundleNotFoundException;
 import com.idolcollector.idolcollector.advice.exception.CMemberNotFoundException;
+import com.idolcollector.idolcollector.advice.exception.CNotLoginedException;
 import com.idolcollector.idolcollector.advice.exception.CPostNotFoundException;
 import com.idolcollector.idolcollector.web.dto.BindingError;
 import com.idolcollector.idolcollector.web.dto.ErrorResult;
@@ -43,6 +44,14 @@ public class ExControllerAdvice {
     @ExceptionHandler(CBundleNotFoundException.class)
     public ErrorResult cBundleNotFoundException() {
         return new ErrorResult(-103, "존재하지 않은 카드집입니다.");
+    }
+
+
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(CNotLoginedException.class)
+    public ErrorResult cNotLoginedException() {
+        return new ErrorResult(-200, "로그인 되어있지 않습니다.");
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
