@@ -40,7 +40,11 @@ public class PageApiController {
         List<HomePostListResponseDto> homePostListResponseDtos = postService.scorePostList(pageNum);
 
         // 세션에서 멤버정보 받아오기
-        MemberResponseDto memberResponseDto = memberService.findById((Long) httpSession.getAttribute("loginMember"));
+        Long memberId = (Long) httpSession.getAttribute("loginMember");
+        MemberResponseDto memberResponseDto = new MemberResponseDto();
+        if (memberId != null) {
+            memberResponseDto = memberService.findById(memberId);
+        }
 
         String s = memberResponseDto.getNotices().toString();
         return new RootPageDto(homePostListResponseDtos, memberResponseDto);
