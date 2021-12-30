@@ -17,6 +17,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final CustomOAuth2UserService customOAuth2UserService;
 
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable()
@@ -25,7 +26,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .headers().frameOptions().disable()
                 .and()
                     .authorizeRequests()
-                    .antMatchers("/", "/css/**", "/images/**", "/js/**", "/api/**").permitAll()
+                    .antMatchers("/", "/css/**", "/images/**", "/js/**", "/api/login-url").permitAll()
                     .antMatchers("/manager").hasAnyRole(MemberRole.MANAGER.name(), MemberRole.ADMIN.name())
                     .antMatchers("/admin").hasRole(MemberRole.ADMIN.name())
                     .anyRequest().authenticated()
@@ -34,6 +35,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         .logoutSuccessUrl("/")
                 .and()
                     .oauth2Login()
+                .loginPage("/api/login-url")
+                .defaultSuccessUrl("/api/login-success")
                         .userInfoEndpoint()
                             .userService(customOAuth2UserService);
     }
