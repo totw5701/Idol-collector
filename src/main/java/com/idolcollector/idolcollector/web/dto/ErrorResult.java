@@ -12,6 +12,6 @@ import java.util.List;
 @AllArgsConstructor
 public class ErrorResult {
 
-    private String httpCode;
+    private int errorCode;
     private String message;
 }

@@ -31,6 +31,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                     .antMatchers("/admin").hasRole(MemberRole.ADMIN.name())
                     .anyRequest().authenticated()
                 .and()
+                    .exceptionHandling().accessDeniedHandler(new CustomAccessDeniedHandler())
+                .and()
                     .logout()
                         .logoutSuccessUrl("/")
                 .and()

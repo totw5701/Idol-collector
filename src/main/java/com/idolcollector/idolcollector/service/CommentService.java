@@ -1,5 +1,7 @@
 package com.idolcollector.idolcollector.service;
 
+import com.idolcollector.idolcollector.advice.exception.CCommentNotFoundException;
+import com.idolcollector.idolcollector.advice.exception.CPostNotFoundException;
 import com.idolcollector.idolcollector.domain.comment.Comment;
 import com.idolcollector.idolcollector.domain.comment.CommentRepository;
 import com.idolcollector.idolcollector.domain.like.LikeType;
@@ -48,7 +50,7 @@ public class CommentService {
 
     public CommentResponseDto findById(Long id) {
         Comment comment = commentRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 댓글입니다. id=" + id));
+                .orElseThrow(CCommentNotFoundException::new);
 
         Member member = memberRepository.findById((Long) httpSession.getAttribute("loginMember")).get();
 
@@ -72,7 +74,7 @@ public class CommentService {
     public Long save(CommentSaveRequestDto form) {
 
         Post post = postRepository.findById(form.getPostId())
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 게시글입니다. id=" + form.getPostId()));
+                .orElseThrow(CPostNotFoundException::new);
 
         Member member = memberRepository.findById((Long) httpSession.getAttribute("loginMember")).get();
 
@@ -89,7 +91,7 @@ public class CommentService {
     @Transactional
     public Long update(CommentUpdateRequestDto form) {
         Comment comment = commentRepository.findById(form.getId())
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 댓글입니다. id=" + form.getId()));
+                .orElseThrow(CCommentNotFoundException::new);
 
         Member member = memberRepository.findById((Long) httpSession.getAttribute("loginMember")).get();
         if (member.getId() != comment.getMember().getId()) {
@@ -103,7 +105,7 @@ public class CommentService {
     @Transactional
     public Long delete(Long id) {
         Comment comment = commentRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 댓글입니다. id=" + id));
+                .orElseThrow(CCommentNotFoundException::new);
 
         Member member = memberRepository.findById((Long) httpSession.getAttribute("loginMember")).get();
         if (member.getId() != comment.getMember().getId()) {
@@ -118,7 +120,7 @@ public class CommentService {
     @Transactional
     public int like(Long id) {
         Comment comment = commentRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 댓글입니다. id=" + id));
+                .orElseThrow(CCommentNotFoundException::new);
 
         // 좋아요 유무 체크
         Member member = memberRepository.findById((Long) httpSession.getAttribute("loginMember")).get();

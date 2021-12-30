@@ -1,5 +1,6 @@
 package com.idolcollector.idolcollector.service;
 
+import com.idolcollector.idolcollector.advice.exception.CPostNotFoundException;
 import com.idolcollector.idolcollector.domain.comment.Comment;
 import com.idolcollector.idolcollector.domain.like.LikeType;
 import com.idolcollector.idolcollector.domain.like.Likes;
@@ -94,7 +95,7 @@ public class PostService {
     @Transactional
     public PostResponseDto detail(Long id) {
         Post post = postRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 게시글입니다. id=" + id));
+                .orElseThrow(CPostNotFoundException::new);
 
         Member member = memberRepository.findById((Long) httpSession.getAttribute("loginMember")).get();
 
@@ -151,7 +152,7 @@ public class PostService {
     @Transactional
     public Long update(PostUpdateRequestDto form) {
         Post post = postRepository.findById(form.getPostId())
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 게시글입니다. id=" + form.getPostId()));
+                .orElseThrow(CPostNotFoundException::new);
 
         // 세션유저 일치 확인
         Member member = memberRepository.findById((Long) httpSession.getAttribute("loginMember")).get();
@@ -173,7 +174,7 @@ public class PostService {
     @Transactional
     public Long delete(Long id) {
         Post post = postRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 게시글입니다. id=" + id));
+                .orElseThrow(CPostNotFoundException::new);
 
         // 세션유저 일치 확인
         Member member = memberRepository.findById((Long) httpSession.getAttribute("loginMember")).get();
@@ -228,7 +229,7 @@ public class PostService {
     @Transactional
     public int like(Long id) {
         Post post = postRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 게시글입니다. id=" + id));
+                .orElseThrow(CPostNotFoundException::new);
 
         Member member = memberRepository.findById((Long) httpSession.getAttribute("loginMember")).get();
 
@@ -254,7 +255,7 @@ public class PostService {
     @Transactional
     public Long scrap(Long id) {
         Post post = postRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 게시글입니다. id=" + id));
+                .orElseThrow(CPostNotFoundException::new);
 
         Member member = memberRepository.findById((Long) httpSession.getAttribute("loginMember")).get();
 
@@ -273,7 +274,7 @@ public class PostService {
     @Transactional
     public Long cancelScrap(Long id) {
         Post post = postRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 게시글입니다. id=" + id));
+                .orElseThrow(CPostNotFoundException::new);
 
         Member member = memberRepository.findById((Long) httpSession.getAttribute("loginMember")).get();
 

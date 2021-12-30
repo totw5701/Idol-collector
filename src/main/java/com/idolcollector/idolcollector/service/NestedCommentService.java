@@ -1,5 +1,6 @@
 package com.idolcollector.idolcollector.service;
 
+import com.idolcollector.idolcollector.advice.exception.CCommentNotFoundException;
 import com.idolcollector.idolcollector.domain.comment.Comment;
 import com.idolcollector.idolcollector.domain.comment.CommentRepository;
 import com.idolcollector.idolcollector.domain.like.LikeType;
@@ -40,7 +41,7 @@ public class NestedCommentService {
 
     public NestedCommentResponseDto findById(Long id) {
         NestedComment nestedComment = nestedCommentRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 대댓글입니다. id=" + id));
+                .orElseThrow(CCommentNotFoundException::new);
 
         return new NestedCommentResponseDto(nestedComment);
     }
@@ -49,7 +50,7 @@ public class NestedCommentService {
     @Transactional
     public Long save(NestedCommentSaveRequestDto form) {
         Comment comment = commentRepository.findById(form.getCommentId())
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 댓글입니다. id=" + form.getCommentId()));
+                .orElseThrow(CCommentNotFoundException::new);
 
         Member member = memberRepository.findById((Long) httpSession.getAttribute("loginMember")).get();
 
@@ -64,7 +65,7 @@ public class NestedCommentService {
     @Transactional
     public Long update(NestedCommentUpdateRequestDto form) {
         NestedComment nComment = nestedCommentRepository.findById(form.getId())
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 대댓글입니다. id=" + form.getId()));
+                .orElseThrow(CCommentNotFoundException::new);
 
         // 세션아이디 일치확인
         Member member = memberRepository.findById((Long) httpSession.getAttribute("loginMember")).get();
@@ -76,7 +77,7 @@ public class NestedCommentService {
     @Transactional
     public Long delete(Long id) {
         NestedComment nComment = nestedCommentRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 대댓글입니다. id=" + id));
+                .orElseThrow(CCommentNotFoundException::new);
 
         // 세션아이디 일치확인
         Member member = memberRepository.findById((Long) httpSession.getAttribute("loginMember")).get();
@@ -89,7 +90,7 @@ public class NestedCommentService {
     @Transactional
     public int like(Long id) {
         NestedComment nestedComment = nestedCommentRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 대댓글입니다. id=" + id));
+                .orElseThrow(CCommentNotFoundException::new);
 
         // 세션 아이디 중복체크.
         Member member = memberRepository.findById((Long) httpSession.getAttribute("loginMember")).get();

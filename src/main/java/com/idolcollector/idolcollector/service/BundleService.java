@@ -1,16 +1,16 @@
 package com.idolcollector.idolcollector.service;
 
+import com.idolcollector.idolcollector.advice.exception.CBundleNotFoundException;
+import com.idolcollector.idolcollector.advice.exception.CPostNotFoundException;
 import com.idolcollector.idolcollector.domain.bindlepost.BundlePost;
 import com.idolcollector.idolcollector.domain.bindlepost.BundlePostRepository;
 import com.idolcollector.idolcollector.domain.bundle.Bundle;
 import com.idolcollector.idolcollector.domain.bundle.BundleRepository;
 import com.idolcollector.idolcollector.domain.member.Member;
 import com.idolcollector.idolcollector.domain.member.MemberRepository;
-import com.idolcollector.idolcollector.domain.member.MemberRole;
 import com.idolcollector.idolcollector.domain.post.Post;
 import com.idolcollector.idolcollector.domain.post.PostRepository;
 import com.idolcollector.idolcollector.web.dto.bundle.*;
-import com.idolcollector.idolcollector.web.dto.post.PostResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,7 +18,6 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
@@ -33,7 +32,7 @@ public class BundleService {
 
     public BundleResponseDto findById(Long id) {
         Bundle bundle = bundleRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 카드집입니다. id=" + id));
+                .orElseThrow(CBundleNotFoundException::new);
 
         return new BundleResponseDto(bundle);
     }
@@ -59,7 +58,7 @@ public class BundleService {
     @Transactional
     public Long delete(Long id) {
         Bundle bundle = bundleRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 카드집입니다. id=" + id));
+                .orElseThrow(CBundleNotFoundException::new);
 
         // 세션 회원과 일치 확인
 
@@ -71,7 +70,7 @@ public class BundleService {
     @Transactional
     public Long Update(BundleUpdateDto form) {
         Bundle bundle = bundleRepository.findById(form.getBundleId())
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 카드집입니다. id=" + form.getBundleId()));
+                .orElseThrow(CBundleNotFoundException::new);
 
         return bundle.update(form);
     }
@@ -79,10 +78,10 @@ public class BundleService {
     @Transactional
     public Long addPost(BundleAddCardDto form) {
         Bundle bundle = bundleRepository.findById(form.getBundleId())
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 카드집입니다. id=" + form.getBundleId()));
+                .orElseThrow(CBundleNotFoundException::new);
 
         Post post = postRepository.findById(form.getPostId())
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 카드입니다. id=" + form.getPostId()));
+                .orElseThrow(CPostNotFoundException::new);
 
         boolean present = bundlePostRepository.findByPostBundleId(post.getId(), bundle.getId()).isPresent();
         if (present) throw new IllegalArgumentException("이미 존재하는 카드입니다.");
