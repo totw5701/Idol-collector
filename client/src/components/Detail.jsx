@@ -1,7 +1,8 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import styled from 'styled-components';
 import { ArrowForwardIos, ArrowForward } from '@material-ui/icons';
+import TextareaAutosize from 'react-textarea-autosize';
 import Columns from './Columns';
 import { dummyDB as data } from '../App';
 
@@ -9,9 +10,19 @@ function Detail({ card }) {
   const history = useHistory();
   const [isShow, setIsShow] = useState(false);
 
+  const inputRef = useRef();
+
   const toggleShow = () => setIsShow(prev => !prev);
 
   const handlePage = () => history.push('/');
+
+  const handleSubmit = e => {
+    e.preventDefault();
+
+    console.log(inputRef.current.value);
+    inputRef.current.value = '';
+    inputRef.current.style.height = '39px';
+  };
 
   return (
     <DetailBase>
@@ -45,8 +56,14 @@ function Detail({ card }) {
             </Wrapper>
             <UserInfo as="p">{card.content}</UserInfo>
             <Wrapper>
-              <SmallUserInfo>{card.createDate}</SmallUserInfo>
-              <SmallUserInfo>TAG?</SmallUserInfo>
+              <SmallUserInfo>
+                <span>업로드날짜</span>
+                <span>{card.createDate}</span>
+              </SmallUserInfo>
+              <SmallUserInfo>
+                <span>카드태그</span>
+                <span>태그1</span>
+              </SmallUserInfo>
             </Wrapper>
             <CommentWrapper>
               <h3>댓글</h3>
@@ -55,18 +72,39 @@ function Detail({ card }) {
                 <ArrowForwardIos />
               </CommentButton>
             </CommentWrapper>
-            {isShow && (
-              <CommentList>
-                <CommentItem>
-                  <Link to="">
-                    <img src="/images/업로더-사진.png" alt={`아이디 이미지`} />
-                  </Link>
-                  <CommentInfo>
-                    <UserLink to="/member/:id">아이디</UserLink>
-                    <CommentContent>내용내용</CommentContent>
-                  </CommentInfo>
-                </CommentItem>
-              </CommentList>
+            {!isShow && (
+              <>
+                <CommentList>
+                  <CommentItem>
+                    <Link to="">
+                      <img
+                        src="/images/업로더-사진.png"
+                        alt={`아이디 이미지`}
+                      />
+                    </Link>
+                    <CommentInfo>
+                      <UserLink to="/member/:id">아이디</UserLink>
+                      <CommentContent>내용내용</CommentContent>
+                    </CommentInfo>
+                  </CommentItem>
+                </CommentList>
+                <CommentForm onSubmit={handleSubmit}>
+                  <CommentFormItem as="div">
+                    <Link to="">
+                      <img
+                        src="/images/업로더-사진.png"
+                        alt={`아이디 이미지`}
+                      />
+                    </Link>
+                    <CommentText
+                      type="text"
+                      ref={inputRef}
+                      placeholder="댓글을 입력하세요."
+                    />
+                    <button type="submit">완료</button>
+                  </CommentFormItem>
+                </CommentForm>
+              </>
             )}
           </Info>
         </DetailBlock>
@@ -195,6 +233,7 @@ const UserInfo = styled.div`
   padding: 10px;
   border-radius: 6px;
   background-color: #fff;
+  text-align: left;
 `;
 
 const Wrapper = styled.div`
@@ -226,6 +265,7 @@ const SmallUserInfo = styled(UserInfo)`
   width: 50%;
   height: 34px;
   min-height: 0;
+  font-size: 14px;
 
   & + & {
     ::before {
@@ -238,6 +278,11 @@ const SmallUserInfo = styled(UserInfo)`
       height: 80%;
       background-color: #b580d1;
     }
+  }
+
+  > span:nth-of-type(1) {
+    font-weight: 600;
+    margin-right: 10px;
   }
 `;
 
@@ -253,7 +298,9 @@ const CommentWrapper = styled.div`
   }
 `;
 
-const CommentList = styled.ul``;
+const CommentList = styled.ul`
+  margin-bottom: 50px;
+`;
 
 const CommentItem = styled.li`
   display: flex;
@@ -269,22 +316,11 @@ const CommentItem = styled.li`
 `;
 
 const CommentInfo = styled(UserInfo)`
-  display: flex;
   flex-direction: column;
   align-items: flex-start;
   position: relative;
   width: 85%;
-  margin-left: 20px;
-
-  ::before {
-    content: '';
-    position: absolute;
-    top: 15%;
-    left: -14px;
-    width: 4px;
-    height: 70%;
-    background-color: #b580d1;
-  }
+  margin-left: 10px;
 `;
 
 const UserLink = styled(Link)`
@@ -295,6 +331,7 @@ const UserLink = styled(Link)`
 
 const CommentContent = styled.p`
   font-size: 12px;
+  text-align: left;
 `;
 
 const Line = styled.div`
@@ -308,4 +345,32 @@ const Announcement = styled.p`
   margin: 16px 0;
   font-weight: 600;
   font-size: 22px;
+`;
+
+const CommentForm = styled.form``;
+
+const CommentFormItem = styled(CommentItem)`
+  width: 100%;
+
+  > button {
+    background-color: #b580d1;
+    width: 50px;
+    height: 40px;
+    margin-top: 10px;
+    margin-left: 10px;
+    border-radius: 25px;
+    color: #fff;
+  }
+`;
+
+const CommentText = styled(TextareaAutosize)`
+  resize: none;
+  outline: none;
+  border: none;
+  flex: 1;
+  margin-top: 10px;
+  margin-left: 10px;
+  padding: 10px;
+  border-radius: 6px;
+  line-height: 1.4;
 `;
