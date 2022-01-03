@@ -16,6 +16,7 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final CustomOAuth2UserService customOAuth2UserService;
+    private final LoginSuccessHandler loginSuccessHandler;
 
 
     @Override
@@ -38,7 +39,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                     .oauth2Login()
                         .loginPage("/api/exception/login")
-                        .defaultSuccessUrl("/api/login-success")
+                        .successHandler(loginSuccessHandler)
                         .userInfoEndpoint()
                             .userService(customOAuth2UserService);
     }
