@@ -1,12 +1,7 @@
 package com.idolcollector.idolcollector.advice;
 
-import com.idolcollector.idolcollector.advice.exception.CBundleNotFoundException;
-import com.idolcollector.idolcollector.advice.exception.CMemberNotFoundException;
-import com.idolcollector.idolcollector.advice.exception.CNotLoginedException;
-import com.idolcollector.idolcollector.advice.exception.CPostNotFoundException;
+import com.idolcollector.idolcollector.advice.exception.*;
 import com.idolcollector.idolcollector.service.ResponseService;
-import com.idolcollector.idolcollector.web.dto.BindingError;
-import com.idolcollector.idolcollector.web.dto.ErrorResult;
 import com.idolcollector.idolcollector.web.dto.response.CommonResult;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -18,7 +13,6 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import java.util.List;
 
 @Slf4j
 @RestControllerAdvice
@@ -72,9 +66,16 @@ public class ExControllerAdvice {
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler
-    public ErrorResult illegalExHandler(IllegalArgumentException e) {
+    public CommonResult accessDeniedException(CAccessDeniedException e) {
+        log.error("[exceptionHandler} ex", e);
+        return responseService.getFailResult(-202, "변경 권한이 없습니다.");
+    }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler
+    public CommonResult illegalExHandler(IllegalArgumentException e) {
         log.info("[exceptionHandler] ex, {}, message = {}", e, e.getMessage());
-        return new ErrorResult(-1, e.getMessage());
+        return responseService.getFailResult(-1, e.getMessage());
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
@@ -82,7 +83,7 @@ public class ExControllerAdvice {
     public CommonResult validationExHandler(BindException e) {
         log.error("[exceptionHandler} ex", e);
         FieldError err = e.getFieldError();
-        return responseService.getFailResult(-301, String.valueOf(err.getObjectName()) + " " + String.valueOf(err.getField()) + err.getDefaultMessage());
+        return responseService.getFailResult(-301, String.valueOf(err.getObjectName()) + " " + String.valueOf(err.getField()) + " " + err.getDefaultMessage());
         //return new BindingError(err.getObjectName(), err.getField(), err.getCode(), err.getDefaultMessage());
 
     }

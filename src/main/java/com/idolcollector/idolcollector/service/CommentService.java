@@ -1,5 +1,6 @@
 package com.idolcollector.idolcollector.service;
 
+import com.idolcollector.idolcollector.advice.exception.CAccessDeniedException;
 import com.idolcollector.idolcollector.advice.exception.CCommentNotFoundException;
 import com.idolcollector.idolcollector.advice.exception.CPostNotFoundException;
 import com.idolcollector.idolcollector.domain.comment.Comment;
@@ -95,7 +96,7 @@ public class CommentService {
 
         Member member = memberRepository.findById((Long) httpSession.getAttribute("loginMember")).get();
         if (member.getId() != comment.getMember().getId()) {
-            throw new IllegalArgumentException("작성자 본인만 수정할 수 있습니다. commentId = " + comment.getId());
+            throw new CAccessDeniedException();
         }
 
         return comment.update(form.getContent());
@@ -109,7 +110,7 @@ public class CommentService {
 
         Member member = memberRepository.findById((Long) httpSession.getAttribute("loginMember")).get();
         if (member.getId() != comment.getMember().getId()) {
-            throw new IllegalArgumentException("작성자 본인만 삭제할 수 있습니다. commentId = " + comment.getId());
+            throw new CAccessDeniedException();
         }
 
         commentRepository.delete(comment);

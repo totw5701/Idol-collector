@@ -1,6 +1,7 @@
 package com.idolcollector.idolcollector.service;
 
 import com.idolcollector.idolcollector.advice.exception.CMemberNotFoundException;
+import com.idolcollector.idolcollector.advice.exception.CNotLoginedException;
 import com.idolcollector.idolcollector.domain.blame.Blame;
 import com.idolcollector.idolcollector.domain.blame.BlameRepository;
 import com.idolcollector.idolcollector.domain.member.Member;
@@ -66,7 +67,7 @@ public class MemberService {
     @Transactional
     public void noticeConfirm() {
         Member member = memberRepository.findById((Long) httpSession.getAttribute("loginMember"))
-                .orElseThrow(() -> new IllegalArgumentException("로그인이 필요한 서비스입니다."));
+                .orElseThrow(() -> new CNotLoginedException());
 
         noticeRepository.deleteAll(member.getNotices());
     }
@@ -74,7 +75,7 @@ public class MemberService {
     @Transactional
     public Blame blame(BlameRequestDto form) {
         Member member = memberRepository.findById((Long) httpSession.getAttribute("loginMember"))
-                .orElseThrow(() -> new IllegalArgumentException("로그인이 필요한 서비스입니다."));
+                .orElseThrow(() -> new CNotLoginedException());
 
         Member targetMember = memberRepository.findById(form.getTargetMember())
                 .orElseThrow(CMemberNotFoundException::new);
