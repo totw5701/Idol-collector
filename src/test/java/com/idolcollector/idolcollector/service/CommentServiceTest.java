@@ -49,9 +49,9 @@ public class CommentServiceTest {
 
     @BeforeEach
     void before() {
-        Member member = new Member(MemberRole.USER, "nick", "email", "1111", "steve", "dsfsdfdsfdsf", LocalDateTime.now());
+        Member member = new Member(MemberRole.USER, "qqqqeeeererwr#@#wr13", "email", "1111", "steve", "dsfsdfdsfdsf", LocalDateTime.now());
         memberRepository.save(member);
-        Post post = new Post(member, "title", "conten", "ste", "ori");
+        Post post = new Post(member, "qqqqeeeererwr#@#wr13", "conten", "ste", "ori");
         postRepository.save(post);
 
     }
@@ -60,10 +60,10 @@ public class CommentServiceTest {
     void 저장_조회() {
 
         // Given
-        Member member = memberRepository.findAll().get(0);
+        Member member = memberRepository.findByNickName("qqqqeeeererwr#@#wr13").get();
         httpSession.setAttribute("loginMember", member.getId());
 
-        Post post = postRepository.findAll().get(0);
+        Post post = postRepository.findByTitle("qqqqeeeererwr#@#wr13").get();
 
         CommentSaveRequestDto form = new CommentSaveRequestDto(post.getId(), "comment content");
 
@@ -79,7 +79,7 @@ public class CommentServiceTest {
         assertThat(find.getId()).isEqualTo(saveId);
         assertThat(find.getNestedComments().get(0).getContent()).isEqualTo("n Comment");
 
-        List<Notice> notices = noticeRepository.findAll();
+        List<Notice> notices = member.getNotices();
         assertThat(notices.size()).isEqualTo(1);
     }
 
@@ -88,10 +88,10 @@ public class CommentServiceTest {
     void 수정() {
 
         // Given
-        Member member = memberRepository.findAll().get(0);
+        Member member = memberRepository.findByNickName("qqqqeeeererwr#@#wr13").get();
         httpSession.setAttribute("loginMember", member.getId());
 
-        Post post = postRepository.findAll().get(0);
+        Post post = postRepository.findByTitle("qqqqeeeererwr#@#wr13").get();
         Comment comment = commentRepository.save(new Comment(member, post, "comment content"));
 
         CommentUpdateRequestDto form = new CommentUpdateRequestDto(comment.getId(), "updated comment content");
@@ -110,10 +110,10 @@ public class CommentServiceTest {
     void 삭제() {
 
         // Given
-        Member member = memberRepository.findAll().get(0);
+        Member member = memberRepository.findByNickName("qqqqeeeererwr#@#wr13").get();
         httpSession.setAttribute("loginMember", member.getId());
 
-        Post post = postRepository.findAll().get(0);
+        Post post = postRepository.findByTitle("qqqqeeeererwr#@#wr13").get();
         Comment comment = commentRepository.save(new Comment(member, post, "comment content"));
 
         NestedComment n_comment = nestedCommentRepository.save(new NestedComment(member, comment, "n Comment"));
@@ -133,10 +133,10 @@ public class CommentServiceTest {
     void 좋아요() {
 
         // Given
-        Member member = memberRepository.findAll().get(0);
+        Member member = memberRepository.findByNickName("qqqqeeeererwr#@#wr13").get();
         httpSession.setAttribute("loginMember", member);
 
-        Post post = postRepository.findAll().get(0);
+        Post post = postRepository.findByTitle("qqqqeeeererwr#@#wr13").get();
         Comment comment = commentRepository.save(new Comment(member, post, "comment content"));
 
         // When
@@ -150,10 +150,10 @@ public class CommentServiceTest {
     void 게시글_댓글_받아오기() {
 
         // Given
-        Member member = memberRepository.findAll().get(0);
+        Member member = memberRepository.findByNickName("qqqqeeeererwr#@#wr13").get();
         httpSession.setAttribute("loginMember", member.getId());
 
-        Post post = postRepository.findAll().get(0);
+        Post post = postRepository.findByTitle("qqqqeeeererwr#@#wr13").get();
 
         Comment comment = new Comment(member, post, "content");
         Comment comment2 = new Comment(member, post, "content");

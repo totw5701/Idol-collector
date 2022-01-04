@@ -30,9 +30,9 @@ class NestedCommentRepositoryTest {
 
     @BeforeEach
     void before() {
-        Member member = new Member(MemberRole.USER, "nick", "email", "1111", "steve", "dsfsdfdsfdsf", LocalDateTime.now());
+        Member member = new Member(MemberRole.USER, "qqqqeeeererwr#@#wr13", "email", "1111", "steve", "dsfsdfdsfdsf", LocalDateTime.now());
         memberRepository.save(member);
-        Post post = new Post(member, "title", "conten", "ste", "ori");
+        Post post = new Post(member, "qqqqeeeererwr#@#wr13", "conten", "ste", "ori");
         postRepository.save(post);
         Comment comment = new Comment(member, post, "content");
         commentRepository.save(comment);
@@ -42,7 +42,7 @@ class NestedCommentRepositoryTest {
     void 저장_조회() {
 
         // Given
-        Member member = memberRepository.findAll().get(0);
+        Member member = memberRepository.findByNickName("qqqqeeeererwr#@#wr13").get();
         Comment comment = commentRepository.findAll().get(0);
         NestedComment nComment = new NestedComment(member, comment, "test");
 
@@ -59,7 +59,7 @@ class NestedCommentRepositoryTest {
     void 수정() {
 
         //Given
-        Member member = memberRepository.findAll().get(0);
+        Member member = memberRepository.findByNickName("qqqqeeeererwr#@#wr13").get();
         Comment comment = commentRepository.findAll().get(0);
         NestedComment nComment = new NestedComment(member, comment, "test");
         NestedComment save = nestedCommentRepository.save(nComment);
@@ -82,7 +82,7 @@ class NestedCommentRepositoryTest {
     void 삭제() {
 
         //Given
-        Member member = memberRepository.findAll().get(0);
+        Member member = memberRepository.findByNickName("qqqqeeeererwr#@#wr13").get();
         Comment comment = commentRepository.findAll().get(0);
         NestedComment nComment = new NestedComment(member, comment, "test");
         NestedComment save = nestedCommentRepository.save(nComment);
@@ -101,8 +101,9 @@ class NestedCommentRepositoryTest {
     @Test
     void 댓글_id로_대댓글_모두_가져오기() {
         // Given
-        Member member = memberRepository.findAll().get(0);
-        Comment comment = commentRepository.findAll().get(0);
+        Member member = memberRepository.findByNickName("qqqqeeeererwr#@#wr13").get();
+
+        Comment comment = commentRepository.findAllByMemberId(member.getId()).get(0);
 
         NestedComment nComment = new NestedComment(member, comment, "test");
         NestedComment nComment2 = new NestedComment(member, comment, "test2");
