@@ -62,3 +62,5 @@ hs_err_pid*
 
 # misc
 .DS_Store
+
+application-dev.properties

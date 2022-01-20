@@ -32,6 +32,7 @@ public class BundleController {
         return responseService.getResult(result);
     }
 
+    @ResponseBody
     @PostMapping("/create")
     public CommonResult create(@Validated @RequestBody BundleSaveDto form) {
 
