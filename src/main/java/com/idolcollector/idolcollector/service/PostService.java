@@ -1,5 +1,6 @@
 package com.idolcollector.idolcollector.service;
 
+import com.idolcollector.idolcollector.advice.exception.CAccessDeniedException;
 import com.idolcollector.idolcollector.advice.exception.CPostNotFoundException;
 import com.idolcollector.idolcollector.domain.comment.Comment;
 import com.idolcollector.idolcollector.domain.like.LikeType;
@@ -157,7 +158,7 @@ public class PostService {
         // 세션유저 일치 확인
         Member member = memberRepository.findById((Long) httpSession.getAttribute("loginMember")).get();
         if (post.getMember().getId() != member.getId()) {
-            throw new IllegalArgumentException("작성자 본인만 수정할 수 있습니다. 카드 id =" + form.getPostId());
+            throw new CAccessDeniedException();
         }
 
         post.update(form);
@@ -180,7 +181,7 @@ public class PostService {
         Member member = memberRepository.findById((Long) httpSession.getAttribute("loginMember")).get();
 
         if (post.getMember().getId() != member.getId()) {
-            throw new IllegalArgumentException("작성자 본인만 삭제할 수 있습니다. 카드 id =" + post.getId());
+            throw new CAccessDeniedException();
         }
 
         postRepository.delete(post);

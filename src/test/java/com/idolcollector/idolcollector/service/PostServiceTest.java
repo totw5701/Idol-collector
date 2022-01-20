@@ -64,7 +64,7 @@ class PostServiceTest {
 
     @BeforeEach
     void before() {
-        Member member = new Member(MemberRole.USER, "nick", "email", "1111", "steve", "dsfsdfdsfdsf", LocalDateTime.now());
+        Member member = new Member(MemberRole.USER, "qqqqeeeererwr#@#wr13", "email", "1111", "steve", "dsfsdfdsfdsf", LocalDateTime.now());
         memberRepository.save(member);
     }
 
@@ -72,7 +72,7 @@ class PostServiceTest {
     void 페이지_리스트받아오기() {
 
         // Given
-        Member member = memberRepository.findAll().get(0);
+        Member member = memberRepository.findByNickName("qqqqeeeererwr#@#wr13").get();
 
         Post post = new Post(member, "title", "conten", "ste", "ori");
         Post p1 = postRepository.save(post);
@@ -127,18 +127,14 @@ class PostServiceTest {
     void 생성() throws IOException {
 
         // Given
-        Member member = memberRepository.findAll().get(0);
+        Member member = memberRepository.findByNickName("qqqqeeeererwr#@#wr13").get();
 
         httpSession.setAttribute("loginMember", member.getId());
 
-        tagRepository.save(new Tag("예쁨"));
-        tagRepository.save(new Tag("beautiful"));
-        tagRepository.save(new Tag("김소담"));
-
         List<String> tags = new ArrayList<>();
-        tags.add("이하늬");
-        tags.add("예쁨");
-        tags.add("BEautiful");
+        tags.add("aSDasdawDW");
+        tags.add("DFeafsfefewff");
+        tags.add("WEFSADVsdfafaWEFASF");
 
         // 사진 파일
         File img = new File("/Users/totheworld/Desktop/idol-collector/test.png");
@@ -155,11 +151,10 @@ class PostServiceTest {
 
         // Then
         Post findPost = postRepository.findById(postId).get();
-        List<Tag> findTags = tagRepository.findAll();
-        List<PostTag> findPostTags = postTagRepository.findAll();
+
+        List<PostTag> findPostTags = postTagRepository.findAllByPostId(findPost.getId());
 
         assertThat(findPost.getId()).isEqualTo(postId);
-        assertThat(findTags.size()).isEqualTo(4);
         assertThat(findPostTags.size()).isEqualTo(3);
     }
 
@@ -167,7 +162,7 @@ class PostServiceTest {
     void 상세보기() {
 
         // Given
-        Member member = memberRepository.findAll().get(0);
+        Member member = memberRepository.findByNickName("qqqqeeeererwr#@#wr13").get();
         httpSession.setAttribute("loginMember", member.getId());
 
         Post post = postRepository.save(new Post(member, "title", "content", "storeFilename", "oriFileName"));
@@ -192,7 +187,7 @@ class PostServiceTest {
     void 수정() throws IOException {
 
         // Given
-        Member member = memberRepository.findAll().get(0);
+        Member member = memberRepository.findByNickName("qqqqeeeererwr#@#wr13").get();
 
         httpSession.setAttribute("loginMember", member.getId());
 
@@ -246,7 +241,7 @@ class PostServiceTest {
     void 삭제() {
 
         // Given
-        Member member = memberRepository.findAll().get(0);
+        Member member = memberRepository.findByNickName("qqqqeeeererwr#@#wr13").get();
         Post post = postRepository.save(new Post(member, "title", "content", "storeFilename", "oriFileName"));
         Comment comment = commentRepository.save(new Comment(member, post, "content"));
         Comment comment2 = commentRepository.save(new Comment(member, post, "content2"));
@@ -294,7 +289,7 @@ class PostServiceTest {
     void 좋아요() {
 
         // Given
-        Member member = memberRepository.findAll().get(0);
+        Member member = memberRepository.findByNickName("qqqqeeeererwr#@#wr13").get();
         httpSession.setAttribute("loginMember", member.getId());
 
         Post post = postRepository.save(new Post(member, "title", "content", "storeFilename", "oriFileName"));
@@ -305,7 +300,7 @@ class PostServiceTest {
         // Then
         assertThat(post.getLikes()).isEqualTo(1);
 
-        List<Notice> notices = noticeRepository.findAll();
+        List<Notice> notices = member.getNotices();
         assertThat(notices.size()).isEqualTo(1);
 
 
@@ -323,15 +318,15 @@ class PostServiceTest {
         Post post = postRepository.save(new Post(member, "title", "content", "storeFilename", "oriFileName"));
 
         // When
-        Long scrap = postService.scrap(post.getId());
+        Long id = postService.scrap(post.getId());
 
         // Then
-        Scrap scrap1 = scrapRepository.findAll().get(0);
+        Scrap scrap = scrapRepository.findScrapByMemberIdPostId(post.getId(), member.getId()).get();
 
-        assertThat(scrap1.getPost().getTitle()).isEqualTo("title");
-        assertThat(scrap1.getMember().getNickName()).isEqualTo("nick");
+        assertThat(scrap.getPost().getTitle()).isEqualTo("title");
+        assertThat(scrap.getMember().getNickName()).isEqualTo("nick");
 
-        List<Notice> notices = noticeRepository.findAll();
+        List<Notice> notices = member.getNotices();
         assertThat(notices.size()).isEqualTo(1);
 
     }

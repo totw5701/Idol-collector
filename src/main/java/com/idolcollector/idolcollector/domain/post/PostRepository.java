@@ -10,8 +10,11 @@ import org.springframework.data.repository.query.Param;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 public interface PostRepository extends JpaRepository<Post, Long> {
+
+    Optional<Post> findByTitle(String title);
 
     @Query("select pt.post from PostTag pt join pt.tag t where t.name = :tagName")
     List<Post> findAllInTag(@Param("tagName") String tagName);

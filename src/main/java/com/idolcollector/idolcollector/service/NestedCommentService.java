@@ -1,5 +1,6 @@
 package com.idolcollector.idolcollector.service;
 
+import com.idolcollector.idolcollector.advice.exception.CAccessDeniedException;
 import com.idolcollector.idolcollector.advice.exception.CCommentNotFoundException;
 import com.idolcollector.idolcollector.domain.comment.Comment;
 import com.idolcollector.idolcollector.domain.comment.CommentRepository;
@@ -69,7 +70,7 @@ public class NestedCommentService {
 
         // 세션아이디 일치확인
         Member member = memberRepository.findById((Long) httpSession.getAttribute("loginMember")).get();
-        if(member.getId() != nComment.getMember().getId()) throw new IllegalArgumentException("작성자만 수정할 수 있습니다. 대댓글 id=" + form.getId());
+        if(member.getId() != nComment.getMember().getId()) throw new CAccessDeniedException();
 
         return nComment.update(form.getContent());
     }
@@ -81,7 +82,7 @@ public class NestedCommentService {
 
         // 세션아이디 일치확인
         Member member = memberRepository.findById((Long) httpSession.getAttribute("loginMember")).get();
-        if(member.getId() != nComment.getMember().getId()) throw new IllegalArgumentException("작성자만 수정할 수 있습니다. 대댓글 id=" + id);
+        if(member.getId() != nComment.getMember().getId()) throw new CAccessDeniedException();
 
         nestedCommentRepository.delete(nComment);
         return id;

@@ -7,7 +7,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.io.IOException;
 
 @Slf4j
 @RestController
@@ -21,8 +23,11 @@ public class SocialLoginController {
     String baseUrl;
 
     @GetMapping("/login-success")
-    public String loginSuccess() {
-        return httpSession.getId();
+    public void loginSuccess(HttpServletResponse res) throws IOException {
+        System.out.println("httpSession.getId() = " + httpSession.getId());
+
+        res.sendRedirect("https://www.naver.com/");
+        //return httpSession.getId();
     }
 
     @GetMapping("/login-url")

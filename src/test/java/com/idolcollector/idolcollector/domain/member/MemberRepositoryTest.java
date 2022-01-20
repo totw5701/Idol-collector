@@ -25,7 +25,7 @@ class MemberRepositoryTest {
 
     @BeforeEach
     void before() {
-        Tag tag = new Tag("이하늬");
+        Tag tag = new Tag("qqqqeeeererwr#@#wr13");
         tagRepository.save(tag);
 
     }
@@ -53,14 +53,13 @@ class MemberRepositoryTest {
         Member member = new Member(MemberRole.USER, "nick", "email", "1111", "steve", "dsfsdfdsfdsf", LocalDateTime.now());
         memberRepository.save(member);
 
-        List<Tag> tags = tagRepository.findAll();
-        Tag tag = tags.get(0);
+        Tag tag = tagRepository.findByName("qqqqeeeererwr#@#wr13").get();
 
         MemberTag memberTag = new MemberTag(member, tag);
         memberTagRepository.save(memberTag);
 
         //When
-        List<Member> members = memberRepository.findAllInTag("이하늬");
+        List<Member> members = memberRepository.findAllInTag("qqqqeeeererwr#@#wr13");
 
         //Then
         assertThat(members.size()).isEqualTo(1);
