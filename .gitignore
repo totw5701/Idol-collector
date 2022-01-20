@@ -63,4 +63,5 @@ hs_err_pid*
 
 
 application-dev.properties
+application-prod.properties
 /src/test/resources/imgs/*.png

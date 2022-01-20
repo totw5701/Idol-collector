@@ -26,7 +26,7 @@ public class SocialLoginController {
     public void loginSuccess(HttpServletResponse res) throws IOException {
         System.out.println("httpSession.getId() = " + httpSession.getId());
 
-        res.sendRedirect("https://www.naver.com/");
+        res.sendRedirect("/api/home");
         //return httpSession.getId();
     }
 
