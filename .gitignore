@@ -61,9 +61,6 @@ hs_err_pid*
 # misc
 .DS_Store
 
-<<<<<<< HEAD
+
 application-dev.properties
-/src/test/resources/imgs/*
-=======
-application-dev.properties
->>>>>>> ce1374bd6656c4057212590892a325e964b99033
+/src/test/resources/imgs/*.png
