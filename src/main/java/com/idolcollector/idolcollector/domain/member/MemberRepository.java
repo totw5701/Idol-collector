@@ -15,7 +15,7 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
 
     List<Member> findAll();
 
-    @Query("select mt.member from MemberTag mt join mt.tag t where t.name = :tagName")
+    @Query("select mt.member from MemberTag mt where mt.tag.name = :tagName")
     List<Member> findAllInTag(@Param("tagName") String tagName);
 
 }

@@ -41,7 +41,7 @@ class NestedCommentServiceTest {
 
     @BeforeEach
     void before() {
-        Member member = new Member(MemberRole.USER, "nick", "email", "1111", "steve", "dsfsdfdsfdsf", LocalDateTime.now());
+        Member member = new Member(MemberRole.USER, "qqqqeeeererwr#@#wr13", "email", "1111", "steve", "dsfsdfdsfdsf", LocalDateTime.now());
         memberRepository.save(member);
         Post post = new Post(member, "title", "conten", "ste", "ori");
         postRepository.save(post);
@@ -53,9 +53,9 @@ class NestedCommentServiceTest {
     void 저장_조회() {
 
         // Given
-        Member member = memberRepository.findAll().get(0);
+        Member member = memberRepository.findByNickName("qqqqeeeererwr#@#wr13").get();
         httpSession.setAttribute("loginMember", member.getId());
-        Comment comment = commentRepository.findAll().get(0);
+        Comment comment = commentRepository.findAllByMemberId(member.getId()).get(0);
 
         NestedCommentSaveRequestDto form = new NestedCommentSaveRequestDto(comment.getId(), "nest comment test");
 
@@ -66,7 +66,7 @@ class NestedCommentServiceTest {
         // Then
         assertThat(nComment.getContent()).isEqualTo("nest comment test");
 
-        List<Notice> notices = noticeRepository.findAll();
+        List<Notice> notices = member.getNotices();
         assertThat(notices.size()).isEqualTo(1);
     }
 
@@ -75,9 +75,9 @@ class NestedCommentServiceTest {
     void 수정() {
 
         // Given
-        Member member = memberRepository.findAll().get(0);
+        Member member = memberRepository.findByNickName("qqqqeeeererwr#@#wr13").get();
         httpSession.setAttribute("loginMember", member.getId());
-        Comment comment = commentRepository.findAll().get(0);
+        Comment comment = commentRepository.findAllByMemberId(member.getId()).get(0);
         NestedComment saved = nestedCommentRepository.save(new NestedComment(member, comment, "nest comment test"));
 
         NestedCommentUpdateRequestDto form = new NestedCommentUpdateRequestDto(saved.getId(), "updated nest comment test");
@@ -96,14 +96,26 @@ class NestedCommentServiceTest {
     void 삭제() {
 
         // Given
-        Member member = memberRepository.findAll().get(0);
+        Member member = memberRepository.findByNickName("qqqqeeeererwr#@#wr13").get();
         httpSession.setAttribute("loginMember", member.getId());
-        Comment comment = commentRepository.findAll().get(0);
-        NestedComment saved = nestedCommentRepository.save(new NestedComment(member, comment, "nest comment test"));
+        Comment comment = commentRepository.findAllByMemberId(member.getId()).get(0);
+
+        //Long id = nestedCommentService.save(new NestedCommentSaveRequestDto(comment.getId(), "nest comment test"));
+
+        //NestedComment saved = nestedCommentRepository.save(new NestedComment(member, comment, "nest comment test"));
 
         // When
-        nestedCommentService.delete(saved.getId());
-        List<NestedComment> result = nestedCommentRepository.findAll();
+        List<NestedComment> result = comment.getNComment();
+
+        for (NestedComment nestedComment : result) {
+            System.out.println("22222222 = " + nestedComment.getContent());
+        }
+
+        //nestedCommentService.delete(id);
+
+        for (NestedComment nestedComment : result) {
+            System.out.println("3333333 " + nestedComment.getContent());
+        }
 
         // Then
         assertThat(result.size()).isEqualTo(0);
@@ -114,9 +126,9 @@ class NestedCommentServiceTest {
     void 좋아요() {
 
         // Given
-        Member member = memberRepository.findAll().get(0);
+        Member member = memberRepository.findByNickName("qqqqeeeererwr#@#wr13").get();
         httpSession.setAttribute("loginMember", member);
-        Comment comment = commentRepository.findAll().get(0);
+        Comment comment = commentRepository.findAllByMemberId(member.getId()).get(0);
         NestedComment nComment = nestedCommentRepository.save(new NestedComment(member, comment, "nest comment test"));
 
         // When

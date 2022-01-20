@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -90,8 +91,11 @@ class CommentRepositoryTest {
         Member member = memberRepository.findAll().get(0);
         Post post = postRepository.findAll().get(0);
 
-        Comment comment = new Comment(member, post, "content");
-        Comment comment2 = new Comment(member, post, "content");
+        UUID uuid = UUID.randomUUID();
+        UUID uuid2 = UUID.randomUUID();
+
+        Comment comment = new Comment(member, post, uuid.toString());
+        Comment comment2 = new Comment(member, post, uuid2.toString());
 
         commentRepository.save(comment);
         commentRepository.save(comment2);
@@ -100,7 +104,15 @@ class CommentRepositoryTest {
         List<Comment> comments = commentRepository.findAllByPostId(post.getId());
 
         // Then
-        assertThat(comments.size()).isEqualTo(2);
+        boolean flag1 = false;
+        boolean flag2 = false;
+        for (Comment com : comments) {
+            if(com.getContent().equals(uuid.toString())) flag1 = true;
+            if(com.getContent().equals(uuid2.toString())) flag2 = true;
+        }
+
+        assertThat(flag1).isTrue();
+        assertThat(flag2).isTrue();
     }
 
     @Test

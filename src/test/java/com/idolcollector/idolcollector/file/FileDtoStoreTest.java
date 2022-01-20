@@ -29,7 +29,7 @@ class FileDtoStoreTest {
     void fileStore() throws IOException {
 
         // Given
-        File img = new File("/Users/totheworld/Desktop/idol-collector/test.png");
+        File img = new File("./src/test/resources/test.png");
         MultipartFile mf = new MockMultipartFile("image","test.png", "img",new FileInputStream(img));
 
         // When
@@ -39,7 +39,7 @@ class FileDtoStoreTest {
         assertThat(uploadFile.getUploadFileName()).isEqualTo("test.png");
         assertThat(uploadFile.getStoreFileName()).isNotNull();
 
-        File file = new File("/Users/totheworld/Desktop/idol-collector/img/" + uploadFile.getStoreFileName());
+        File file = new File("./src/test/resources/imgs/" + uploadFile.getStoreFileName());
         assertThat(file.length()).isEqualTo(img.length());
 
     }
