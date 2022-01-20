@@ -100,8 +100,9 @@ class NestedCommentServiceTest {
         httpSession.setAttribute("loginMember", member.getId());
         Comment comment = commentRepository.findAllByMemberId(member.getId()).get(0);
 
+        //Long id = nestedCommentService.save(new NestedCommentSaveRequestDto(comment.getId(), "nest comment test"));
 
-        NestedComment saved = nestedCommentRepository.save(new NestedComment(member, comment, "nest comment test"));
+        //NestedComment saved = nestedCommentRepository.save(new NestedComment(member, comment, "nest comment test"));
 
         // When
         List<NestedComment> result = comment.getNComment();
@@ -110,7 +111,7 @@ class NestedCommentServiceTest {
             System.out.println("22222222 = " + nestedComment.getContent());
         }
 
-        nestedCommentService.delete(saved.getId());
+        //nestedCommentService.delete(id);
 
         for (NestedComment nestedComment : result) {
             System.out.println("3333333 " + nestedComment.getContent());
