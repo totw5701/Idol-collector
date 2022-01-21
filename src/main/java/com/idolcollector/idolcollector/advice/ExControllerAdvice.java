@@ -93,7 +93,5 @@ public class ExControllerAdvice {
     public CommonResult reqParamExHandler(MissingServletRequestParameterException e) {
         log.error("[exceptionHandler} ex", e);
         return responseService.getFailResult(-302, "파라미터 값이 없습니다.");
-
-        //return new ErrorResult(-1, "파라미터 값이 없습니다.");
     }
 }
