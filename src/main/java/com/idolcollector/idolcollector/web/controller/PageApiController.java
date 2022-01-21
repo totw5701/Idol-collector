@@ -10,6 +10,7 @@ import com.idolcollector.idolcollector.web.dto.member.MemberBrifInfo;
 import com.idolcollector.idolcollector.web.dto.member.MemberDetailDto;
 import com.idolcollector.idolcollector.web.dto.pageresponsedto.CardDetailPageDto;
 import com.idolcollector.idolcollector.web.dto.pageresponsedto.MemberDetailPageDto;
+import com.idolcollector.idolcollector.web.dto.pageresponsedto.MyDetailPageDto;
 import com.idolcollector.idolcollector.web.dto.pageresponsedto.RootPageDto;
 import com.idolcollector.idolcollector.web.dto.post.HomePostListResponseDto;
 import com.idolcollector.idolcollector.web.dto.post.PostResponseDto;
@@ -18,7 +19,11 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
@@ -51,7 +56,7 @@ public class PageApiController {
 
         MemberBrifInfo memberBrifInfo = new MemberBrifInfo(memberService.findById(memberId));
 
-        return responseService.getResult(new RootPageDto(homePostListResponseDtos, memberBrifInfo));
+        return responseService.getResult(new RootPageDto(memberBrifInfo, homePostListResponseDtos));
 
     }
 
@@ -70,16 +75,41 @@ public class PageApiController {
 
         MemberBrifInfo memberBrifInfo = new MemberBrifInfo(memberService.findById(memberId));
 
-        return responseService.getResult(new RootPageDto(homePostListResponseDtos, memberBrifInfo));
+        return responseService.getResult(new RootPageDto(memberBrifInfo, homePostListResponseDtos));
     }
 
 
     @GetMapping({"/member/{id}/{page}", "/member/{id}"})
-    public CommonResult myInfo(@PathVariable(name = "page", required = false) Optional<Integer> page,
-                                      @PathVariable(name = "id") Long memberId) {
+    public CommonResult memberInfo(@PathVariable(name = "page", required = false) Optional<Integer> page,
+                                   @PathVariable(name = "id") Long memberId,
+                                   HttpServletResponse res,
+                                   HttpServletRequest req) throws ServletException, IOException {
+
+        Long sessionId = (Long) httpSession.getAttribute("loginMember");
+        if(memberId == sessionId) req.getRequestDispatcher("/api/mypage").forward(req, res);
+
 
         int pageNum = 0;
         if (page.isPresent()) pageNum = page.get();
+
+        // 세션에서 멤버정보 받아오기
+        MemberBrifInfo member = new MemberBrifInfo(memberService.findById(memberId));
+
+        List<HomePostListResponseDto> cards = postService.memberPostList(memberId, pageNum);
+
+        List<BundleResponseDto> bundles = bundleService.findAllInMember(member.getId());
+
+        return responseService.getResult(new MemberDetailPageDto(member, bundles, cards));
+    }
+
+    @GetMapping({"/mypage/{page}", "/mypage"})
+    public CommonResult myInfo(@PathVariable(name = "page", required = false) Optional<Integer> page) {
+
+        int pageNum = 0;
+        if (page.isPresent()) pageNum = page.get();
+
+
+        Long memberId = (Long) httpSession.getAttribute("loginMember");
 
         // 세션에서 멤버정보 받아오기
         MemberDetailDto member = memberService.findById(memberId);
@@ -88,7 +118,7 @@ public class PageApiController {
 
         List<BundleResponseDto> bundles = bundleService.findAllInMember(member.getId());
 
-        return responseService.getResult(new MemberDetailPageDto(member, bundles, cards));
+        return responseService.getResult(new MyDetailPageDto(member, bundles, cards));
     }
 
 }

@@ -13,9 +13,9 @@ import java.util.List;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class MemberDetailPageDto {
+public class MyDetailPageDto {
 
-    private MemberBrifInfo member;
+    private MemberDetailDto member;
     private List<BundleResponseDto> bundles;
     private List<HomePostListResponseDto> cards;
 }

@@ -11,6 +11,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class CardDetailPageDto {
 
-    private PostResponseDto card;
     private MemberDetailDto member;
+    private PostResponseDto card;
 }

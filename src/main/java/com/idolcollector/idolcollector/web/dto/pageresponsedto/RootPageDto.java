@@ -15,6 +15,6 @@ import java.util.List;
 @NoArgsConstructor
 public class RootPageDto {
 
-    private List<HomePostListResponseDto> cards = new ArrayList<>();
     private MemberBrifInfo member;
+    private List<HomePostListResponseDto> cards = new ArrayList<>();
 }
