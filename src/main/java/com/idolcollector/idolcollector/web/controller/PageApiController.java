@@ -1,11 +1,13 @@
 package com.idolcollector.idolcollector.web.controller;
 
+import com.idolcollector.idolcollector.advice.exception.CNotLoginedException;
 import com.idolcollector.idolcollector.service.BundleService;
 import com.idolcollector.idolcollector.service.MemberService;
 import com.idolcollector.idolcollector.service.PostService;
 import com.idolcollector.idolcollector.service.ResponseService;
 import com.idolcollector.idolcollector.web.dto.bundle.BundleResponseDto;
-import com.idolcollector.idolcollector.web.dto.member.MemberResponseDto;
+import com.idolcollector.idolcollector.web.dto.member.MemberBrifInfo;
+import com.idolcollector.idolcollector.web.dto.member.MemberDetailDto;
 import com.idolcollector.idolcollector.web.dto.pageresponsedto.CardDetailPageDto;
 import com.idolcollector.idolcollector.web.dto.pageresponsedto.MemberDetailPageDto;
 import com.idolcollector.idolcollector.web.dto.pageresponsedto.RootPageDto;
@@ -45,12 +47,11 @@ public class PageApiController {
 
         // 세션에서 멤버정보 받아오기
         Long memberId = (Long) httpSession.getAttribute("loginMember");
-        MemberResponseDto memberResponseDto = new MemberResponseDto();
-        if (memberId != null) {
-            memberResponseDto = memberService.findById(memberId);
-        }
+        if (memberId == null) throw new CNotLoginedException();
 
-        return responseService.getResult(new RootPageDto(homePostListResponseDtos, memberResponseDto));
+        MemberBrifInfo memberBrifInfo = new MemberBrifInfo(memberService.findById(memberId));
+
+        return responseService.getResult(new RootPageDto(homePostListResponseDtos, memberBrifInfo));
 
     }
 
@@ -64,22 +65,14 @@ public class PageApiController {
         List<HomePostListResponseDto> homePostListResponseDtos = postService.scorePostListSearch(pageNum, keywords);
 
         // 세션에서 멤버정보 받아오기
-        MemberResponseDto memberResponseDto = memberService.findById((Long) httpSession.getAttribute("loginMember"));
+        Long memberId = (Long) httpSession.getAttribute("loginMember");
+        if (memberId == null) throw new CNotLoginedException();
 
+        MemberBrifInfo memberBrifInfo = new MemberBrifInfo(memberService.findById(memberId));
 
-        return responseService.getResult(new RootPageDto(homePostListResponseDtos, memberResponseDto));
+        return responseService.getResult(new RootPageDto(homePostListResponseDtos, memberBrifInfo));
     }
 
-    @GetMapping("/card/{id}")
-    public CommonResult detail(@PathVariable("id") Long id) {
-
-        PostResponseDto post = postService.detail(id);
-
-        // 세션에서 멤버정보 받아오기
-        MemberResponseDto member = memberService.findById((Long) httpSession.getAttribute("loginMember"));
-
-        return responseService.getResult(new CardDetailPageDto(post, member));
-    }
 
     @GetMapping({"/member/{id}/{page}", "/member/{id}"})
     public CommonResult myInfo(@PathVariable(name = "page", required = false) Optional<Integer> page,
@@ -89,7 +82,7 @@ public class PageApiController {
         if (page.isPresent()) pageNum = page.get();
 
         // 세션에서 멤버정보 받아오기
-        MemberResponseDto member = memberService.findById(memberId);
+        MemberDetailDto member = memberService.findById(memberId);
 
         List<HomePostListResponseDto> cards = postService.memberPostList(memberId, pageNum);
 

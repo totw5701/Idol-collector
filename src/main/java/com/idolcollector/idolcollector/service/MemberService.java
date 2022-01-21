@@ -7,10 +7,9 @@ import com.idolcollector.idolcollector.domain.blame.BlameRepository;
 import com.idolcollector.idolcollector.domain.member.Member;
 import com.idolcollector.idolcollector.domain.member.MemberRepository;
 import com.idolcollector.idolcollector.domain.member.MemberRole;
-import com.idolcollector.idolcollector.domain.notice.Notice;
 import com.idolcollector.idolcollector.domain.notice.NoticeRepository;
 import com.idolcollector.idolcollector.web.dto.blame.BlameRequestDto;
-import com.idolcollector.idolcollector.web.dto.member.MemberResponseDto;
+import com.idolcollector.idolcollector.web.dto.member.MemberDetailDto;
 import com.idolcollector.idolcollector.web.dto.member.MemberSaveRequestDto;
 import com.idolcollector.idolcollector.web.dto.member.MemberUpdateRequestDto;
 import lombok.RequiredArgsConstructor;
@@ -50,11 +49,11 @@ public class MemberService {
     }
 
 
-    public MemberResponseDto findById(Long id) {
+    public MemberDetailDto findById(Long id) {
         Member member = memberRepository.findById(id)
                 .orElseThrow(CMemberNotFoundException::new);
 
-        return new MemberResponseDto(member);
+        return new MemberDetailDto(member);
     }
 
     public Member findEntityById(Long id) {
@@ -85,10 +84,10 @@ public class MemberService {
         return save;
     }
 
-    public MemberResponseDto testMember() {
+    public MemberDetailDto testMember() {
         Member member = new Member(MemberRole.USER, "SessionLoginGuy", "email", "1111", "pressLike", "dsfsdfdsfdsf", LocalDateTime.now());
         memberRepository.save(member);
 
-        return new MemberResponseDto(member);
+        return new MemberDetailDto(member);
     }
 }

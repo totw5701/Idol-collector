@@ -13,7 +13,7 @@ import java.util.List;
 
 @Getter
 @NoArgsConstructor
-public class MemberResponseDto {
+public class MemberDetailDto {
 
     private String role;
 
@@ -28,7 +28,7 @@ public class MemberResponseDto {
 
     private List<NoticeResponseDto> notices = new ArrayList<>();
 
-    public MemberResponseDto(Member member) {
+    public MemberDetailDto(Member member) {
         this.id = member.getId();
         this.role = member.getRole().name();
         this.nickName = member.getNickName();

@@ -1,10 +1,14 @@
 package com.idolcollector.idolcollector.web.controller;
 
 import com.idolcollector.idolcollector.file.FileStore;
+import com.idolcollector.idolcollector.service.MemberService;
 import com.idolcollector.idolcollector.service.PostService;
 import com.idolcollector.idolcollector.service.ResponseService;
 import com.idolcollector.idolcollector.web.dto.comment.CommentUpdateRequestDto;
 import com.idolcollector.idolcollector.web.dto.file.UploadFile;
+import com.idolcollector.idolcollector.web.dto.member.MemberDetailDto;
+import com.idolcollector.idolcollector.web.dto.pageresponsedto.CardDetailPageDto;
+import com.idolcollector.idolcollector.web.dto.post.PostResponseDto;
 import com.idolcollector.idolcollector.web.dto.post.PostSaveRequestDto;
 import com.idolcollector.idolcollector.web.dto.post.PostUpdateRequestDto;
 import com.idolcollector.idolcollector.web.dto.response.CommonResult;
@@ -19,6 +23,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
@@ -31,6 +36,8 @@ public class CardController {
 
     private final PostService postService;
     private final FileStore fileStore;
+    private final MemberService memberService;
+    private final HttpSession httpSession;
 
     private final ResponseService responseService;
 
@@ -40,6 +47,18 @@ public class CardController {
         Long id = postService.create(form);
 
         return responseService.getResult(id);
+    }
+
+
+    @GetMapping("/{id}")
+    public CommonResult detail(@PathVariable("id") Long id) {
+
+        PostResponseDto post = postService.detail(id);
+
+        // 세션에서 멤버정보 받아오기
+        MemberDetailDto member = memberService.findById((Long) httpSession.getAttribute("loginMember"));
+
+        return responseService.getResult(new CardDetailPageDto(post, member));
     }
 
     @PutMapping("/update")

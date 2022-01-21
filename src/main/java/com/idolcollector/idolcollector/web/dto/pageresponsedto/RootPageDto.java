@@ -1,6 +1,7 @@
 package com.idolcollector.idolcollector.web.dto.pageresponsedto;
 
-import com.idolcollector.idolcollector.web.dto.member.MemberResponseDto;
+import com.idolcollector.idolcollector.web.dto.member.MemberBrifInfo;
+import com.idolcollector.idolcollector.web.dto.member.MemberDetailDto;
 import com.idolcollector.idolcollector.web.dto.post.HomePostListResponseDto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -15,5 +16,5 @@ import java.util.List;
 public class RootPageDto {
 
     private List<HomePostListResponseDto> cards = new ArrayList<>();
-    private MemberResponseDto member;
+    private MemberBrifInfo member;
 }
