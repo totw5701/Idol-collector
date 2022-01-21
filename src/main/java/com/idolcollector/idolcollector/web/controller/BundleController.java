@@ -51,7 +51,6 @@ public class BundleController {
     @ResponseBody
     @PostMapping("/delete-card")
     public CommonResult addCard(@Validated @RequestBody BundleDeleteCardDto form) {
-
         bundleService.deletePost(form);
         return responseService.getSuccessResult();
     }
