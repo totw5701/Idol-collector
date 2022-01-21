@@ -22,8 +22,7 @@ import java.io.IOException;
 public class CommentController {
 
     private final CommentService commentService;
-
-    private ResponseService responseService;
+    private final ResponseService responseService;
 
     @PostMapping(value = "/create")
     public CommonResult create(@Validated @RequestBody CommentSaveRequestDto form) throws IOException {
