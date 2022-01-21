@@ -10,6 +10,7 @@ import com.idolcollector.idolcollector.web.dto.blame.BlameRequestDto;
 import com.idolcollector.idolcollector.web.dto.bundle.BundleResponseDto;
 import com.idolcollector.idolcollector.web.dto.member.MemberBrifInfo;
 import com.idolcollector.idolcollector.web.dto.member.MemberDetailDto;
+import com.idolcollector.idolcollector.web.dto.notice.NoticeResponseDto;
 import com.idolcollector.idolcollector.web.dto.pageresponsedto.MemberDetailPageDto;
 import com.idolcollector.idolcollector.web.dto.pageresponsedto.MyDetailPageDto;
 import com.idolcollector.idolcollector.web.dto.post.HomePostListResponseDto;
@@ -43,8 +44,8 @@ public class MemberController {
 
     @GetMapping("/notice")
     public CommonResult noticeConfirm() {
-        memberService.noticeConfirm();
-        return responseService.getSuccessResult();
+        List<NoticeResponseDto> noticeResponseDtos = memberService.noticeConfirm();
+        return responseService.getResult(noticeResponseDtos);
     }
 
     @PostMapping("/blame")

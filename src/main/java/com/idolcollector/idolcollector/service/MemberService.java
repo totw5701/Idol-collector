@@ -7,17 +7,21 @@ import com.idolcollector.idolcollector.domain.blame.BlameRepository;
 import com.idolcollector.idolcollector.domain.member.Member;
 import com.idolcollector.idolcollector.domain.member.MemberRepository;
 import com.idolcollector.idolcollector.domain.member.MemberRole;
+import com.idolcollector.idolcollector.domain.notice.Notice;
 import com.idolcollector.idolcollector.domain.notice.NoticeRepository;
 import com.idolcollector.idolcollector.web.dto.blame.BlameRequestDto;
 import com.idolcollector.idolcollector.web.dto.member.MemberDetailDto;
 import com.idolcollector.idolcollector.web.dto.member.MemberSaveRequestDto;
 import com.idolcollector.idolcollector.web.dto.member.MemberUpdateRequestDto;
+import com.idolcollector.idolcollector.web.dto.notice.NoticeResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpSession;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 
 @RequiredArgsConstructor
@@ -64,11 +68,19 @@ public class MemberService {
     }
 
     @Transactional
-    public void noticeConfirm() {
+    public List<NoticeResponseDto> noticeConfirm() {
         Member member = memberRepository.findById((Long) httpSession.getAttribute("loginMember"))
                 .orElseThrow(() -> new CNotLoginedException());
 
+        List<Notice> notices = member.getNotices();
+
+        List<NoticeResponseDto> list = new ArrayList<>();
+        for (Notice notice : notices) {
+            list.add(new NoticeResponseDto(notice));
+        }
         noticeRepository.deleteAll(member.getNotices());
+
+        return list;
     }
 
     @Transactional
