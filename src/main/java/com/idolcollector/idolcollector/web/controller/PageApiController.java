@@ -79,46 +79,6 @@ public class PageApiController {
     }
 
 
-    @GetMapping({"/member/{id}/{page}", "/member/{id}"})
-    public CommonResult memberInfo(@PathVariable(name = "page", required = false) Optional<Integer> page,
-                                   @PathVariable(name = "id") Long memberId,
-                                   HttpServletResponse res,
-                                   HttpServletRequest req) throws ServletException, IOException {
 
-        Long sessionId = (Long) httpSession.getAttribute("loginMember");
-        if(memberId == sessionId) req.getRequestDispatcher("/api/mypage").forward(req, res);
-
-
-        int pageNum = 0;
-        if (page.isPresent()) pageNum = page.get();
-
-        // 세션에서 멤버정보 받아오기
-        MemberBrifInfo member = new MemberBrifInfo(memberService.findById(memberId));
-
-        List<HomePostListResponseDto> cards = postService.memberPostList(memberId, pageNum);
-
-        List<BundleResponseDto> bundles = bundleService.findAllInMember(member.getId());
-
-        return responseService.getResult(new MemberDetailPageDto(member, bundles, cards));
-    }
-
-    @GetMapping({"/mypage/{page}", "/mypage"})
-    public CommonResult myInfo(@PathVariable(name = "page", required = false) Optional<Integer> page) {
-
-        int pageNum = 0;
-        if (page.isPresent()) pageNum = page.get();
-
-
-        Long memberId = (Long) httpSession.getAttribute("loginMember");
-
-        // 세션에서 멤버정보 받아오기
-        MemberDetailDto member = memberService.findById(memberId);
-
-        List<HomePostListResponseDto> cards = postService.memberPostList(memberId, pageNum);
-
-        List<BundleResponseDto> bundles = bundleService.findAllInMember(member.getId());
-
-        return responseService.getResult(new MyDetailPageDto(member, bundles, cards));
-    }
 
 }
