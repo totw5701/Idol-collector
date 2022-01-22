@@ -4,6 +4,7 @@ import com.idolcollector.idolcollector.service.BundleService;
 import com.idolcollector.idolcollector.service.MemberService;
 import com.idolcollector.idolcollector.service.PostService;
 import com.idolcollector.idolcollector.service.ResponseService;
+import com.idolcollector.idolcollector.web.controller.api.MemberController;
 import com.idolcollector.idolcollector.web.dto.bundle.BundleResponseDto;
 import com.idolcollector.idolcollector.web.dto.member.MemberDetailDto;
 import com.idolcollector.idolcollector.web.dto.notice.NoticeResponseDto;

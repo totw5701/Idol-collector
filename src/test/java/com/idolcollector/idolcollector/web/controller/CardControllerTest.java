@@ -5,6 +5,7 @@ import com.idolcollector.idolcollector.file.FileStore;
 import com.idolcollector.idolcollector.service.MemberService;
 import com.idolcollector.idolcollector.service.PostService;
 import com.idolcollector.idolcollector.service.ResponseService;
+import com.idolcollector.idolcollector.web.controller.api.CardController;
 import com.idolcollector.idolcollector.web.dto.member.MemberDetailDto;
 import com.idolcollector.idolcollector.web.dto.post.PostResponseDto;
 import com.idolcollector.idolcollector.web.dto.post.PostSaveRequestDto;
@@ -37,7 +38,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ExtendWith(MockitoExtension.class)
 class CardControllerTest {
 
-    @InjectMocks CardController cardController;
+    @InjectMocks
+    CardController cardController;
 
     @Mock private PostService postService;
     @Mock private FileStore fileStore;

@@ -4,6 +4,7 @@ import com.idolcollector.idolcollector.service.BundleService;
 import com.idolcollector.idolcollector.service.MemberService;
 import com.idolcollector.idolcollector.service.PostService;
 import com.idolcollector.idolcollector.service.ResponseService;
+import com.idolcollector.idolcollector.web.controller.api.PageApiController;
 import com.idolcollector.idolcollector.web.dto.member.MemberDetailDto;
 import com.idolcollector.idolcollector.web.dto.post.HomePostListResponseDto;
 import org.junit.jupiter.api.BeforeEach;
@@ -34,7 +35,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ExtendWith(MockitoExtension.class)
 class PageApiControllerTest {
 
-    @InjectMocks PageApiController pageApiController;
+    @InjectMocks
+    PageApiController pageApiController;
 
     @Mock private PostService postService;
     @Mock private MemberService memberService;
