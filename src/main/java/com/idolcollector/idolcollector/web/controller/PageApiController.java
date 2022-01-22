@@ -52,7 +52,6 @@ public class PageApiController {
 
         // 세션에서 멤버정보 받아오기
         Long memberId = (Long) httpSession.getAttribute("loginMember");
-        if (memberId == null) throw new CNotLoginedException();
 
         MemberBrifInfo memberBrifInfo = new MemberBrifInfo(memberService.findById(memberId));
 
@@ -71,7 +70,6 @@ public class PageApiController {
 
         // 세션에서 멤버정보 받아오기
         Long memberId = (Long) httpSession.getAttribute("loginMember");
-        if (memberId == null) throw new CNotLoginedException();
 
         MemberBrifInfo memberBrifInfo = new MemberBrifInfo(memberService.findById(memberId));
 
