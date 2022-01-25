@@ -19,7 +19,5 @@ public class SwaggerConfig {
                 .apis(RequestHandlerSelectors.basePackage("com.idolcollector.idolcollector.web.controller.api"))
                 .paths(PathSelectors.any())
                 .build();
-
     }
-
 }

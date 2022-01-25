@@ -87,5 +87,11 @@ public class Post {
         return ++this.views;
     }
 
+    /**
+     * 테스트용 코드입니다.
+     */
 
+    public void test(long id) {
+        this.id = id;
+    }
 }
