@@ -28,6 +28,7 @@ import com.idolcollector.idolcollector.domain.trending.Trending;
 import com.idolcollector.idolcollector.domain.trending.TrendingRepository;
 import com.idolcollector.idolcollector.domain.trending.TrendingType;
 import com.idolcollector.idolcollector.file.FileStore;
+import com.idolcollector.idolcollector.web.dto.comment.CommentResponseDto;
 import com.idolcollector.idolcollector.web.dto.post.HomePostListResponseDto;
 import com.idolcollector.idolcollector.web.dto.post.PostResponseDto;
 import com.idolcollector.idolcollector.web.dto.post.PostSaveRequestDto;
@@ -133,7 +134,7 @@ class MockPostServiceTest {
         assertThat(detail.getAuthorNickName()).isEqualTo("testMember");
         assertThat(detail.getTitle()).isEqualTo("test card");
         assertThat(detail.getStoreFileName()).isEqualTo("ste");
-        assertThat(detail.getComments().size()).isEqualTo(2);
+        assertThat(detail.getComments().size()).isEqualTo(4);
         assertThat(detail.getComments().get(0).getContent()).contains("comment");
         assertThat(detail.getTags().size()).isEqualTo(2);
         assertThat(detail.getTags().get(0).getName()).contains("tag");
