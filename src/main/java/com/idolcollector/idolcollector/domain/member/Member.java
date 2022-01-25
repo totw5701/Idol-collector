@@ -96,4 +96,11 @@ public class Member {
         return this;
     }
 
+    /**
+     * 테스트용 코드입니다.
+     */
+
+    public void test(long id) {
+        this.id = id;
+    }
 }

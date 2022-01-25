@@ -1,5 +1,5 @@
 plugins {
-    id 'org.springframework.boot' version '2.6.1'
+    id 'org.springframework.boot' version '2.5.2'
     id 'io.spring.dependency-management' version '1.0.11.RELEASE'
     id 'java'
 }
@@ -32,13 +32,12 @@ dependencies {
 
     implementation 'org.springframework.boot:spring-boot-starter-validation'
 
-
     implementation('com.h2database:h2')
-
 
     implementation 'org.mariadb.jdbc:mariadb-java-client:2.7.4'
 
-
+    implementation group: 'io.springfox', name: 'springfox-swagger2', version: '2.9.2'
+    implementation group: 'io.springfox', name: 'springfox-swagger-ui', version: '2.9.2'
 }
 
 test {

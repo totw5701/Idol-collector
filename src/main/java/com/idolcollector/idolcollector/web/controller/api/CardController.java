@@ -1,4 +1,4 @@
-package com.idolcollector.idolcollector.web.controller;
+package com.idolcollector.idolcollector.web.controller.api;
 
 import com.idolcollector.idolcollector.file.FileStore;
 import com.idolcollector.idolcollector.service.MemberService;
@@ -12,6 +12,7 @@ import com.idolcollector.idolcollector.web.dto.post.PostResponseDto;
 import com.idolcollector.idolcollector.web.dto.post.PostSaveRequestDto;
 import com.idolcollector.idolcollector.web.dto.post.PostUpdateRequestDto;
 import com.idolcollector.idolcollector.web.dto.response.CommonResult;
+import io.swagger.annotations.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.Resource;
@@ -28,6 +29,7 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
 
+@Api(tags = {"카드"})
 @Slf4j
 @RestController
 @RequiredArgsConstructor
@@ -41,15 +43,23 @@ public class CardController {
 
     private final ResponseService responseService;
 
+    @ApiOperation(value = "카드 생성", notes = "카드를 생성합니다.")
     @PostMapping(value = "/create")
-    public CommonResult create(@Validated @ModelAttribute PostSaveRequestDto form) throws IOException {
+    public CommonResult create(@ApiParam @Validated @ModelAttribute PostSaveRequestDto form) throws IOException {
 
         Long id = postService.create(form);
 
         return responseService.getResult(id);
     }
 
-
+    @ApiOperation(value = "카드 상세정보", notes = "카드 상세정보를 조회합니다.")
+    @ApiResponses({
+        @ApiResponse(
+                code = 200
+                , response = CardDetailClass.class
+                , message = "생성 성공"
+        )
+    })
     @GetMapping("/{id}")
     public CommonResult detail(@PathVariable("id") Long id) {
 
@@ -61,14 +71,16 @@ public class CardController {
         return responseService.getResult(new CardDetailPageDto(post, member));
     }
 
+    @ApiOperation(value = "카드 수정", notes = "카드를 수정합니다.")
     @PutMapping("/update")
-    public CommonResult update(@Validated @RequestBody PostUpdateRequestDto form) {
+    public CommonResult update(@ApiParam @Validated @RequestBody PostUpdateRequestDto form) {
 
         postService.update(form);
 
         return responseService.getSuccessResult();
     }
 
+    @ApiOperation(value = "카드 삭제", notes = "카드를 삭제합니다.")
     @DeleteMapping("/delete/{id}")
     public CommonResult delete(@PathVariable("id") Long id) {
 
@@ -76,6 +88,7 @@ public class CardController {
         return responseService.getSuccessResult();
     }
 
+    @ApiOperation(value = "카드 좋아요", notes = "이 카드를 좋아합니다.")
     @PutMapping("/like/{id}")
     public CommonResult addLike(@PathVariable("id") Long id) {
 
@@ -83,6 +96,7 @@ public class CardController {
         return responseService.getSuccessResult();
     }
 
+    @ApiOperation(value = "카드 스크랩", notes = "이 카드를 스크랩합니다.")
     @PutMapping("/scrap/{id}")
     public CommonResult scrap(@PathVariable("id") Long id) {
 
@@ -90,14 +104,22 @@ public class CardController {
         return responseService.getResult(scrapId);
     }
 
+    @ApiOperation(value = "스크랩 취소", notes = "스크랩을 취소합니다.")
     @DeleteMapping("/unscrap/{id}")
     public CommonResult unscrap(@PathVariable("id") Long id) {
         postService.cancelScrap(id);
         return responseService.getSuccessResult();
     }
 
+    @ApiOperation(value = "이미지 파일 받아오기", notes = "이미지 파일을 받아옵니다.")
     @GetMapping("/image/{fileName}")
     public Resource imageFile(@PathVariable String fileName) throws MalformedURLException {
         return new UrlResource("file:" + fileStore.getFullPath(fileName));
     }
+
+    /**
+     * Swagger Response API docs 용 클래스
+     */
+
+    private class CardDetailClass extends CommonResult<CardDetailPageDto>{ }
 }
