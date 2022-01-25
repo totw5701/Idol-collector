@@ -124,7 +124,7 @@ class CardControllerTest {
     @Test
     void 이미지_불러오기() throws Exception {
         // Given
-        doReturn("./src/test/resources/imgs/test.png").when(fileStore).getFullPath(any(String.class));
+        doReturn("./src/test/resources/test.png").when(fileStore).getFullPath(any(String.class));
 
         // When
         ResultActions resultActions = mockMvc.perform(
