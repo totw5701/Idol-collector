@@ -18,7 +18,7 @@ script: "./gradlew clean build"
 before_deploy:
   - zip -r idol-collector *
   - mkdir -p deploy
-  - mv travis-test.zip deploy/travis-test.zip
+  - mv idol-collector.zip deploy/idol-collector.zip
 
 # https://docs.travis-ci.com/user/deployment/s3/ 공식 docs
 deploy:
