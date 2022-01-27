@@ -5,6 +5,7 @@ jdk:
 branches:
   only:
     - main
+    - master
 
 # Travis CI 서버의 Home
 cache:
@@ -13,6 +14,27 @@ cache:
     - '$HOME/.gradle'
 
 script: "./gradlew clean build"
+
+before_deploy:
+  - zip -r travis-test *
+  - mkdir -p deploy
+  - mv travis-test.zip deploy/travis-test.zip
+
+# https://docs.travis-ci.com/user/deployment/s3/ 공식 docs
+deploy:
+  provider: s3
+  access_key_id: $AWS_ACCESS_KEY
+  secret_access_key: $AWS_SECRET_KEY
+  bucket: idol-collector-build
+  region: ap-northeast-2
+  skip_cleanup: true
+  acl: private  # zip 파일 접근 private
+  local_dir: deploy  # befroe_deploy에서 생성한 폴더
+  #wait-until-deployed: true
+  on:
+    all_branches: true
+
+
 
 # CI 실행 완료 시 메일로 알람
 notifications:
