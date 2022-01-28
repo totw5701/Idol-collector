@@ -1,10 +1,12 @@
 import styled from 'styled-components';
 
 function Button({ children, src }) {
+  // nav바 상단 카드만들기, 닉네임 부분 
+
   return (
     <StyledButton>
-      {src && <IconButton src={`/images/${src}`} />}
-      {children}
+      {src && <IconButton src={`/images/${src}`} />} 
+      {children} 
     </StyledButton>
   );
 }

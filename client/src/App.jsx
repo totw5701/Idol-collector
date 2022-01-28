@@ -5,6 +5,7 @@ import DetailPage from './pages/DetailPage';
 import MainPage from './pages/MainPage';
 import CreatePage from './pages/CreatePage';
 import SettingPage from './pages/SettingPage';
+import MycardPage from './pages/MycardPage';
 
 export const dummyDB = [
   {
@@ -265,6 +266,9 @@ function App() {
       <Switch>
         <Route path="/setting">
           <SettingPage />
+        </Route>
+        <Route path="/mycard">
+          <MycardPage />
         </Route>
         <Route path="/create">
           <CreatePage />

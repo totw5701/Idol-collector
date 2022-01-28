@@ -19,7 +19,6 @@ function Nav() {
               <Button src={'카드만들기.png'}>카드만들기</Button>
             </Link>
           </LoginMakeCard>
-
           <LoginNickname onClick={() => setDropdown(!dropdown)}>
             <Button src={'닉네임.png'}>닉네임</Button>
             {dropdown ? <ArrowDropUp /> : <ArrowDropDown />}
@@ -28,7 +27,9 @@ function Nav() {
           {dropdown && (
             <DropdownBar>
               <li>
+                <Link to="/mycard">
                 <Button src={'나의카드.png'}>나의 카드</Button>
+                </Link>
               </li>
               <li>
                 <Link to="/setting">

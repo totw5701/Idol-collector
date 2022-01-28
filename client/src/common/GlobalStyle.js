@@ -45,7 +45,7 @@ const GlobalStyle = createGlobalStyle`
   blockquote:before, blockquote:after,
   q:before, q:after {
     content: '';
-    content: none;
+    content: none; 
   }
   table {
     border-collapse: collapse;

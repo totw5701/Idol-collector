@@ -2,6 +2,10 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
 function Columns({ data }) {
+  // 메인 페이지 카드들을 나열하는 부분
+  // map 으로 카드들을 나열하고, 각 카드들에는 링크를 걸어 각 카드의 상세페이지로 이동하게 한다.
+
+  // data가 배열이 아니라면 null 을 리턴한다.
   if (!Array.isArray(data)) return null;
 
   return (
