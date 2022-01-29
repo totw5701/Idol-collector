@@ -1,8 +1,11 @@
 import { useParams } from 'react-router-dom';
 import Detail from '../components/Detail';
-import { dummyDB as data } from '../App';
+import { useSelector } from 'react-redux';
 
 function DetailContainer() {
+
+  let data = useSelector( ({postReducer}) => { return postReducer });
+
   const { cardId } = useParams();
   const db = data;
 
