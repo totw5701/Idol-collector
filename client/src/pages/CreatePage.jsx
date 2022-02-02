@@ -1,6 +1,7 @@
+import React from 'react';
 import CreateContainer from '../containers/CreateContainer';
 
-function CreatePage() {
+const CreatePage = () => {
   return (
     <>
       <CreateContainer />

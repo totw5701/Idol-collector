@@ -1,8 +1,8 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { css } from 'styled-components';
 
-function SearchBar() {
+const SearchBar = () => {
   const [isFixed, setIsFixed] = useState(false);
   const [searchValue, setSearchValue] = useState();
 

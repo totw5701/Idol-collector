@@ -1,4 +1,6 @@
-function SimilarContainer() {
+import React from 'react';
+
+const SimilarContainer = () => {
   return <div></div>;
 }
 

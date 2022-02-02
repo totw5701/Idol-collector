@@ -1,11 +1,12 @@
+import React from 'react';
 import Columns from '../components/Columns';
 import Jumbotron from '../components/Jumbotron';
 
-function MainContainer({ data }) {
+const MainContainer = () => {
   return (
     <>
       <Jumbotron />
-      <Columns data={data} />
+      <Columns />
     </>
   );
 }

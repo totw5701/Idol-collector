@@ -1,6 +1,7 @@
+import React from 'react';
 import styled from 'styled-components';
 
-function TopBtn() {
+const TopBtn = () => {
   const handleTopBtn = () => (document.documentElement.scrollTop = 0);
   return (
     <StyledTopBtn onClick={handleTopBtn}>

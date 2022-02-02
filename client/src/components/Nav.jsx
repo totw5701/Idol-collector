@@ -1,11 +1,12 @@
+import React, { useRef, useState, useEffect } from 'react';
 import { ArrowDropDown, ArrowDropUp } from '@material-ui/icons';
-import { useRef, useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import styled from 'styled-components/macro';
 import Button from './Button';
 
-function Nav() {
+const Nav = ({ isLogin, setIsLogin }) => {
   const navclose = useRef();
+  const history = useHistory();
 
   const [dropdown, setDropdown] = useState(false);
 
@@ -16,6 +17,17 @@ function Nav() {
     }
   }
 
+  const handleLogout = () => {
+    if(isLogin){
+      setIsLogin(false);
+      window.location.replace('/')
+    }
+  };
+
+  const handleLoginModal = () => {
+    setIsLogin(true);
+  };
+
   useEffect(() => {
     window.addEventListener('click', handleCloseModal)
     return () => {
@@ -25,7 +37,7 @@ function Nav() {
 
   return (
     <>
-      <Navbar onClick={(e) => handleCloseModal(e)} ref={navclose}>
+      <Navbar onClick={e => handleCloseModal(e)} ref={navclose}>
         <Link to="/">
           <Logo src="/images/로고.png" alt="homepage logo" />
         </Link>
@@ -35,18 +47,16 @@ function Nav() {
               <Button src={'카드만들기.png'}>카드만들기</Button>
             </Link>
           </LoginMakeCard>
-          <LoginNickname 
-          onClick={() => setDropdown(!dropdown)}
-          >
+          <LoginNickname onClick={() => setDropdown(!dropdown)}>
             <Button src={'닉네임.png'}>닉네임</Button>
             {dropdown ? <ArrowDropUp /> : <ArrowDropDown />}
           </LoginNickname>
 
           {dropdown && (
-            <DropdownBar >
+            <DropdownBar>
               <li>
                 <Link to="/mycard">
-                <Button src={'나의카드.png'}>나의 카드</Button>
+                  <Button src={'나의카드.png'}>나의 카드</Button>
                 </Link>
               </li>
               <li>
@@ -54,8 +64,19 @@ function Nav() {
                   <Button src={'설정.png'}>설정</Button>
                 </Link>
               </li>
-              <li>
-                <Button src={'로그아웃.png'}>로그아웃</Button>
+              <li onClick={() => {
+                handleLogout()
+                handleLoginModal()
+                }}>
+                {isLogin ? (
+                  <Button 
+                  src={'로그아웃.png'} 
+                  >
+                    로그아웃
+                  </Button>
+                ) : (
+                  <Button src={'로그아웃.png'}>로그인</Button>
+                )}
               </li>
             </DropdownBar>
           )}

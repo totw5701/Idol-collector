@@ -1,8 +1,9 @@
+import React from 'react';
 import { useParams } from 'react-router-dom';
 import Detail from '../components/Detail';
-import { dummyDB as data } from '../App';
+import { dummyDB as data } from '../common/dummyData';
 
-function DetailContainer() {
+const DetailContainer = () => {
   const { cardId } = useParams();
   const db = data;
 

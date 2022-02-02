@@ -1,12 +1,12 @@
-import { useRef, useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import styled from 'styled-components';
 import { ArrowForwardIos, ArrowForward } from '@material-ui/icons';
 import TextareaAutosize from 'react-textarea-autosize';
 import Columns from './Columns';
-import { dummyDB as data } from '../App';
+import { dummyDB as data } from '../common/dummyData';
 
-function Detail({ card }) {
+const Detail = ({ card }) => {
   const history = useHistory();
   const [isShow, setIsShow] = useState(false);
 

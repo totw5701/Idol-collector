@@ -1,8 +1,9 @@
+import React from 'react';
 import { useState } from 'react';
 import styled from 'styled-components';
 import CloseIcon from '@material-ui/icons/Close';
 
-function CreateContainer() {
+const CreateContainer = () => {
   const [isPhotoSelected, setIsPhotoSelected] = useState(false);
   const [title, setTitle] = useState();
   const [description, setDescription] = useState();

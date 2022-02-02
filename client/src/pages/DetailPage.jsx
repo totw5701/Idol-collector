@@ -1,7 +1,8 @@
+import React from 'react';
 import DetailContainer from '../containers/DetailContainer';
 import SimilarContainer from '../containers/SimilarContainer';
 
-function DetailPage() {
+const DetailPage = () => {
   return (
     <>
       <DetailContainer />

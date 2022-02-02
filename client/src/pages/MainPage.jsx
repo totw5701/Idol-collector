@@ -1,9 +1,10 @@
+import React from 'react';
 import MainContainer from '../containers/MainContainer';
 
-function MainPage({ data }) {
+const MainPage = () => {
   return (
     <>
-      <MainContainer data={data} />
+      <MainContainer />
     </>
   );
 }

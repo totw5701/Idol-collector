@@ -1,6 +1,7 @@
+import React from 'react';
 import SettingContainer from '../containers/SettingContainer';
 
-function SettingPage() {
+const SettingPage = () => {
   return (
     <>
       <SettingContainer />
