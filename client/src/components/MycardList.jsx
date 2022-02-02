@@ -2,9 +2,7 @@ import React from 'react';
 
 const MycardList = () => {
     return (
-        <div>
-            
-        </div>
+            <h2>케케케</h2>
     );
 };
 

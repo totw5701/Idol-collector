@@ -1,15 +1,31 @@
 import { ArrowDropDown, ArrowDropUp } from '@material-ui/icons';
-import { useState } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components/macro';
 import Button from './Button';
 
 function Nav() {
+  const navclose = useRef();
+
   const [dropdown, setDropdown] = useState(false);
+
+  const handleCloseModal = (e) => {
+    if (e.target === navclose.current) {
+      setDropdown(false)
+      document.body.style.overflow = 'unset'
+    }
+  }
+
+  useEffect(() => {
+    window.addEventListener('click', handleCloseModal)
+    return () => {
+      window.removeEventListener('click', handleCloseModal)
+    }
+  })  
 
   return (
     <>
-      <Navbar>
+      <Navbar onClick={(e) => handleCloseModal(e)} ref={navclose}>
         <Link to="/">
           <Logo src="/images/로고.png" alt="homepage logo" />
         </Link>
@@ -19,13 +35,15 @@ function Nav() {
               <Button src={'카드만들기.png'}>카드만들기</Button>
             </Link>
           </LoginMakeCard>
-          <LoginNickname onClick={() => setDropdown(!dropdown)}>
+          <LoginNickname 
+          onClick={() => setDropdown(!dropdown)}
+          >
             <Button src={'닉네임.png'}>닉네임</Button>
             {dropdown ? <ArrowDropUp /> : <ArrowDropDown />}
           </LoginNickname>
 
           {dropdown && (
-            <DropdownBar>
+            <DropdownBar >
               <li>
                 <Link to="/mycard">
                 <Button src={'나의카드.png'}>나의 카드</Button>
