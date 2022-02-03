@@ -1,21 +1,22 @@
-import { combineReducers } from 'redux';
+import { combineReducers } from 'redux'
 import { ADD_LIKE, REMOVE_LIKE, ADD_VIEW } from './types'
-import dummyPost from '../../data/dummyPost';
-import dummyBundle from '../../data/dummyBundle';
-import dummyMember from '../../data/dummyMember';
+import dummyPost from '../../data/dummyPost'
+import axiosPost from '../../data/axiosPost'
+import dummyBundle from '../../data/dummyBundle'
+import dummyMember from '../../data/dummyMember'
 
 
-import axios from 'axios';
 
-const post = dummyPost;
-const bundle = dummyBundle;
-const member = dummyMember;
+const post = axiosPost
+/* const post = dummyPost */
+const bundle = dummyBundle
+const member = dummyMember
 
 
 
 /* post: mainPage 카드들 */
 const postReducer = ( state = post, action = { type: '' } ) => {
-  let copy = [...state];
+  let copy = [...state]
 
   switch(action.type) {
 
@@ -42,14 +43,14 @@ const postReducer = ( state = post, action = { type: '' } ) => {
 
 /* bundle: mypage 카드집 */
 const bundleReducer = ( state = bundle, action = { type: '' } ) => {
-    let copy = [...bundle];
+    let copy = [...bundle]
 
-    return state;
+    return state
 }//bundleReducer
 
 /* 회원관리 */
 const memberReducer = ( state = member, action = {type: ''} ) => {
-    let copy = [...member];
+    let copy = [...member]
 
     return state
 
@@ -59,4 +60,4 @@ const memberReducer = ( state = member, action = {type: ''} ) => {
 /* reduder들 combine */
 const reducer = combineReducers({ postReducer, bundleReducer, memberReducer });
 
-export default reducer;
+export default reducer

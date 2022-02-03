@@ -1,17 +1,3 @@
-import axios from 'axios';
-
-  let axiosPost = {};
-
-  axios.get('api/home').then((result) => {
-    console.log(result.data.data.member)
-    axiosPost = {...axiosPost,...result.data.data.member}
-  }).catch((e)=>{
-    console.log('/home axios get 실패')
-  });
-
-  console.log('post'+JSON.stringify(axiosPost))
-
-
 export default [
   {
     id: 0,
