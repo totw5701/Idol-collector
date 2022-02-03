@@ -5,6 +5,7 @@ import com.idolcollector.idolcollector.domain.comment.Comment;
 import com.idolcollector.idolcollector.domain.like.Likes;
 import com.idolcollector.idolcollector.domain.member.Member;
 import com.idolcollector.idolcollector.domain.member.MemberRole;
+import com.idolcollector.idolcollector.domain.nestedcomment.NestedComment;
 import com.idolcollector.idolcollector.domain.notice.Notice;
 import com.idolcollector.idolcollector.domain.notice.NoticeType;
 import com.idolcollector.idolcollector.domain.post.Post;
@@ -36,6 +37,10 @@ public class EntityMaker {
 
     public static Comment generateComment(Post post, Member member) {
         return new Comment(member, post, "comment content");
+    }
+
+    public static NestedComment generateNComment(Comment comment, Member member) {
+        return new NestedComment(member, comment, "comment content");
     }
 
     public static Notice generateNotice() {
