@@ -88,7 +88,7 @@ class MockPostServiceTest {
     @Test
     void 생성() throws IOException {
         // Given
-        Post post = generatePost();
+        Post post = generatePost(generateMember());
         List<String> tags = new ArrayList<>();
         tags.add("tag1");
         tags.add("tag2");
@@ -118,7 +118,7 @@ class MockPostServiceTest {
     @Test
     void 상세보기() {
         // Given
-        Post post = generatePost();
+        Post post = generatePost(generateMember());
         Member sessionMember = generateMember();
 
         // When
@@ -144,7 +144,7 @@ class MockPostServiceTest {
     @Test
     void 수정() throws IOException {
         // Given
-        Post post = generatePost();
+        Post post = generatePost(generateMember());
         Member sessionMember = generateMember();
 
         doReturn(1L).when(httpSession).getAttribute(any());
@@ -171,7 +171,7 @@ class MockPostServiceTest {
     @Test
     void 수정_실패_작성자_아님() throws IOException {
         // Given
-        Post post = generatePost();
+        Post post = generatePost(generateMember());
         Member sessionMember = generateMember();
         post.getMember().test(1L); sessionMember.test(2L);
 
@@ -193,7 +193,7 @@ class MockPostServiceTest {
     @Test
     void 삭제() {
         // Given
-        Post post = generatePost();
+        Post post = generatePost(generateMember());
         Member sessionMember = generateMember();
 
         doReturn(1L).when(httpSession).getAttribute(any());
@@ -213,7 +213,7 @@ class MockPostServiceTest {
     @Test
     void 삭제_실패_작성자_아님() {
         // Given
-        Post post = generatePost();
+        Post post = generatePost(generateMember());
         Member sessionMember = generateMember();
         post.getMember().test(1L); sessionMember.test(2L);
 
@@ -236,7 +236,7 @@ class MockPostServiceTest {
     @Test
     void 좋아요_성공() {
         // Given
-        Post post = generatePost();
+        Post post = generatePost(generateMember());
         Member sessionMember = generateMember();
 
         doReturn(1L).when(httpSession).getAttribute(any());
@@ -262,7 +262,7 @@ class MockPostServiceTest {
     @Test
     void 좋아요_실패_중복() {
         // Given
-        Post post = generatePost();
+        Post post = generatePost(generateMember());
         Member sessionMember = generateMember();
 
         doReturn(1L).when(httpSession).getAttribute(any());
@@ -284,7 +284,7 @@ class MockPostServiceTest {
     @Test
     void 스크랩() {
         // Given
-        Post post = generatePost();
+        Post post = generatePost(generateMember());
         Member sessionMember = generateMember();
 
         doReturn(1L).when(httpSession).getAttribute(any());

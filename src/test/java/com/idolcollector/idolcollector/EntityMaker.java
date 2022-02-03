@@ -22,8 +22,7 @@ public class EntityMaker {
         return new Member(MemberRole.USER, "testMember", "testEmail@email.net", "1111", "steve", "dsfsdfdsfdsf", LocalDateTime.now());
     }
 
-    public static Post generatePost() {
-        Member member = new Member(MemberRole.USER, "testMember", "testEmail@email.net", "1111", "steve", "dsfsdfdsfdsf", LocalDateTime.now());
+    public static Post generatePost(Member member) {
         Post post = new Post(member, "test card", "test card content", "ste", "ori");
 
         post.getComments().add(new Comment(generateMember(), post, "comment1"));
@@ -33,6 +32,10 @@ public class EntityMaker {
         post.getPostTags().add(new PostTag(post, new Tag("tag2")));
 
         return post;
+    }
+
+    public static Comment generateComment(Post post, Member member) {
+        return new Comment(member, post, "comment content");
     }
 
     public static Notice generateNotice() {

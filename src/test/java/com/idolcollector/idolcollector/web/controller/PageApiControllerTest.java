@@ -57,8 +57,8 @@ class PageApiControllerTest {
     void 홈페이지_접근() throws Exception {
         // given
         List<HomePostListResponseDto> cards = new ArrayList<>();
-        HomePostListResponseDto dto1 = new HomePostListResponseDto(generatePost());
-        HomePostListResponseDto dto2 = new HomePostListResponseDto(generatePost());
+        HomePostListResponseDto dto1 = new HomePostListResponseDto(generatePost(generateMember()));
+        HomePostListResponseDto dto2 = new HomePostListResponseDto(generatePost(generateMember()));
         cards.add(dto1);
         cards.add(dto2);
 
@@ -82,8 +82,8 @@ class PageApiControllerTest {
     void 태그_검색() throws Exception {
         // given
         List<HomePostListResponseDto> cards = new ArrayList<>();
-        HomePostListResponseDto dto1 = new HomePostListResponseDto(generatePost());
-        HomePostListResponseDto dto2 = new HomePostListResponseDto(generatePost());
+        HomePostListResponseDto dto1 = new HomePostListResponseDto(generatePost(generateMember()));
+        HomePostListResponseDto dto2 = new HomePostListResponseDto(generatePost(generateMember()));
         cards.add(dto1);
         cards.add(dto2);
 
