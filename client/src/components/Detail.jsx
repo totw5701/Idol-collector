@@ -4,11 +4,19 @@ import styled from 'styled-components';
 import { ArrowForwardIos, ArrowForward } from '@material-ui/icons';
 import TextareaAutosize from 'react-textarea-autosize';
 import Columns from './Columns';
-import { dummyDB as data } from '../App';
+import { useSelector, useDispatch } from 'react-redux';
+
+
+
 
 function Detail({ card }) {
+
+  const data = useSelector ( ({postReducer}) => { return postReducer } )
+
   const history = useHistory();
   const [isShow, setIsShow] = useState(false);
+
+  const dispatch = useDispatch();
 
   const inputRef = useRef();
 

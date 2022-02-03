@@ -5,11 +5,13 @@ import { Provider } from 'react-redux';
 import create from './redux/create';
 import GlobalStyle from './common/GlobalStyle';
 
-const store = create();
+/*const store = createStore(()=>{ return dummyPost});*/
+
+const store = create;
 
 ReactDOM.render(
   <React.StrictMode>
-    <Provider store={store}>
+    <Provider store = { store }>
       <GlobalStyle />
       <App />
     </Provider>

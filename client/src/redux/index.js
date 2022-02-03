@@ -1,0 +1,1 @@
+export { addLike, removeLike, addView} from './modules/actions'
