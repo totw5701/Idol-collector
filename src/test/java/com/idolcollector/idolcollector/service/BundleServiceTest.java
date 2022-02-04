@@ -1,143 +1,207 @@
 package com.idolcollector.idolcollector.service;
 
+import com.idolcollector.idolcollector.advice.exception.CBundleNotFoundException;
 import com.idolcollector.idolcollector.domain.bindlepost.BundlePost;
 import com.idolcollector.idolcollector.domain.bindlepost.BundlePostRepository;
 import com.idolcollector.idolcollector.domain.bundle.Bundle;
 import com.idolcollector.idolcollector.domain.bundle.BundleRepository;
 import com.idolcollector.idolcollector.domain.member.Member;
 import com.idolcollector.idolcollector.domain.member.MemberRepository;
-import com.idolcollector.idolcollector.domain.member.MemberRole;
 import com.idolcollector.idolcollector.domain.post.Post;
 import com.idolcollector.idolcollector.domain.post.PostRepository;
-import com.idolcollector.idolcollector.web.dto.bundle.BundleAddCardDto;
-import com.idolcollector.idolcollector.web.dto.bundle.BundleDeleteCardDto;
-import com.idolcollector.idolcollector.web.dto.bundle.BundleSaveDto;
-import org.assertj.core.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
+import com.idolcollector.idolcollector.web.dto.bundle.*;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.transaction.annotation.Transactional;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import javax.servlet.http.HttpSession;
-import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.*;
+import static com.idolcollector.idolcollector.EntityMaker.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.*;
 
-@SpringBootTest
-@Transactional
+@ExtendWith(MockitoExtension.class)
 class BundleServiceTest {
 
-    @Autowired
+    @InjectMocks
     BundleService bundleService;
 
-    @Autowired MemberRepository memberRepository;
-    @Autowired PostRepository postRepository;
-    @Autowired BundleRepository bundleRepository;
-    @Autowired BundlePostRepository bundlePostRepository;
-    @Autowired HttpSession httpSession;
-
-    @BeforeEach
-    void before() {
-        Member member = new Member(MemberRole.USER, "nick", "email", "1111", "steve", "dsfsdfdsfdsf", LocalDateTime.now());
-        memberRepository.save(member);
-        Post post = new Post(member, "title", "conten", "ste", "ori");
-        postRepository.save(post);
-    }
+    @Mock MemberRepository memberRepository;
+    @Mock PostRepository postRepository;
+    @Mock BundleRepository bundleRepository;
+    @Mock BundlePostRepository bundlePostRepository;
+    @Mock HttpSession httpSession;
 
     @Test
-    void 조회() {
-
+    void 조회_성공() {
         // Given
+        Member member = generateMember();
+        Bundle bundle = generateBundle(member);
+
+        Optional<Bundle> bundleOp = Optional.of(bundle);
+
+        doReturn(bundleOp).when(bundleRepository).findById(any());
 
         // When
+        BundleResponseDto result = bundleService.findById(1L);
 
         // Then
+        assertThat(result.getTitle()).isEqualTo(bundle.getTitle());
+        assertThat(result.getDescription()).isEqualTo(bundle.getDescription());
     }
 
+
     @Test
-    void 카드_삭제() {
-
+    void 조회_실패() {
         // Given
-        Member member = memberRepository.findAll().get(0);
-        Post post = postRepository.findAll().get(0);
+        Member member = generateMember();
+        Bundle bundle = generateBundle(member);
 
-        Bundle bundle = new Bundle(member, "title", "desc");
-        Bundle save = bundleRepository.save(bundle);
+        Optional<Bundle> bundleOp = Optional.empty();
 
-        bundlePostRepository.save(new BundlePost(bundle, post));
-
-        BundleDeleteCardDto form = new BundleDeleteCardDto(post.getId(), bundle.getId());
+        doReturn(bundleOp).when(bundleRepository).findById(any());
 
         // When
-        bundleService.deletePost(form);
+        assertThatThrownBy(() -> {
+            bundleService.findById(1L);
+        }).isInstanceOf(CBundleNotFoundException.class);
+    }
+
+
+    @Test
+    void 카드집_생성() {
+        // Given
+        Member sessionMember = generateMember();
+        sessionMember.test(1L);
+        Bundle bundle = generateBundle(sessionMember);
+
+
+        Optional<Member> memberOp = Optional.of(sessionMember);
+
+        doReturn(memberOp).when(memberRepository).findById(sessionMember.getId());
+        doReturn(sessionMember.getId()).when(httpSession).getAttribute(any(String.class));
+        doReturn(bundle).when(bundleRepository).save(any());
+
+        BundleSaveDto form = new BundleSaveDto(bundle.getTitle(), bundle.getDescription());
+
+        // When
+        bundleService.save(form);
+
+        // Verify
+        verify(bundleRepository, times(1)).save(any());
+    }
+
+
+    @Test
+    void 삭제() {
+        // Given
+        Member member = generateMember();
+        Bundle bundle = generateBundle(member);
+
+        Optional<Bundle> bundleOp = Optional.of(bundle);
+
+        doReturn(bundleOp).when(bundleRepository).findById(any());
+        doNothing().when(bundleRepository).delete(any(Bundle.class));
+
+        // When
+        bundleService.delete(1L);
+
+        // Verify
+        verify(bundleRepository, times(1)).delete(any());
+    }
+
+
+    @Test
+    void 카드집_수정() {
+        // Given
+        Member member = generateMember();
+        Bundle bundle = generateBundle(member);
+
+        Optional<Bundle> bundleOp = Optional.of(bundle);
+
+        doReturn(bundleOp).when(bundleRepository).findById(1L);
+
+        BundleUpdateDto form = new BundleUpdateDto(1L, "updated title", "updated desc");
+
+        // When
+        bundleService.update(form);
 
         // Then
-        List<BundlePost> all = bundlePostRepository.findAll();
-        assertThat(all.size()).isEqualTo(0);
+        assertThat(bundle.getTitle()).isEqualTo("updated title");
+        assertThat(bundle.getDescription()).isEqualTo("updated desc");
     }
 
 
     @Test
     void 카드_추가() {
-
         // Given
-        Member member = memberRepository.findAll().get(0);
-        Post post = postRepository.findAll().get(0);
+        Member member = generateMember();
+        Bundle bundle = generateBundle(member);
+        Post post = generatePost(member);
 
-        Bundle bundle = new Bundle(member, "title", "desc");
-        Bundle save = bundleRepository.save(bundle);
+        Optional<Bundle> bundleOp = Optional.of(bundle);
+        Optional<Post> postOp = Optional.of(post);
+        Optional<BundlePost> bundlePostOp = Optional.empty();
 
-        BundleAddCardDto form = new BundleAddCardDto(post.getId(), bundle.getId());
+        doReturn(bundleOp).when(bundleRepository).findById(any());
+        doReturn(postOp).when(postRepository).findById(any());
+        doReturn(bundlePostOp).when(bundlePostRepository).findByPostBundleId(any(), any());
+        doReturn(new BundlePost()).when(bundlePostRepository).save(any());
+
+        BundleAddCardDto form = new BundleAddCardDto(1L, 1L);
 
         // When
-        Long saved = bundleService.addPost(form);
+        bundleService.addPost(form);
 
-        // Then
-        List<BundlePost> all = bundlePostRepository.findAll();
-        assertThat(all.size()).isEqualTo(1);
-
+        // Verify
+        verify(bundlePostRepository, times(1)).save(any());
     }
+
 
     @Test
-    void 카드집_생성() {
-
+    void 카드_삭제() {
         // Given
-        Member member = memberRepository.findAll().get(0);
-        httpSession.setAttribute("loginMember", member.getId());
+        Optional<BundlePost> bundlePostOp = Optional.of(new BundlePost());
 
+        doReturn(bundlePostOp).when(bundlePostRepository).findByPostBundleId(1L, 1L);
+        doNothing().when(bundlePostRepository).delete(any(BundlePost.class));
 
-        BundleSaveDto form = new BundleSaveDto("title", "description");
+        BundleDeleteCardDto form = new BundleDeleteCardDto(1L, 1L);
 
         // When
-        Long save = bundleService.save(form);
+        bundleService.deletePost(form);
 
-        // Then
-        Bundle bundle = bundleRepository.findById(save).get();
-
-        assertThat(bundle.getTitle()).isEqualTo("title");
-
+        // Verify
+        verify(bundlePostRepository, times(1)).delete(any(BundlePost.class));
     }
+
 
     @Test
-    void 삭제() {
-
+    void 회원_카드집_조회() {
         // Given
-        Member member = memberRepository.findAll().get(0);
-        Post post = postRepository.findAll().get(0);
+        Member member = generateMember();
+        member.test(1L);
 
-        Bundle bundle = new Bundle(member, "title", "desc");
-        Bundle save = bundleRepository.save(bundle);
+        List<Bundle> list = new ArrayList<>();
+        list.add(new Bundle(member, "ttl1", "desc1"));
+        list.add(new Bundle(member, "ttl2", "desc2"));
+
+        doReturn(list).when(bundleRepository).findByMemberId(1L);
 
         // When
-        bundleService.delete(save.getId());
+        List<BundleResponseDto> bundles = bundleService.findAllInMember(1L);
 
         // Then
-        Optional<Bundle> byId = bundleRepository.findById(save.getId());
-        assertThat(byId.isPresent()).isEqualTo(false);
+        for (BundleResponseDto b : bundles) {
+            assertThat(b.getTitle()).contains("ttl");
+            assertThat(b.getDescription()).contains("desc");
+        }
     }
-
 }
