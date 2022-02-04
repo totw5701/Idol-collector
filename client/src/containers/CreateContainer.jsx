@@ -39,7 +39,7 @@ function CreateContainer() {
 
       //console.log(newCard.get('attachFile'))
 
-      ApiService.postCreate(newCard)
+      ApiService.postCard(newCard)
       .then( (result)=> { console.log('card/create 성공') } )
       .catch( (err) => { console.log(err+ 'card/create axios실패!') } )
 

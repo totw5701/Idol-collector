@@ -7,8 +7,8 @@ import dummyMember from '../../data/dummyMember'
 
 
 
-const post = axiosPost
-/* const post = dummyPost */
+const post = dummyPost
+/* const post = axiosPost */
 const bundle = dummyBundle
 const member = dummyMember
 
