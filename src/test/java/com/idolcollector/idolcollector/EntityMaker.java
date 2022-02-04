@@ -43,6 +43,10 @@ public class EntityMaker {
         return new NestedComment(member, comment, "comment content");
     }
 
+    public static Bundle generateBundle(Member member) {
+        return new Bundle(member, "bundle title", "bundle desc");
+    }
+
     public static Notice generateNotice() {
         Member member = new Member(MemberRole.USER, "testMember", "testEmail@email.net", "1111", "steve", "dsfsdfdsfdsf", LocalDateTime.now());
         Member member2 = new Member(MemberRole.USER, "testMember2", "testEmail2@email.net", "1111", "steve", "dsfsdfdsfdsf", LocalDateTime.now());
