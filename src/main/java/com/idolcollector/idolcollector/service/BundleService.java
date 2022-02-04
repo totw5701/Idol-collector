@@ -68,7 +68,7 @@ public class BundleService {
     }
 
     @Transactional
-    public Long Update(BundleUpdateDto form) {
+    public Long update(BundleUpdateDto form) {
         Bundle bundle = bundleRepository.findById(form.getBundleId())
                 .orElseThrow(CBundleNotFoundException::new);
 

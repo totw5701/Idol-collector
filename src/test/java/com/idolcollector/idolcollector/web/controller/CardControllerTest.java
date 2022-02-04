@@ -88,7 +88,7 @@ class CardControllerTest {
     @Test
     void 카드_디테일() throws Exception {
         // Given
-        Post post = generatePost();
+        Post post = generatePost(generateMember());
         doReturn(new PostResponseDto(post)).when(postService).detail(any(Long.class));
         doReturn(new MemberDetailDto(post.getMember())).when(memberService).findById(any());
 
