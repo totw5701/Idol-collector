@@ -8,7 +8,7 @@ import ApiService from '../ApiService'
 function Columns({ data }) {
 
 
-/*  dummyDB
+/*  dummyDB copy로 무한 스크롤 테스트
   const copy = data.filter(e => e.id < 10)
   const copy2 = data.filter(e => e.id > 10 && e.id <20)
   const copy3 = data.filter(e => e.id > 20)
@@ -30,8 +30,9 @@ function Columns({ data }) {
 
     ApiService.getHomePage(page)
     .then((result) => {
-      console.log(result)
-      setCard([...data,...result])
+      //console.log(result)
+      setCard([...data,...result.data.data.cards])//dummyDB
+      //setCard([...card,...result.data.data.cards])
       setLoading(false)
     })
     .catch((err) => {
@@ -64,10 +65,14 @@ function Columns({ data }) {
     }
   }, [inView,loading])
 
-  if (!Array.isArray(data)) return null
+  if (!Array.isArray(card)) return null
 
   return (
    <ColumnsContainer>
+      { loading === true
+        ? <span>Loading...</span>
+        : null
+      }
       {card.map((el,idx) => (
         <Card key={el.id}>
           { card.length -1 === idx
