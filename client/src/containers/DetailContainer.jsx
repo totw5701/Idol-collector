@@ -10,7 +10,7 @@ function DetailContainer() {
   const db = data;
 
   const card = db.find(data => data.id === Number(cardId));
-  console.log(card);
+  //console.log(card);
 
   return <Detail card={card} />;
 }
