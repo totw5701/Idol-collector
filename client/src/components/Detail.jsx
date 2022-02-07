@@ -48,6 +48,9 @@ function Detail({ card }) {
   };
 
   const handleNCmtSubmit = (e) => {
+    e.preventDefault()
+    let nComment = {  commentId: e.target[0].value ,content: e.target[1].value }
+    console.log(nComment)
 
   }
   const handleDelCard = () => { // 카드 삭제
@@ -144,6 +147,32 @@ function Detail({ card }) {
                   <FavoriteIcon />
                   <ChatBubbleIcon onClick = { toggleNCmt }  isNCmt = {isNCmt}/>
                   <MoreHorizIcon />
+
+                  { cmt.nestedComments.map((nCmt, nIdx) =>
+
+                    (<NCommentForm>
+                    <NCommentItem as="div" key={nCmt.id}>
+                    <Link to="">
+                      <img
+                        src="/images/업로더-사진.png"
+                        alt={`아이디 이미지`}
+                      />
+                    </Link>
+                    <CommentInfo>
+                      <UserLink to="/member/: card.comments[0].authorId" >comments authorId {nCmt.authorId}</UserLink>
+                      <CommentContent>comments content {nCmt.content}</CommentContent>
+                    </CommentInfo>
+                    </NCommentItem>
+
+                    <FavoriteIcon />
+                    <ChatBubbleIcon onClick = { toggleNCmt }  isNCmt = {isNCmt}/>
+                    <MoreHorizIcon />
+                    </NCommentForm>
+                    )
+
+
+                  )}
+
                 { !isNCmt && (
                   <NCommentForm onSubmit = { handleNCmtSubmit }>
                     <NCommentFormItem as="div">
