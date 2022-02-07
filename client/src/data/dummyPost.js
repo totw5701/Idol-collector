@@ -1,16 +1,127 @@
 export default [
-  {
-    id: 0,
-    authorNickName: 'nickname0',
-    authorId: 'id0',
-    title: 'korean male idol',
-    content: '파란배경 아이돌 사진',
-    createDate: '2021-12-21',
-    views: 100,
-    likes: 10,
-    storeFileName:
-      'https://www.smlounge.co.kr/upload/woman/article/201911/thumb/43390-393024-sampleM.jpg',
+
+ {
+  authorId: 0,
+  authorNickName: "회원 별명",
+  createDate: "2022-02-06T15:19:49.146Z",
+  comments: [
+    {
+      authorId: 0,
+      authorNickName: "별명0",
+      content: "댓글내용 여기 써요!",
+      createDate: "2022-02-06T15:19:49.146Z",
+      didLike: true,
+      id: 0,
+      likes: 0,
+      modifyDate: "2022-02-06T15:19:49.146Z",
+      nestedComments: [
+        {
+          authorId: 1,
+          authorNickName: "별명1",
+          content: "대댓글",
+          createDate: "2022-02-06T15:19:49.146Z",
+          didLike: true,
+          id: 0,
+          likes: 0,
+          modifyDate: "2022-02-06T15:19:49.146Z"
+        },
+        {
+          authorId: 1,
+          authorNickName: "별명1",
+          content: "대댓글",
+          createDate: "2022-02-06T15:19:49.146Z",
+          didLike: true,
+          id: 1,
+          likes: 0,
+          modifyDate: "2022-02-06T15:19:49.146Z"
+        }
+      ]
+    },
+    {
+      authorId: 1,
+      authorNickName: "별명1",
+      content: "댓글내용 여기 써요1!",
+      createDate: "2022-02-06T15:19:49.146Z",
+      didLike: true,
+      id: 1,
+      likes: 0,
+      modifyDate: "2022-02-06T15:19:49.146Z",
+      nestedComments: [
+        {
+          authorId: 1,
+          authorNickName: "별명1",
+          content: "대댓글",
+          createDate: "2022-02-06T15:19:49.146Z",
+          didLike: true,
+          id: 2,
+          likes: 0,
+          modifyDate: "2022-02-06T15:19:49.146Z"
+        }
+      ]
+    },
+    {
+      authorId: 2,
+      authorNickName: "별명2",
+      content: "댓글내용 여기 써요2!",
+      createDate: "2022-02-06T15:19:49.146Z",
+      didLike: true,
+      id: 2,
+      likes: 0,
+      modifyDate: "2022-02-06T15:19:49.146Z",
+      nestedComments: [
+        {
+          authorId: 1,
+          authorNickName: "별명1",
+          content: "대댓글",
+          createDate: "2022-02-06T15:19:49.146Z",
+          didLike: true,
+          id: 3,
+          likes: 0,
+          modifyDate: "2022-02-06T15:19:49.146Z"
+        }
+      ]
+    },
+    {
+      authorId: 3,
+      authorNickName: "별명3",
+      content: "댓글내용 여기 써요3!",
+      createDate: "2022-02-06T15:19:49.146Z",
+      didLike: true,
+      id: 3,
+      likes: 0,
+      modifyDate: "2022-02-06T15:19:49.146Z",
+      nestedComments: [
+        {
+          authorId: 1,
+          authorNickName: "별명1",
+          content: "대댓글",
+          createDate: "2022-02-06T15:19:49.146Z",
+          didLike: true,
+          id: 4,
+          likes: 0,
+          modifyDate: "2022-02-06T15:19:49.146Z"
+        }
+      ]
+    },
+
+  ],
+  content: "설명은 파란배경 아이돌 사진",
+  didLike: true,
+  didScrap: true,
+  id: 0,
+  likes: 1,
+  oriFileName: "string",
+  storeFileName:
+        'https://www.smlounge.co.kr/upload/woman/article/201911/thumb/43390-393024-sampleM.jpg',
+  tags: [
+    {
+      name: "로운"
+    }
+  ],
+  title: "카드제목은 로운",
+  views: 0
   },
+
   {
     id: 1,
     authorNickName: 'nickname1',
@@ -248,5 +359,272 @@ export default [
     storeFileName:
       'http://file2.instiz.net/data/cached_img/upload/2017/12/10/22/ea157bc4974420076209cce9df096bd9.jpg',
   },
+  {
+    id: 21,
+    authorNickName: 'nickname20',
+    authorId: 'id20',
+    title: '버논',
+    content: '세븐틴 버논',
+    createDate: '2021-12-21',
+    views: 2000,
+    likes: 200,
+    storeFileName:
+      'http://file2.instiz.net/data/cached_img/upload/2017/12/10/22/ea157bc4974420076209cce9df096bd9.jpg',
+  },
+  {
+    id: 22,
+    authorNickName: 'nickname20',
+    authorId: 'id20',
+    title: '버논',
+    content: '세븐틴 버논',
+    createDate: '2021-12-21',
+    views: 2000,
+    likes: 200,
+    storeFileName:
+      'http://file2.instiz.net/data/cached_img/upload/2017/12/10/22/ea157bc4974420076209cce9df096bd9.jpg',
+  },
+  {
+    id: 23,
+    authorNickName: 'nickname20',
+    authorId: 'id20',
+    title: '버논',
+    content: '세븐틴 버논',
+    createDate: '2021-12-21',
+    views: 2000,
+    likes: 200,
+    storeFileName:
+      'http://file2.instiz.net/data/cached_img/upload/2017/12/10/22/ea157bc4974420076209cce9df096bd9.jpg',
+  },
+  {
+    id: 24,
+    authorNickName: 'nickname20',
+    authorId: 'id20',
+    title: '버논',
+    content: '세븐틴 버논',
+    createDate: '2021-12-21',
+    views: 2000,
+    likes: 200,
+    storeFileName:
+      'http://file2.instiz.net/data/cached_img/upload/2017/12/10/22/ea157bc4974420076209cce9df096bd9.jpg',
+  },
+  {
+    id: 25,
+    authorNickName: 'nickname20',
+    authorId: 'id20',
+    title: '버논',
+    content: '세븐틴 버논',
+    createDate: '2021-12-21',
+    views: 2000,
+    likes: 200,
+    storeFileName:
+      'http://file2.instiz.net/data/cached_img/upload/2017/12/10/22/ea157bc4974420076209cce9df096bd9.jpg',
+  },
+  {
+    id: 26,
+    authorNickName: 'nickname20',
+    authorId: 'id20',
+    title: '버논',
+    content: '세븐틴 버논',
+    createDate: '2021-12-21',
+    views: 2000,
+    likes: 200,
+    storeFileName:
+      'http://file2.instiz.net/data/cached_img/upload/2017/12/10/22/ea157bc4974420076209cce9df096bd9.jpg',
+  },
+  {
+    id: 27,
+    authorNickName: 'nickname20',
+    authorId: 'id20',
+    title: '버논',
+    content: '세븐틴 버논',
+    createDate: '2021-12-21',
+    views: 2000,
+    likes: 200,
+    storeFileName:
+      'http://file2.instiz.net/data/cached_img/upload/2017/12/10/22/ea157bc4974420076209cce9df096bd9.jpg',
+  },
+  {
+    id: 28,
+    authorNickName: 'nickname20',
+    authorId: 'id20',
+    title: '버논',
+    content: '세븐틴 버논',
+    createDate: '2021-12-21',
+    views: 2000,
+    likes: 200,
+    storeFileName:
+      'http://file2.instiz.net/data/cached_img/upload/2017/12/10/22/ea157bc4974420076209cce9df096bd9.jpg',
+  },
+  {
+    id: 29,
+    authorNickName: 'nickname20',
+    authorId: 'id20',
+    title: '버논',
+    content: '세븐틴 버논',
+    createDate: '2021-12-21',
+    views: 2000,
+    likes: 200,
+    storeFileName:
+      'http://file2.instiz.net/data/cached_img/upload/2017/12/10/22/ea157bc4974420076209cce9df096bd9.jpg',
+  },
+  {
+    id: 30,
+    authorNickName: 'nickname20',
+    authorId: 'id20',
+    title: '버논',
+    content: '세븐틴 버논',
+    createDate: '2021-12-21',
+    views: 2000,
+    likes: 200,
+    storeFileName:
+      'http://file2.instiz.net/data/cached_img/upload/2017/12/10/22/ea157bc4974420076209cce9df096bd9.jpg',
+  },
+  {
+    id: 31,
+    authorNickName: 'nickname20',
+    authorId: 'id20',
+    title: '버논',
+    content: '세븐틴 버논',
+    createDate: '2021-12-21',
+    views: 2000,
+    likes: 200,
+    storeFileName:
+      'http://file2.instiz.net/data/cached_img/upload/2017/12/10/22/ea157bc4974420076209cce9df096bd9.jpg',
+  },
+  {
+    id: 32,
+    authorNickName: 'nickname9',
+    authorId: 'id9',
+    title: '청하',
+    content: '청하 청하 청하 청하 청하 청하 청하 청하 청하',
+    createDate: '2021-12-21',
+    views: 900,
+    likes: 90,
+    storeFileName:
+      'https://pds.joongang.co.kr/news/component/htmlphoto_mmdata/202012/09/4b713b30-3499-4cf7-a95d-1e877f0367d4.jpg',
+  },
+  {
+    id: 33,
+    authorNickName: 'nickname9',
+    authorId: 'id9',
+    title: '청하',
+    content: '청하 청하 청하 청하 청하 청하 청하 청하 청하',
+    createDate: '2021-12-21',
+    views: 900,
+    likes: 90,
+    storeFileName:
+      'https://pds.joongang.co.kr/news/component/htmlphoto_mmdata/202012/09/4b713b30-3499-4cf7-a95d-1e877f0367d4.jpg',
+  },
+
+  {
+    id: 34,
+    authorNickName: 'nickname9',
+    authorId: 'id9',
+    title: '청하',
+    content: '청하 청하 청하 청하 청하 청하 청하 청하 청하',
+    createDate: '2021-12-21',
+    views: 900,
+    likes: 90,
+    storeFileName:
+      'https://pds.joongang.co.kr/news/component/htmlphoto_mmdata/202012/09/4b713b30-3499-4cf7-a95d-1e877f0367d4.jpg',
+  },
+
+  {
+    id: 35,
+    authorNickName: 'nickname9',
+    authorId: 'id9',
+    title: '청하',
+    content: '청하 청하 청하 청하 청하 청하 청하 청하 청하',
+    createDate: '2021-12-21',
+    views: 900,
+    likes: 90,
+    storeFileName:
+      'https://pds.joongang.co.kr/news/component/htmlphoto_mmdata/202012/09/4b713b30-3499-4cf7-a95d-1e877f0367d4.jpg',
+  },
+
+  {
+    id: 36,
+    authorNickName: 'nickname9',
+    authorId: 'id9',
+    title: '청하',
+    content: '청하 청하 청하 청하 청하 청하 청하 청하 청하',
+    createDate: '2021-12-21',
+    views: 900,
+    likes: 90,
+    storeFileName:
+      'https://pds.joongang.co.kr/news/component/htmlphoto_mmdata/202012/09/4b713b30-3499-4cf7-a95d-1e877f0367d4.jpg',
+  },
+  {
+    id: 37,
+    authorNickName: 'nickname9',
+    authorId: 'id9',
+    title: '청하',
+    content: '청하 청하 청하 청하 청하 청하 청하 청하 청하',
+    createDate: '2021-12-21',
+    views: 900,
+    likes: 90,
+    storeFileName:
+      'https://pds.joongang.co.kr/news/component/htmlphoto_mmdata/202012/09/4b713b30-3499-4cf7-a95d-1e877f0367d4.jpg',
+  },
+  {
+    id: 38,
+    authorNickName: 'nickname9',
+    authorId: 'id9',
+    title: '청하',
+    content: '청하 청하 청하 청하 청하 청하 청하 청하 청하',
+    createDate: '2021-12-21',
+    views: 900,
+    likes: 90,
+    storeFileName:
+      'https://pds.joongang.co.kr/news/component/htmlphoto_mmdata/202012/09/4b713b30-3499-4cf7-a95d-1e877f0367d4.jpg',
+  },
+  {
+    id: 39,
+    authorNickName: 'nickname9',
+    authorId: 'id9',
+    title: '청하',
+    content: '청하 청하 청하 청하 청하 청하 청하 청하 청하',
+    createDate: '2021-12-21',
+    views: 900,
+    likes: 90,
+    storeFileName:
+      'https://pds.joongang.co.kr/news/component/htmlphoto_mmdata/202012/09/4b713b30-3499-4cf7-a95d-1e877f0367d4.jpg',
+  },
+  {
+    id: 40,
+    authorNickName: 'nickname9',
+    authorId: 'id9',
+    title: '청하',
+    content: '청하 청하 청하 청하 청하 청하 청하 청하 청하',
+    createDate: '2021-12-21',
+    views: 900,
+    likes: 90,
+    storeFileName:
+      'https://pds.joongang.co.kr/news/component/htmlphoto_mmdata/202012/09/4b713b30-3499-4cf7-a95d-1e877f0367d4.jpg',
+  },
+  {
+    id: 41,
+    authorNickName: 'nickname9',
+    authorId: 'id9',
+    title: '청하',
+    content: '청하 청하 청하 청하 청하 청하 청하 청하 청하',
+    createDate: '2021-12-21',
+    views: 900,
+    likes: 90,
+    storeFileName:
+      'https://pds.joongang.co.kr/news/component/htmlphoto_mmdata/202012/09/4b713b30-3499-4cf7-a95d-1e877f0367d4.jpg',
+  },
+  {
+    id: 42,
+    authorNickName: 'nickname9',
+    authorId: 'id9',
+    title: '청하',
+    content: '청하 청하 청하 청하 청하 청하 청하 청하 청하',
+    createDate: '2021-12-21',
+    views: 900,
+    likes: 90,
+    storeFileName:
+      'https://pds.joongang.co.kr/news/component/htmlphoto_mmdata/202012/09/4b713b30-3499-4cf7-a95d-1e877f0367d4.jpg',
+  }
 ];
 
