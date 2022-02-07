@@ -50,9 +50,9 @@ public class MemberServiceTest {
 
         doReturn(1L).when(httpSession).getAttribute(any());
         doReturn(memberOp).when(memberRepository).findById(1L);
-        //doReturn(generateUploadFile()).when(fileStore).storeProFile(any(MultipartFile.class));
+        doReturn(generateUploadFile()).when(fileStore).storeProFile(any(MultipartFile.class));
 
-        File img = new File("./src/test/resources/imgs/profile/test.png");
+        File img = new File("./src/test/resources/test.png");
         MockMultipartFile mf = new MockMultipartFile("image","test.png", "img", new FileInputStream(img));
 
         MemberUpdateRequestDto form = new MemberUpdateRequestDto("upNick", "upEmail@email.com", mf);
