@@ -66,6 +66,15 @@ function Detail({ card }) {
   }
 
   const handleDownload = () => { // 카드 이미지 다운로드
+    console.log(card)
+    console.log(card.storeFileName)
+    ApiService.getCardImage(card.storeFileName)
+    .then((result) => {
+      console.log('카드 이미지 다운로드 완료')
+    })
+    .catch((err) => {
+      console.log('getCardImage axios 실패! '+err )
+    })
 
   }
 
