@@ -5,10 +5,8 @@ import axiosPost from '../../data/axiosPost'
 import dummyBundle from '../../data/dummyBundle'
 import dummyMember from '../../data/dummyMember'
 
-
-
 const post = dummyPost
-/* const post = axiosPost */
+// const post = axiosPost
 const bundle = dummyBundle
 const member = dummyMember
 
