@@ -153,7 +153,14 @@ function Detail({ card }) {
             </Wrapper>
             <Wrapper>
               <UserInfo>{card.authorNickName}</UserInfo>
-
+              { !didScrap
+                ? <InfoButton onClick = { handleScrap }>
+                    <img src="/images/스크랩.png" alt="스크랩 버튼" />
+                  </InfoButton>
+                : <InfoButton onClick = { handleUnScrap }>
+                     스크랩 취소
+                  </InfoButton>
+              }
             </Wrapper>
             <UserInfo as="p">{card.content}</UserInfo>
             <Wrapper>
