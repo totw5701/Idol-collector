@@ -2,7 +2,6 @@ package com.idolcollector.idolcollector.web.controller.api;
 
 import com.idolcollector.idolcollector.domain.blame.Blame;
 import com.idolcollector.idolcollector.domain.notice.NoticeRepository;
-import com.idolcollector.idolcollector.file.FileStore;
 import com.idolcollector.idolcollector.service.BundleService;
 import com.idolcollector.idolcollector.service.MemberService;
 import com.idolcollector.idolcollector.service.PostService;
@@ -11,17 +10,17 @@ import com.idolcollector.idolcollector.web.dto.blame.BlameRequestDto;
 import com.idolcollector.idolcollector.web.dto.bundle.BundleResponseDto;
 import com.idolcollector.idolcollector.web.dto.member.MemberBrifInfo;
 import com.idolcollector.idolcollector.web.dto.member.MemberDetailDto;
-import com.idolcollector.idolcollector.web.dto.member.MemberUpdateRequestDto;
 import com.idolcollector.idolcollector.web.dto.notice.NoticeResponseDto;
 import com.idolcollector.idolcollector.web.dto.pageresponsedto.MemberDetailPageDto;
 import com.idolcollector.idolcollector.web.dto.pageresponsedto.MyDetailPageDto;
 import com.idolcollector.idolcollector.web.dto.post.HomePostListResponseDto;
 import com.idolcollector.idolcollector.web.dto.response.CommonResult;
-import io.swagger.annotations.*;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.core.io.Resource;
-import org.springframework.core.io.UrlResource;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -30,7 +29,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.util.List;
 import java.util.Optional;
 
@@ -44,7 +42,6 @@ public class MemberController {
     private final MemberService memberService;
     private final PostService postService;
     private final BundleService bundleService;
-    private final FileStore fileStore;
 
     private final HttpSession httpSession;
 
@@ -87,7 +84,7 @@ public class MemberController {
                                    HttpServletRequest req) throws ServletException, IOException {
 
         Long sessionId = (Long) httpSession.getAttribute("loginMember");
-        if (memberId == sessionId) req.getRequestDispatcher("/api/mypage").forward(req, res);
+        if(memberId == sessionId) req.getRequestDispatcher("/api/mypage").forward(req, res);
 
 
         int pageNum = 0;
@@ -131,34 +128,13 @@ public class MemberController {
         return responseService.getResult(new MyDetailPageDto(member, bundles, cards));
     }
 
-    @ApiOperation(value = "회원 정보수정", notes = "회원 정보를 수정합니다.")
-    @PutMapping("/mypage")
-    public CommonResult updateMember(@ApiParam @Validated @ModelAttribute MemberUpdateRequestDto form) throws IOException {
-
-        memberService.update(form);
-
-        return responseService.getSuccessResult();
-    }
-
-    @GetMapping("/image/{fileName}")
-    public Resource imageFile(@PathVariable String fileName) throws MalformedURLException {
-        return new UrlResource("file:" + fileStore.getProfileFullPath(fileName));
-    }
-
-
-
     /**
      * Swagger Response API docs 용 클래스
      */
 
-    private class NoticeConfirmClass extends CommonResult<List<NoticeResponseDto>> {
-    }
-
-    private class MemberDetailClass extends CommonResult<MemberDetailPageDto> {
-    }
-
-    private class MyDetailClass extends CommonResult<MyDetailPageDto> {
-    }
+    private class NoticeConfirmClass extends CommonResult<List<NoticeResponseDto>>{ }
+    private class MemberDetailClass extends CommonResult<MemberDetailPageDto>{ }
+    private class MyDetailClass extends CommonResult<MyDetailPageDto>{ }
 
 
 }

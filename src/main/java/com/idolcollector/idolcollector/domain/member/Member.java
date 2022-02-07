@@ -9,7 +9,6 @@ import com.idolcollector.idolcollector.domain.notice.Notice;
 import com.idolcollector.idolcollector.domain.post.Post;
 import com.idolcollector.idolcollector.domain.scrap.Scrap;
 import com.idolcollector.idolcollector.web.dto.member.MemberUpdateRequestDto;
-import com.idolcollector.idolcollector.web.dto.member.MemberUpdateServiceDto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -80,16 +79,20 @@ public class Member {
 
 
     // 비즈니스 로직
-    public Long update(MemberUpdateServiceDto form) {
+    public Long update(MemberUpdateRequestDto form) {
         this.nickName = form.getNickName();
         this.email = form.getEmail();
+        this.pwd = form.getPwd();
+        this.name = form.getName();
         this.picture = form.getPicture();
 
         return this.id;
     }
 
-    public Member update(String name) {
+    public Member update(String name, String picture) {
         this.name = name;
+        this.picture = picture;
+
         return this;
     }
 
