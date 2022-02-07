@@ -1,20 +1,25 @@
 import { useRef, useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import styled from 'styled-components';
-import { ArrowForwardIos, ArrowForward } from '@material-ui/icons';
+import { ArrowForwardIos, ArrowForward } from '@mui/icons-material';
+import ChatBubbleIcon from '@mui/icons-material/ChatBubble';
 import TextareaAutosize from 'react-textarea-autosize';
+import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
+import FavoriteIcon from '@mui/icons-material/Favorite';
 import Columns from './Columns';
 import { useSelector, useDispatch } from 'react-redux';
 import ApiService from '../ApiService'
 
-
-
 function Detail({ card }) {
 
   const data = useSelector ( ({postReducer}) => { return postReducer } )
+  const member = useSelector ( ({memberReducer}) => { return memberReducer})
+
+  //console.log(member)
 
   const history = useHistory();
-  const [isShow, setIsShow] = useState(false);
+  const [isShow, setIsShow] = useState(false)
+  const [isNCmt, setIsNCmt] = useState(false)
 
   const dispatch = useDispatch();
 
@@ -22,38 +27,36 @@ function Detail({ card }) {
 
   const toggleShow = () => setIsShow(prev => !prev);
 
+  const toggleNCmt =() => setIsNCmt(prev => !prev);
+
   const handlePage = () => history.push('/');
 
-  const handleSubmit = e => {
-    e.preventDefault();
+  const handleCmtSubmit = e => { // 댓글 등록
 
-    console.log(inputRef.current.value);
-    inputRef.current.value = '';
-    inputRef.current.style.height = '39px';
+
   };
 
+  const handleNCmtSubmit = (e) => {
+
+  }
   const handleDelCard = () => { // 카드 삭제
 
-    ApiService.delCardId(card.id)
-    .then((result) => {
-      console.log('카드 삭제완료')
-      handlePage()
-    })
-    .catch((err) => {
-      console.log('delCardId axios 에러! '+err )
-    })
   }
 
   const handleDownload = () => { // 카드 이미지 다운로드
-    console.log(card)
-    console.log(card.storeFileName)
-    ApiService.getCardImage(card.storeFileName)
-    .then((result) => {
-      console.log('카드 이미지 다운로드 완료')
-    })
-    .catch((err) => {
-      console.log('getCardImage axios 실패! '+err )
-    })
+
+  }
+
+    const handleLike = () => { // 카드 좋아요
+
+
+    }
+
+  const handleScrap = () => { // 카드 스크랩
+
+  }
+
+  const handleUnScrap = () => { // 카드 스크랩 취소
 
   }
 
@@ -74,7 +77,7 @@ function Detail({ card }) {
               <Button onClick = { handleDownload }>
                 <img src="/images/다운로드.png" alt="다운로드" />
               </Button>
-              <Button >
+              <Button onClick = { handleLike }>
                 <img src="/images/하트.png" alt="좋아요" />
               </Button>
             </Buttons>
@@ -82,13 +85,13 @@ function Detail({ card }) {
           <Info>
             <Wrapper>
               <UserInfo>{card.title}</UserInfo>
-              <InfoButton>
+              <InfoButton onClick = { handleLike }>
                 <img src="/images/라이크.png" alt="좋아요 버튼" />
               </InfoButton>
             </Wrapper>
             <Wrapper>
               <UserInfo>{card.authorNickName}</UserInfo>
-              <InfoButton>
+              <InfoButton onClick = { handleScrap }>
                 <img src="/images/스크랩.png" alt="스크랩 버튼" />
               </InfoButton>
             </Wrapper>
@@ -100,7 +103,7 @@ function Detail({ card }) {
               </SmallUserInfo>
               <SmallUserInfo>
                 <span>카드태그</span>
-                <span>태그1</span>
+                <span>{card.tags[0].name}</span>
               </SmallUserInfo>
             </Wrapper>
             <CommentWrapper>
@@ -112,7 +115,8 @@ function Detail({ card }) {
             </CommentWrapper>
             {!isShow && (
               <>
-                <CommentList>
+              { card.comments.map((cmt,idx) =>
+                <CommentList key={cmt.id}>
                   <CommentItem>
                     <Link to="">
                       <img
@@ -121,14 +125,49 @@ function Detail({ card }) {
                       />
                     </Link>
                     <CommentInfo>
-                      <UserLink to="/member/:id">아이디</UserLink>
-                      <CommentContent>내용내용</CommentContent>
+                      <UserLink to="/member/: card.comments[0].authorId" >comments authorId {cmt.authorId}</UserLink>
+                      <CommentContent>comments content {cmt.content}</CommentContent>
                     </CommentInfo>
+
                   </CommentItem>
+                  <FavoriteIcon />
+                  <ChatBubbleIcon onClick = { toggleNCmt }  isNCmt = {isNCmt}/>
+                  <MoreHorizIcon />
+                { !isNCmt && (
+                  <NCommentForm onSubmit = { handleNCmtSubmit }>
+                    <NCommentFormItem as="div">
+                      <Link to="마이페이지path">
+                        <img
+                        src="/images/업로더-사진.png"
+                        alt={`아이디 이미지`}
+                        />
+                      </Link>
+                      <NCommentInfo>
+                        <input
+                          type = 'hidden'
+                          value = {cmt.id}
+                        />
+                        <CommentText
+                          type = 'text'
+                          placeholder = '댓글 추가'
+
+                        />
+                      </NCommentInfo>
+
+                      <button onClick = {()=>{ setIsNCmt(false) } }>취소</button>
+                      <button type = 'submit'>완료</button>
+                    </NCommentFormItem>
+                  </NCommentForm>
+                  )
+                }
+
                 </CommentList>
-                <CommentForm onSubmit={handleSubmit}>
+
+              )}
+
+                <CommentForm onSubmit={handleCmtSubmit}>
                   <CommentFormItem as="div">
-                    <Link to="">
+                    <Link to="마이페이지path">
                       <img
                         src="/images/업로더-사진.png"
                         alt={`아이디 이미지`}
@@ -143,7 +182,9 @@ function Detail({ card }) {
                   </CommentFormItem>
                 </CommentForm>
               </>
+
             )}
+
           </Info>
         </DetailBlock>
       )}
@@ -324,6 +365,32 @@ const SmallUserInfo = styled(UserInfo)`
   }
 `;
 
+
+const UserLink = styled(Link)`
+  margin-bottom: 8px;
+  font-weight: 700;
+  font-size: 14px;
+`;
+
+const CommentContent = styled.p`
+  font-size: 12px;
+  text-align: left;
+`;
+
+const Line = styled.div`
+  width: 90%;
+  margin: 0 auto;
+  height: 4px;
+  background-color: #b580d1;
+`;
+
+const Announcement = styled.p`
+  margin: 16px 0;
+  font-weight: 600;
+  font-size: 22px;
+`;
+
+
 const CommentWrapper = styled.div`
   display: flex;
   align-items: center;
@@ -353,6 +420,23 @@ const CommentItem = styled.li`
   }
 `;
 
+const NCommentItem = styled.div`
+  display: flex;
+  justify-content: flex-end;
+
+  > a {
+    margin: 8px 0px 0px 0px;
+
+    img {
+      width: 38px;
+      height: 38px;
+    }
+  }
+
+
+
+`;
+
 const CommentInfo = styled(UserInfo)`
   flex-direction: column;
   align-items: flex-start;
@@ -361,34 +445,35 @@ const CommentInfo = styled(UserInfo)`
   margin-left: 10px;
 `;
 
-const UserLink = styled(Link)`
-  margin-bottom: 8px;
-  font-weight: 700;
-  font-size: 14px;
-`;
-
-const CommentContent = styled.p`
-  font-size: 12px;
-  text-align: left;
-`;
-
-const Line = styled.div`
-  width: 90%;
-  margin: 0 auto;
-  height: 4px;
-  background-color: #b580d1;
-`;
-
-const Announcement = styled.p`
-  margin: 16px 0;
-  font-weight: 600;
-  font-size: 22px;
+const NCommentInfo = styled(UserInfo)`
+  margin: 8px 5px 0 8px;
 `;
 
 const CommentForm = styled.form``;
 
+const NCommentForm = styled.form`
+  width: 85%;
+  height: 50%;
+  margin: 0 10px 0 auto;
+`;
+
 const CommentFormItem = styled(CommentItem)`
   width: 100%;
+
+  > button {
+    background-color: #b580d1;
+    width: 50px;
+    height: 40px;
+    margin-top: 10px;
+    margin-left: 10px;
+    border-radius: 25px;
+    color: #fff;
+  }
+`;
+
+const NCommentFormItem = styled(NCommentItem)`
+  width: 100%
+  margin-right: 0px;
 
   > button {
     background-color: #b580d1;
