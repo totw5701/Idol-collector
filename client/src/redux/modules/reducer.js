@@ -2,16 +2,17 @@ import { combineReducers } from 'redux'
 import { ADD_LIKE, REMOVE_LIKE, ADD_VIEW } from './types'
 import dummyPost from '../../data/dummyPost'
 import axiosPost from '../../data/axiosPost'
+//import axiosMember from '../../data/axiosMember'
 import dummyBundle from '../../data/dummyBundle'
 import dummyMember from '../../data/dummyMember'
+import ApiService from '../../ApiService'
 
 
 
 const post = dummyPost
 /* const post = axiosPost */
 const bundle = dummyBundle
-const member = dummyMember
-
+const member = {}
 
 
 /* post: mainPage 카드들 */
@@ -50,8 +51,11 @@ const bundleReducer = ( state = bundle, action = { type: '' } ) => {
 
 /* 회원관리 */
 const memberReducer = ( state = member, action = {type: ''} ) => {
-    let copy = [...member]
+    let copy = {...member}
 
+    if(action.type === 'axiosMember'){
+      return action.payload
+    }
     return state
 
 }//memberReducer
