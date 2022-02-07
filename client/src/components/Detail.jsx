@@ -1,7 +1,8 @@
-import { useRef, useState } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import { Link, useHistory } from 'react-router-dom';
-import styled from 'styled-components';
+import styled,{ css } from 'styled-components';
 import { ArrowForwardIos, ArrowForward } from '@mui/icons-material';
+import CancelIcon from '@mui/icons-material/Cancel';
 import ChatBubbleIcon from '@mui/icons-material/ChatBubble';
 import TextareaAutosize from 'react-textarea-autosize';
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
@@ -20,6 +21,8 @@ function Detail({ card }) {
   const history = useHistory();
   const [isShow, setIsShow] = useState(false)
   const [isNCmt, setIsNCmt] = useState(false)
+  const [didScrap, setDidScrap] = useState(false)
+  const [isUpdate, setIsUpdate] = useState(false)
 
   const dispatch = useDispatch();
 
@@ -98,6 +101,7 @@ function Detail({ card }) {
     .catch((err) => {
       console.log('putCardScrap axios 에러! '+err )
     })
+    setDidScrap(true)
   }
 
   const handleUnScrap = () => { // 카드 스크랩 취소
@@ -109,10 +113,17 @@ function Detail({ card }) {
     .catch((err) => {
       console.log('delCardUnscrap axios 에러! '+err )
     })
+    setDidScrap(false)
   }
+
+  useEffect(() => {
+    console.log(isUpdate)
+  },[isUpdate])
+
 
   return (
     <DetailBase>
+     <button onClick={()=>{ setIsUpdate(true) }}>카드 수정</button>
       {!card
         ? (
            <span>Loading...</span>
@@ -142,9 +153,7 @@ function Detail({ card }) {
             </Wrapper>
             <Wrapper>
               <UserInfo>{card.authorNickName}</UserInfo>
-              <InfoButton onClick = { handleScrap }>
-                <img src="/images/스크랩.png" alt="스크랩 버튼" />
-              </InfoButton>
+
             </Wrapper>
             <UserInfo as="p">{card.content}</UserInfo>
             <Wrapper>
@@ -182,7 +191,7 @@ function Detail({ card }) {
 
                   </CommentItem>
                   <FavoriteIcon />
-                  <ChatBubbleIcon onClick = { toggleNCmt }  isNCmt = {isNCmt}/>
+                  <ChatBubbleIcon onClick = { toggleNCmt } />
                   <MoreHorizIcon />
 
                   { cmt.nestedComments.map((nCmt, nIdx) =>
@@ -201,7 +210,7 @@ function Detail({ card }) {
                       </NCommentItem>
 
                       <FavoriteIcon />
-                      <ChatBubbleIcon onClick = { toggleNCmt }  isNCmt = {isNCmt}/>
+                      <ChatBubbleIcon onClick = { toggleNCmt } />
                       <MoreHorizIcon />
                       </NCommentForm>
                      )
@@ -209,7 +218,7 @@ function Detail({ card }) {
                   )}
 
                 { !isNCmt && (
-                  <NCommentForm onSubmit = { handleNCmtSubmit }>
+                  <NCommentForm onSubmit = { handleNCmtSubmit } >
                     <NCommentFormItem as="div">
                       <Link to="마이페이지path">
                         <img
@@ -267,6 +276,31 @@ function Detail({ card }) {
         <ArrowForward />
       </BackButton>
       <Line />
+      <UpdateForm isUpdate={isUpdate}>
+        <Title>카드 수정</Title>
+
+        <UpdateFormItem>
+          <UpdateInfo>
+              <Label> 제목
+                <Input type='text' name='title' placeholder={ card.title }/>
+              </Label>
+              <Label> 설명
+                <Input type='text' name='content'/>
+              </Label>
+              <Label> 태그
+                <Input type='text' name='tags'/>
+
+              </Label>
+                <input type='hidden' name='postId' value= { card.id }/>          <Label>
+              </Label>
+          </UpdateInfo>
+          <UpdateImg src={card.storeFileName} alt={`${card.title} 사진`} />
+        </UpdateFormItem>
+        <ButtonItem>
+          <NoBtn onClick = { ()=>{ setIsUpdate(false) }} >취소</NoBtn>
+          <YesBtn type="submit">완료</YesBtn>
+        </ButtonItem>
+      </UpdateForm>
       <Announcement>비슷한 순간들을 확인하세요</Announcement>
       <Columns data={data} />
     </DetailBase>
@@ -275,6 +309,125 @@ function Detail({ card }) {
 
 export default Detail;
 
+
+
+const Title = styled.div`
+  font-size: 40px;
+  font-weight: 800;
+  margin: 50px auto 20px auto;
+`;
+
+const UpdateForm = styled.form`
+  display: ${ props => props.isUpdate ? 'block':'none'};
+  height: 650px;
+  width: 1012px;
+  position: fixed;
+  top: 25%;
+  left: 50%;
+  transform: translateX( -50%);
+  border-radius: 20px;
+  background: white;
+
+  @media screen and (max-width: 1100px) {
+    top: 15%;
+    height: 870px;
+    width: 60%;
+  }
+
+`;
+
+const UpdateFormItem = styled.div`
+  display: flex;
+  justify-content: space-between;
+  margin: 40px auto 0 auto;
+
+  @media screen and (max-width: 1100px) {
+    display: flex;
+    flex-direction: column-reverse;
+    align-items: center;
+  }
+`;
+
+const UpdateInfo = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+
+`;
+
+const UpdateImg =styled.img`
+  width: 100%;
+  height: 100%;
+  max-width: 300px;
+  max-height: 380px;
+  margin: 15px 40px 0 0;
+  object-fit: cover;
+  border-radius: 10px;
+
+  @media screen and (max-width: 1100px) {
+    width: 100%;
+    height: 100%;
+    margin: 0 auto 0 auto;
+  }
+
+`;
+
+const Input = styled.input`
+  width: 70%;
+  height: 70px;
+  padding-left: 20px;
+  margin: 17px 0 20px 70px;
+  border: 3px solid #e0e0e0;
+  border-radius: 10px;
+
+  @media screen and (max-width: 1100px) {
+    width: 70%;
+    height: 50px;
+    padding-left: 20px;
+    margin: 17px 0 10px 20px;
+    border: 3px solid #e0e0e0;
+    border-radius: 10px;
+  }
+`;
+
+const Label = styled.label`
+  text-align: center;
+  font-size: 16px;
+  font-weight: bold;
+`;
+
+const ButtonItem = styled.div`
+  position: absolute;
+  top: 570px;
+  left: 790px;
+
+  @media screen and (max-width: 1100px) {
+    position: absolute;
+    top: 790px;
+    left: 250px;
+  }
+
+`;
+
+const NoBtn = styled.button`
+  width: 70px;
+  height: 50px;
+  background: #e0e0e0;
+  font-size: 17px;
+  font-weight: 800;
+  border-radius: 30px;
+`;
+
+const YesBtn = styled.button`
+  width: 70px;
+  height: 50px;
+  background: red;
+  color: white;
+  font-size: 17px;
+  font-weight: 800;
+  border-radius: 30px;
+  margin-left: 20px;
+`;
 const DetailBase = styled.section`
   position: relative;
   padding: 50px 30px;
