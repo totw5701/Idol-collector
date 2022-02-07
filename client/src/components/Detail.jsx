@@ -5,7 +5,7 @@ import { ArrowForwardIos, ArrowForward } from '@material-ui/icons';
 import TextareaAutosize from 'react-textarea-autosize';
 import Columns from './Columns';
 import { useSelector, useDispatch } from 'react-redux';
-
+import ApiService from '../ApiService'
 
 
 
@@ -32,19 +32,49 @@ function Detail({ card }) {
     inputRef.current.style.height = '39px';
   };
 
+  const handleDelCard = () => { // 카드 삭제
+
+    ApiService.delCardId(card.id)
+    .then((result) => {
+      console.log('카드 삭제완료')
+      handlePage()
+    })
+    .catch((err) => {
+      console.log('delCardId axios 에러! '+err )
+    })
+  }
+
+  const handleDownload = () => { // 카드 이미지 다운로드
+    console.log(card)
+    console.log(card.storeFileName)
+    ApiService.getCardImage(card.storeFileName)
+    .then((result) => {
+      console.log('카드 이미지 다운로드 완료')
+    })
+    .catch((err) => {
+      console.log('getCardImage axios 실패! '+err )
+    })
+
+  }
+
   return (
     <DetailBase>
-      {!card ? (
-        <span>Loading...</span>
-      ) : (
+      {!card
+        ? (
+           <span>Loading...</span>
+          )
+        : (
         <DetailBlock>
           <ImgBlock>
             <img src={card.storeFileName} alt={`${card.title} 사진`} />
             <Buttons>
-              <Button>
+              <Button onClick = { handleDelCard }>
+                <img src="/images/휴지통.png" alt="삭제" />
+              </Button>
+              <Button onClick = { handleDownload }>
                 <img src="/images/다운로드.png" alt="다운로드" />
               </Button>
-              <Button>
+              <Button >
                 <img src="/images/하트.png" alt="좋아요" />
               </Button>
             </Buttons>

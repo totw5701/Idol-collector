@@ -1,6 +1,11 @@
 import { useState } from 'react';
 import styled from 'styled-components';
 import CloseIcon from '@material-ui/icons/Close';
+import ApiService from '../ApiService'
+import axios from 'axios'
+
+
+
 
 function CreateContainer() {
   const [isPhotoSelected, setIsPhotoSelected] = useState(false);
@@ -8,18 +13,39 @@ function CreateContainer() {
   const [description, setDescription] = useState();
   const [alt, setAlt] = useState();
   const [selectedPhoto, setSelectedPhoto] = useState({
-    photo: [],
+    photo: null,
     photoPreview: null,
   });
-  const [tag, setTag] = useState([]);
+  const [tag, setTag] = useState([])
 
   // const handleCreate = async () => {
   //   const formdata = new FormData();
   //   formdata.append('newcard', )
   // }
 
-  const handleCreateCard = () => {
-    console.log(tag, title, description, alt);
+  const handleCreateCard = async () => {
+
+    //console.log(tag, title, description, alt,selectedPhoto)
+
+    /* 사진 첨부 검사 ( 추후 유효성검사 )*/
+    if(selectedPhoto.photo !== null){
+
+      const newCard = new FormData();
+
+      newCard.append('attachFile', selectedPhoto.photo )
+      newCard.append('title', title )
+      newCard.append('content', description )
+      newCard.append('tags', tag )
+
+      //console.log(newCard.get('attachFile'))
+
+      ApiService.postCard(newCard)
+      .then( (result)=> { console.log('card/create 성공') } )
+      .catch( (err) => { console.log(err+ 'card/create axios실패!') } )
+
+    }else{
+      alert('사진을 첨부해주세요')
+    }
   };
 
   const handleAlt = e => {
@@ -50,6 +76,7 @@ function CreateContainer() {
 
   const handleSelectPhoto = e => {
     setIsPhotoSelected(true);
+    // photo에 이미지파일, photoPreview에 상대경로로 미리보기
     setSelectedPhoto({
       ...selectedPhoto,
       photo: e.target.files[0],
@@ -120,6 +147,8 @@ function CreateContainer() {
               placeholder="태그를 넣어 주세요 (최대 5개, 띄어쓰기 없이 한글 영어만 가능)"
               required
             />
+
+            <button type='onSubmit'>태그등록</button>
           </form>
         </InputField>
         {tag && (
