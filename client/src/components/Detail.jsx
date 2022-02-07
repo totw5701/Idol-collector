@@ -102,6 +102,13 @@ function Detail({ card }) {
 
   const handleUnScrap = () => { // 카드 스크랩 취소
 
+    ApiService.delCardUnscrap(card.id)
+    .then((result) => {
+      console.log('카드 스크랩 취소 완료')
+    })
+    .catch((err) => {
+      console.log('delCardUnscrap axios 에러! '+err )
+    })
   }
 
   return (
@@ -179,27 +186,25 @@ function Detail({ card }) {
                   <MoreHorizIcon />
 
                   { cmt.nestedComments.map((nCmt, nIdx) =>
-
                     (<NCommentForm>
-                    <NCommentItem as="div" key={nCmt.id}>
-                    <Link to="">
-                      <img
-                        src="/images/업로더-사진.png"
-                        alt={`아이디 이미지`}
-                      />
-                    </Link>
-                    <CommentInfo>
-                      <UserLink to="/member/: card.comments[0].authorId" >comments authorId {nCmt.authorId}</UserLink>
-                      <CommentContent>comments content {nCmt.content}</CommentContent>
-                    </CommentInfo>
-                    </NCommentItem>
+                      <NCommentItem as="div" key={nCmt.id}>
+                      <Link to="">
+                        <img
+                          src="/images/업로더-사진.png"
+                          alt={`아이디 이미지`}
+                        />
+                      </Link>
+                      <CommentInfo>
+                        <UserLink to="/member/: card.comments[0].authorId" >comments authorId {nCmt.authorId}</UserLink>
+                        <CommentContent>comments content {nCmt.content}</CommentContent>
+                      </CommentInfo>
+                      </NCommentItem>
 
-                    <FavoriteIcon />
-                    <ChatBubbleIcon onClick = { toggleNCmt }  isNCmt = {isNCmt}/>
-                    <MoreHorizIcon />
-                    </NCommentForm>
-                    )
-
+                      <FavoriteIcon />
+                      <ChatBubbleIcon onClick = { toggleNCmt }  isNCmt = {isNCmt}/>
+                      <MoreHorizIcon />
+                      </NCommentForm>
+                     )
 
                   )}
 
