@@ -80,7 +80,13 @@ function Detail({ card }) {
 
     const handleLike = () => { // 카드 좋아요
 
-
+      ApiService.putCardLike(card.id)
+      .then((result) => {
+        console.log('카드 좋아요 완료')
+      })
+      .catch((err) => {
+        console.log('putCardLike axios 에러! '+err )
+      })
     }
 
   const handleScrap = () => { // 카드 스크랩
