@@ -1,8 +1,8 @@
-import { ArrowDropDown, ArrowDropUp } from '@material-ui/icons';
-import { useState } from 'react';
-import { Link } from 'react-router-dom';
-import styled from 'styled-components/macro';
-import Button from './Button';
+import { ArrowDropDown, ArrowDropUp } from '@mui/icons-material'
+import { useState } from 'react'
+import { Link } from 'react-router-dom'
+import styled from 'styled-components/macro'
+import Button from './Button'
 
 function Nav() {
   const [dropdown, setDropdown] = useState(false);
