@@ -59,7 +59,6 @@ public class MemberService {
 
         UploadFile uploadFile = fileStore.storeProFile(form.getProfile());
         String picture = url + uploadFile.getStoreFileName();
-        System.out.println("picture = " + picture);
 
         return member.update(new MemberUpdateServiceDto(form.getNickName(), form.getEmail(), picture));
     }
