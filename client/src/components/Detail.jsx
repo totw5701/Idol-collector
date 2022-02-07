@@ -55,6 +55,14 @@ function Detail({ card }) {
   }
   const handleDelCard = () => { // 카드 삭제
 
+    ApiService.delCardId(card.id)
+    .then((result) => {
+      console.log('카드 삭제완료')
+      handlePage()
+    })
+    .catch((err) => {
+      console.log('delCardId axios 에러! '+err )
+    })
   }
 
   const handleDownload = () => { // 카드 이미지 다운로드
