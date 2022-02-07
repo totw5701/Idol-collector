@@ -36,7 +36,7 @@ function Columns({ data }) {
       setLoading(false)
     })
     .catch((err) => {
-      console.log('/api/home/page axios 에러! '+err )
+      console.log('getHomePage axios 에러! '+err )
       setCard(data)
       setLoading(false)
     })
