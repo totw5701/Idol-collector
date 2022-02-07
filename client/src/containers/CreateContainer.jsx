@@ -1,13 +1,19 @@
-import { useState } from 'react';
-import styled from 'styled-components';
-import CloseIcon from '@material-ui/icons/Close';
+import { useState, useEffect } from 'react';
+import styled, { keyframes, css } from 'styled-components';
+import CancelIcon from '@mui/icons-material/Cancel';
 import ApiService from '../ApiService'
 import axios from 'axios'
+
+
+//null검사, reg검사
+
+
 
 
 
 
 function CreateContainer() {
+
   const [isPhotoSelected, setIsPhotoSelected] = useState(false);
   const [title, setTitle] = useState();
   const [description, setDescription] = useState();
@@ -16,16 +22,89 @@ function CreateContainer() {
     photo: null,
     photoPreview: null,
   });
-  const [tag, setTag] = useState([])
+  const [tags, setTags] = useState([])
+
+  const [regFail,setRegFail] = useState({})//{ [cardDB id명]: 해당 id의 값이 true,false인지 }
 
   // const handleCreate = async () => {
   //   const formdata = new FormData();
   //   formdata.append('newcard', )
   // }
 
+  useEffect(() => {
+    console.log(regFail)
+  },[regFail])
+
+
+ const regFailSwitch = (el) => {
+    setRegFail({...regFail, [el.id]: false }) // 에러: 왜 photo 제외 값은 안넣어지지? 덮어씌워지나? 그래놓고 true로는 잘바뀌네...?
+    setTimeout(()=>{
+       setRegFail({...regFail, [el.id]: true })
+    },1000)
+
+ }
+
+const regObj = {
+  title: { rule: /^[ㄱ-ㅎ가-힣a-zA-Z0-9 ]{1,10}$/, msg: '카드 title은 10자 이내로 입력해주세요!' },
+  description: { rule: /^[ㄱ-ㅎ가-힣a-zA-Z0-9 ]{1,30}$/, msg: '카드 설명은 30자 내로 입력해주세요'},
+  alt: { rule: /^[ㄱ-ㅎ가-힣a-zA-Z0-9 ]/, msg: '카드 이미지 alt값을 입력해주세요!' },
+  tags: { rule: /^[a-zA-Zㄱ-ㅎ가-힣]/, msg: '태그는 띄어쓰기 없이 한글 영어만 가능' },
+  photo: { rule: /[ㄱ-ㅎ가-힣a-zA-Z0-9 ]/, msg: '사진을 등록해주세요' }
+}
+    //console.log( title, description, alt, tags,selectedPhoto)
+
+const isNull = (el) => {
+  if(el.value == null)  { //undefined까지 걸러낼거라서 === 대신 == 사용
+    console.log('Null!! '+ el.id + '값을 입력하셔야 합니다!')
+  }
+
+  return (el.value == null)
+}
+
+
+
+const regTest  = () => { // handleCreateCard 데이터 cardDB 유효성 검사
+  //console.log( title, description, alt, tags,selectedPhoto)
+  const cardDB = [ { id: 'title', value: title },{id: 'description', value: description },{id: 'alt', value: alt },
+                 {id: 'tags', value: tags },{id: 'photo', value: selectedPhoto.photo } ]
+
+  //console.log(cardDB)
+
+  cardDB.map((el) => {
+
+    //console.log(el)
+    //console.log(regObj[el.id].rule.test(el.value))
+
+
+    //태그 유효성 검사
+    if(el.id === 'tags'){
+       //태그 배열 크기 검사
+       if( tags.length === 0 || tags.length >5 ) {
+           console.log('태그는 최대 5개까지 입력! ')
+           regFailSwitch(el)
+       }else{ //태그 1~5개 입력시 각각의 태그 유효성 검사
+         tags.map((tag) => {
+           if(!regObj['tags'].rule.test(tag) ){
+             console.log(regObj['tags'].msg)
+             regFailSwitch(el)
+           }
+         })
+       }
+    }else{ // 태그 외 나머지 유효성 검사
+      if( isNull(el) || !regObj[el.id].rule.test(el.value) ){
+        console.log(regObj[el.id].msg)
+        regFailSwitch(el)
+      }
+    }
+  })// cardDB 반복문 끝
+
+}
+
   const handleCreateCard = async () => {
 
-    //console.log(tag, title, description, alt,selectedPhoto)
+
+  //console.log( title, description, alt, tags,selectedPhoto)
+
 
     /* 사진 첨부 검사 ( 추후 유효성검사 )*/
     if(selectedPhoto.photo !== null){
@@ -35,7 +114,7 @@ function CreateContainer() {
       newCard.append('attachFile', selectedPhoto.photo )
       newCard.append('title', title )
       newCard.append('content', description )
-      newCard.append('tags', tag )
+      newCard.append('tags', tags )
 
       //console.log(newCard.get('attachFile'))
 
@@ -62,12 +141,12 @@ function CreateContainer() {
 
   const handleInputTag = e => {
     e.preventDefault();
-    setTag([...tag, e.target[0].value]);
-    e.target[0].value = '';
+    setTags([...tags, e.target.tags.value]);
+
   };
 
   const handleCloseTag = index => {
-    setTag(tag.filter((cur, i) => i !== index));
+    setTags(tags.filter((cur, i) => i !== index));
   };
 
   const handleDeletePhoto = () => {
@@ -116,14 +195,28 @@ function CreateContainer() {
       <CenterLine />
 
       <CreateRight>
-        <InputField>
-          <input
-            type="text"
-            placeholder="카드 타이틀을 입력하세요 (10자)"
-            required
-            onChange={handleTitle}
-          />
-        </InputField>
+
+{ regFail.title === false
+
+  ? (<InputFailField regFail = { regFail.title }>
+      <input
+      type="text"
+      id="title"
+      placeholder="카드 타이틀을 입력하세요 (10자)"
+      required
+      onChange={handleTitle}
+      />
+    </InputFailField>)
+  : (<InputField>
+      <input
+      type="text"
+      placeholder="카드 타이틀을 입력하세요 (10자)"
+      required
+      onChange={handleTitle}
+      />
+    </InputField>)
+}
+
         <InputField>
           <input
             type="text"
@@ -139,35 +232,43 @@ function CreateContainer() {
             onChange={handleAlt}
           />
         </InputField>
-        <InputField>
+        <InputField >
           {/* 태그 기능 작업할 때 정규식으로 한글 영어만 가져오기 (띄어쓰기, 특수문자, 숫자 제거) */}
           <form onSubmit={handleInputTag}>
             <input
               type="text"
+              name='tags'
               placeholder="태그를 넣어 주세요 (최대 5개, 띄어쓰기 없이 한글 영어만 가능)"
               required
             />
-
             <button type='onSubmit'>태그등록</button>
           </form>
         </InputField>
-        {tag && (
-          <TagField>
-            {tag.map((cur, i) => (
-              <Tag key={i}>
-                {cur}
-                <CloseIcon onClick={() => handleCloseTag(i)} />
-              </Tag>
-            ))}
+          {tags && (
+            <TagField>
+              {tags.map((cur, i) => (
+                <Tag key={i}>
+                  {cur}
+                  <CancelIcon onClick={() => handleCloseTag(i)} />
+            </Tag>
+          ))}
           </TagField>
         )}
-        <CreateBtn onClick={handleCreateCard}>만들기</CreateBtn>
+        <CreateBtn onClick={() => {regTest()}}>만들기</CreateBtn>
       </CreateRight>
     </CreateWrap>
   );
 }
 
 export default CreateContainer;
+
+
+const warning = keyframes`
+  0% { transform: translateX(-5px); }
+  25% { transform: translateX(5px); }
+  50% { transform: translateX(-5px); }
+  75% { transform: translateX(5px); }
+`
 
 const CreateWrap = styled.div`
   width: 90%;
@@ -291,6 +392,39 @@ const InputField = styled.div`
       outline: none;
     }
   }
+  input::placeholder {
+    color: ${ props => props? 'black': 'red'}
+  }
+
+  ${ props => props == false && css`
+      animation: ${ warning }  1s ease;
+  `}
+
+
+`;
+
+const InputFailField = styled.div`
+  width: 100%;
+  border: 2px solid red;
+  padding: 1rem 1.5rem;
+  border-radius: 2rem;
+  margin: 1.5rem auto;
+
+  input {
+    width: 100%;
+    font-size: 0.9rem;
+    border: none;
+    background: none;
+
+    &:focus {
+      outline: none;
+    }
+  }
+
+  input::placeholder {
+    color: red;
+  }
+  animation: ${ warning }  1s ease;
 `;
 
 const TagField = styled.div`
