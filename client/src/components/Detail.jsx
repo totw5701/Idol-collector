@@ -91,6 +91,13 @@ function Detail({ card }) {
 
   const handleScrap = () => { // 카드 스크랩
 
+    ApiService.putCardScrap(card.id)
+    .then((result) => {
+      console.log('카드 스크랩 완료')
+    })
+    .catch((err) => {
+      console.log('putCardScrap axios 에러! '+err )
+    })
   }
 
   const handleUnScrap = () => { // 카드 스크랩 취소
