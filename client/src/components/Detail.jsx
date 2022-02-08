@@ -57,10 +57,19 @@ function Detail({ card }) {
       console.log('putCardUpdate axios 에러! '+err )
     })
 
+  }
+
+
   const handleNCmtSubmit = (e) => { //대댓글 등록
     e.preventDefault()
     //let nComment = {  commentId: e.target[0].value ,content: e.target[1].value }
     //console.log(nComment)
+
+    ApiService.postNCmt({ commentId: e.target[0].value ,content: e.target[1].value })
+    .then((result) => {
+       alert('대댓글 등록 완료')
+    })
+    .catch((err) => {console.log('postNCmt axios 에러! '+err )})
 
   }
   const handleDelCard = () => { // 카드 삭제
@@ -225,6 +234,34 @@ function Detail({ card }) {
                       <FavoriteIcon />
                       <ChatBubbleIcon onClick = { toggleReNCmt } />
                       <MoreHorizIcon />
+
+                        { isReNCmt && (
+                          <NCommentForm onSubmit = { handleNCmtSubmit } >
+                            <NCommentFormItem as="div">
+                              <Link to="마이페이지path">
+                                <img
+                                src="/images/업로더-사진.png"
+                                alt={`아이디 이미지`}
+                                />
+                              </Link>
+                              <NCommentInfo>
+                                <input
+                                  type = 'hidden'
+                                  value = {nCmt.id}
+                                />
+                                <CommentText
+                                  type = 'text'
+                                  placeholder = '댓글 추가'
+                                />
+                              </NCommentInfo>
+
+                              <button onClick = {()=>{ setIsReNCmt(false) } }>취소</button>
+                              <button type = 'submit'>완료</button>
+                            </NCommentFormItem>
+                          </NCommentForm>
+                          )
+                        }
+
                       </NCommentForm>
                      )
                   )}
@@ -260,7 +297,7 @@ function Detail({ card }) {
 
               )}
 
-                <CommentForm onSubmit={handleCmtSubmit}>
+                <CommentForm >
                   <CommentFormItem as="div">
                     <Link to="마이페이지path">
                       <img
