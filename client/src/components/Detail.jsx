@@ -21,39 +21,46 @@ function Detail({ card }) {
   const history = useHistory();
   const [isShow, setIsShow] = useState(false)
   const [isNCmt, setIsNCmt] = useState(false)
+  const [isReNCmt, setIsReNCmt] = useState(false)
   const [didScrap, setDidScrap] = useState(false)
   const [isUpdate, setIsUpdate] = useState(false)
+  const [tag,setTag] = useState()
+  const [tags,setTags] = useState([])
 
   const dispatch = useDispatch();
 
   const inputRef = useRef();
 
-  const toggleShow = () => setIsShow(prev => !prev);
+  const toggleShow = () => setIsShow(prev => !prev)
 
-  const toggleNCmt =() => setIsNCmt(prev => !prev);
+  const toggleNCmt =() => setIsNCmt(prev => !prev)
+
+  const toggleReNCmt = () => setIsReNCmt(prev => !prev)
 
   const handlePage = () => history.push('/');
 
-  const handleCmtSubmit = e => { // 댓글 등록
 
-    //inputRef.current.style.height = '39px';
-    e.preventDefault() // submit할 떄 새로고침 방지
-    console.log(inputRef.current.value);
+  const handleUpdateCard = e => { // 카드 수정
 
-    let comment = { content: inputRef.current.value, postId: card.id }
-
-    ApiService.postCmt(  comment )
+    ApiService.putCardUpdate(
+      {
+        title: e.target.title.value,
+        content: e.target.content.value,
+        postId: e.target.postId.value,
+        tags: tags
+      }
+    )
     .then((result) => {
-      console.log(result)
-    }).catch((err) => {
-      console.log('postCmt axios 에러!'+ err )
+      alert('카드 수정이 완료됐습니다!')
     })
-  };
+    .catch((err) => {
+      console.log('putCardUpdate axios 에러! '+err )
+    })
 
-  const handleNCmtSubmit = (e) => {
+  const handleNCmtSubmit = (e) => { //대댓글 등록
     e.preventDefault()
-    let nComment = {  commentId: e.target[0].value ,content: e.target[1].value }
-    console.log(nComment)
+    //let nComment = {  commentId: e.target[0].value ,content: e.target[1].value }
+    //console.log(nComment)
 
   }
   const handleDelCard = () => { // 카드 삭제
@@ -215,16 +222,14 @@ function Detail({ card }) {
                         <CommentContent>comments content {nCmt.content}</CommentContent>
                       </CommentInfo>
                       </NCommentItem>
-
                       <FavoriteIcon />
-                      <ChatBubbleIcon onClick = { toggleNCmt } />
+                      <ChatBubbleIcon onClick = { toggleReNCmt } />
                       <MoreHorizIcon />
                       </NCommentForm>
                      )
-
                   )}
 
-                { !isNCmt && (
+                { isNCmt && (
                   <NCommentForm onSubmit = { handleNCmtSubmit } >
                     <NCommentFormItem as="div">
                       <Link to="마이페이지path">
@@ -241,7 +246,6 @@ function Detail({ card }) {
                         <CommentText
                           type = 'text'
                           placeholder = '댓글 추가'
-
                         />
                       </NCommentInfo>
 
@@ -283,7 +287,7 @@ function Detail({ card }) {
         <ArrowForward />
       </BackButton>
       <Line />
-      <UpdateForm isUpdate={isUpdate}>
+      <UpdateForm isUpdate={isUpdate} onSubmit = { handleUpdateCard }>
         <Title>카드 수정</Title>
 
         <UpdateFormItem>
@@ -295,17 +299,21 @@ function Detail({ card }) {
                 <Input type='text' name='content'/>
               </Label>
               <Label> 태그
-                <Input type='text' name='tags'/>
-
+                <Input type='text' name='tag' onChange = {(e)=> { setTag(e.target.value) }}/>
+                <div onClick = { () => { setTags([...tags,tag]) }}>태그등록</div>
               </Label>
-                <input type='hidden' name='postId' value= { card.id }/>          <Label>
+              <Label>
+                <TagsArea name='tags' placeholder = { tags }/>
+              </Label>
+              <Label>
+                <input type='hidden' name='postId' value= { card.id }/>
               </Label>
           </UpdateInfo>
           <UpdateImg src={card.storeFileName} alt={`${card.title} 사진`} />
         </UpdateFormItem>
         <ButtonItem>
           <NoBtn onClick = { ()=>{ setIsUpdate(false) }} >취소</NoBtn>
-          <YesBtn type="submit">완료</YesBtn>
+          <YesBtn type = 'onSubmit' >완료</YesBtn>
         </ButtonItem>
       </UpdateForm>
       <Announcement>비슷한 순간들을 확인하세요</Announcement>
@@ -315,7 +323,6 @@ function Detail({ card }) {
 }
 
 export default Detail;
-
 
 
 const Title = styled.div`
@@ -394,6 +401,22 @@ const Input = styled.input`
     margin: 17px 0 10px 20px;
     border: 3px solid #e0e0e0;
     border-radius: 10px;
+  }
+`;
+
+const TagsArea = styled(Input)`
+  width: 70%;
+  height: 70px;
+  margin: 0px 0 0px 70px;
+  border: 3px solid #e0e0e0;
+  border-radius: 10px;
+
+  @media screen and (max-width: 1100px) {
+    width: 70%;
+    height: 50px;
+    padding-left: 20px;
+    margin: 0px 0 0px 20px;
+    border: 3px solid #e0e0e0;
   }
 `;
 
