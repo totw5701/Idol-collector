@@ -4,7 +4,7 @@ function TopBtn() {
   const handleTopBtn = () => (document.documentElement.scrollTop = 0);
   return (
     <StyledTopBtn onClick={handleTopBtn}>
-      <TopBtnIcon src="images/TOP.png" />
+      <TopBtnIcon src="/images/TOP.png" />
     </StyledTopBtn>
   );
 }
