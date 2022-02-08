@@ -7,10 +7,13 @@ import CreatePage from './pages/CreatePage';
 import SettingPage from './pages/SettingPage';
 import { useSelector,useDispatch } from 'react-redux';
 import ApiService from './ApiService'
+import { useState } from 'react';
+import LoginPage from './pages/LoginPage';
 
 function App() {
 
   const dispatch = useDispatch()
+  const [isLogin, setIsLogin] = useState(false);
 
 /*  post */
    let data = useSelector(({postReducer})=> { return postReducer })
@@ -41,10 +44,10 @@ function App() {
   })
 
 
-
-
   return (
     <BrowserRouter>
+    {isLogin ? (
+      <>
       <Nav />
       <Switch>
         <Route path="/setting">
@@ -61,6 +64,15 @@ function App() {
         </Route>
       </Switch>
       <TopBtn />
+      </>
+    ) : (
+      <>
+      <Route path="/login">
+        <LoginPage />
+      </Route>
+      </>
+    )}
+      
     </BrowserRouter>
   );
 }
