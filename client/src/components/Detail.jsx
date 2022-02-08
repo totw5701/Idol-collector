@@ -46,7 +46,7 @@ function Detail({ card }) {
       {
         title: e.target.title.value,
         content: e.target.content.value,
-        postId: e.target.postId.value,
+        postId: Number(e.target.postId.value),
         tags: tags
       }
     )
@@ -73,6 +73,20 @@ function Detail({ card }) {
     })
 
   };
+
+  const handleDelCmt = e => { // 댓글 삭제
+    //console.log(e.target.value) //cmt.id
+
+    ApiService.delCmtId(Number(e.target.value))
+    .then((result) => {
+      console.log('댓글 삭제 완료')
+    })
+    .catch((err)=> {
+      console.log('delCmtId axios 에러!'+ err )
+    })
+
+  }
+
 
   const handleNCmtSubmit = (e) => { //대댓글 등록
     e.preventDefault()
@@ -225,10 +239,11 @@ function Detail({ card }) {
                       <UserLink to="/member/: card.comments[0].authorId" >comments authorId {cmt.authorId}</UserLink>
                       <CommentContent>comments content {cmt.content}</CommentContent>
                     </CommentInfo>
-
                   </CommentItem>
+
                   <FavoriteIcon />
                   <ChatBubbleIcon onClick = { toggleNCmt } />
+                  <button onClick = { handleDelCmt }>삭제</button>
                   <MoreHorizIcon />
 
                   { cmt.nestedComments.map((nCmt, nIdx) =>
