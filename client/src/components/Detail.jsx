@@ -126,6 +126,19 @@ function Detail({ card }) {
 
   }
 
+  const handleNCmtLike = id => { // 대댓글 좋아요
+    //console.log(id) //nCmt.id
+
+    ApiService.putNCmtLike(Number(id))
+    .then((result) => {
+      console.log('대댓글 좋아요 완료')
+    })
+    .catch((err)=> {
+      console.log('putNCmtLike axios 에러!'+ err )
+    })
+
+  }
+
   const handleDelCard = () => { // 카드 삭제
 
     ApiService.delCardId(card.id)
@@ -286,7 +299,7 @@ function Detail({ card }) {
                         <CommentContent>comments content {nCmt.content}</CommentContent>
                       </CommentInfo>
                       </NCommentItem>
-                      <FavoriteIcon />
+                      <FavoriteIcon onClick = {() => { handleNCmtLike(nCmt.id) }} />
                       <ChatBubbleIcon onClick = { toggleReNCmt } />
                       <MoreHorizIcon />
                       <button type='button' onClick = {() => { handleDelNCmt(nCmt.id) }}>대댓글 삭제</button>
