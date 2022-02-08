@@ -112,6 +112,20 @@ function Detail({ card }) {
     .catch((err) => {console.log('postNCmt axios 에러! '+err )})
 
   }
+
+  const handleDelNCmt = id => { // 대댓글 삭제
+    //console.log(id) //nCmt.id
+
+    ApiService.delNCmtId(Number(id))
+    .then((result) => {
+      console.log('대댓글 삭제 완료')
+    })
+    .catch((err)=> {
+      console.log('delNCmtId axios 에러!'+ err )
+    })
+
+  }
+
   const handleDelCard = () => { // 카드 삭제
 
     ApiService.delCardId(card.id)
@@ -255,7 +269,7 @@ function Detail({ card }) {
 
                   <FavoriteIcon type = 'button' onClick = { () => { handleCmtLike(cmt.id) }} />
                   <ChatBubbleIcon onClick = { toggleNCmt } />
-                  <button onClick = { handleDelCmt } value = { cmt.id } >삭제</button>
+                  <button type='button' onClick = { handleDelCmt } value = { cmt.id } >삭제</button>
                   <MoreHorizIcon />
 
                   { cmt.nestedComments.map((nCmt, nIdx) =>
@@ -275,6 +289,7 @@ function Detail({ card }) {
                       <FavoriteIcon />
                       <ChatBubbleIcon onClick = { toggleReNCmt } />
                       <MoreHorizIcon />
+                      <button type='button' onClick = {() => { handleDelNCmt(nCmt.id) }}>대댓글 삭제</button>
 
                         { isReNCmt && (
                           <NCommentForm onSubmit = { handleNCmtSubmit } >
