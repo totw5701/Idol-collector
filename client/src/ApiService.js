@@ -51,8 +51,8 @@ class ApiService {
     return axios.delete( '/api/card/unscrap/'+id )
   }
 
-  putCardUpdate() { // 카드 수정
-    return axios.put( '/api/card/update' )
+  putCardUpdate(form) { // 카드 수정
+    return axios.put( '/api/card/update', form )
   }
 
 /* 댓글 */
@@ -65,8 +65,8 @@ class ApiService {
     return axios.delete( '/api/comment/delete/'+id )
   }
 
-  putCmtUpdate() { // 댓글 수정
-    return axios.put( '/api/comment/update' )
+  putCmtUpdate( comment) { // 댓글 수정
+    return axios.put( '/api/comment/update', comment )
   }
 
   putCmtLike( id ) { // 좋아요
@@ -87,8 +87,8 @@ class ApiService {
     return axios.put( '/api/n-comment/like/'+id )
   }
 
-  putNCmtUpdate() { // 대댓글 수정
-    return axios.put( '/api/n-comment/update' )
+  putNCmtUpdate( nComment ) { // 대댓글 수정
+    return axios.put( '/api/n-comment/update', nComment )
   }
 
 
