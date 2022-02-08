@@ -22,7 +22,8 @@ function Detail({ card }) {
   const [isShow, setIsShow] = useState(false) // 댓글 보기 스위치
   const [isNCmt, setIsNCmt] = useState(false) // 댓글 작성칸 스위치
   const [isUpCmt, setIsUpCmt] = useState(false) // 댓글 수정창 스위치
-  const [isReNCmt, setIsReNCmt] = useState(false) //대댓글 작성칸 스위치
+  const [isUpNCmt, setIsUpNCmt] = useState(false) // 대댓글 수정창 스위치
+  const [isReNCmt, setIsReNCmt] = useState(false) // 대댓글 작성칸 스위치
   const [didScrap, setDidScrap] = useState(false) // 스크랩 언스크랩 버튼 스위치
   const [isUpdate, setIsUpdate] = useState(false) // 카드 수정 창 스위치
 
@@ -164,6 +165,22 @@ function Detail({ card }) {
       console.log('putNCmtLike axios 에러!'+ err )
     })
 
+  }
+
+  const handleNCmtUpdate = id => { // 대댓글 수정
+    //console.log({ id: Number(id), content: cmt })
+    if(id == null || id === '' ){
+      alert('내용을 입력해주세요!')
+    }else{
+      ApiService.putNCmtUpdate({ id: Number(id), content: cmt })
+      .then((result) => {
+        console.log('대댓글 수정 완료')
+        setCmt(null)
+      })
+      .catch((err)=> {
+        console.log('putNCmtUpdate axios 에러!'+ err )
+      })
+    }
   }
 
   const handleDelCard = () => { // 카드 삭제
@@ -331,6 +348,33 @@ function Detail({ card }) {
 
                     )}
 
+                    { isNCmt && (
+                      <NCommentForm onSubmit = { handleNCmtSubmit } >
+                        <NCommentFormItem as="div">
+                          <Link to="마이페이지path">
+                            <img
+                            src="/images/업로더-사진.png"
+                            alt={`아이디 이미지`}
+                            />
+                          </Link>
+                          <NCommentInfo>
+                            <input
+                              type = 'hidden'
+                              value = {cmt.id}
+                            />
+                            <CommentText
+                              type = 'text'
+                              placeholder = '댓글 추가'
+                            />
+                          </NCommentInfo>
+
+                          <button onClick = {()=>{ setIsNCmt(false) } }>취소</button>
+                          <button type = 'submit'>완료</button>
+                        </NCommentFormItem>
+                      </NCommentForm>
+                      )
+                    }
+
                   { cmt.nestedComments.map((nCmt, nIdx) =>
                     (<NCommentForm>
                       <NCommentItem as="div" key={nCmt.id}>
@@ -349,6 +393,7 @@ function Detail({ card }) {
                       <ChatBubbleIcon onClick = { toggleReNCmt } />
                       <MoreHorizIcon />
                       <button type='button' onClick = {() => { handleDelNCmt(nCmt.id) }}>대댓글 삭제</button>
+                      <button type='button' onClick = {() => { setIsUpNCmt(true) }}>대댓글 수정</button>
 
                       { isReNCmt && (
                         <NCommentItem as="div">
@@ -371,36 +416,30 @@ function Detail({ card }) {
                         </NCommentItem>
                       )}
 
+                      { isUpNCmt && (
+                        <NCommentItem as="div">
+                          <Link to="마이페이지path">
+                            <img
+                            src="/images/업로더-사진.png"
+                            alt={`아이디 이미지`}
+                            />
+                          </Link>
+                          <NCommentInfo>
+                            <CommentText
+                              type = 'text'
+                              placeholder = '대댓글 수정'
+                              onChange = {(e) => { setCmt(e.target.value) }}
+                            />
+                          </NCommentInfo>
+
+                          <button type = 'button' onClick = {()=>{ setIsUpNCmt(false) }}>취소</button>
+                          <button type = 'button' onClick = {() => { handleNCmtUpdate(nCmt.id) }}>완료</button>
+                        </NCommentItem>
+                      )}
+
                     </NCommentForm>
                     )
                   )}
-
-                { isNCmt && (
-                  <NCommentForm onSubmit = { handleNCmtSubmit } >
-                    <NCommentFormItem as="div">
-                      <Link to="마이페이지path">
-                        <img
-                        src="/images/업로더-사진.png"
-                        alt={`아이디 이미지`}
-                        />
-                      </Link>
-                      <NCommentInfo>
-                        <input
-                          type = 'hidden'
-                          value = {cmt.id}
-                        />
-                        <CommentText
-                          type = 'text'
-                          placeholder = '댓글 추가'
-                        />
-                      </NCommentInfo>
-
-                      <button onClick = {()=>{ setIsNCmt(false) } }>취소</button>
-                      <button type = 'submit'>완료</button>
-                    </NCommentFormItem>
-                  </NCommentForm>
-                  )
-                }
 
                 </CommentList>
 
