@@ -59,6 +59,20 @@ function Detail({ card }) {
 
   }
 
+  const handleCmtSubmit = e => { // 댓글 등록
+
+    //inputRef.current.style.height = '39px';
+    e.preventDefault() // submit할 떄 새로고침 방지
+    //let comment = { content: inputRef.current.value, postId: card.id }
+    //console.log(comment)
+    ApiService.postCmt( { content: inputRef.current.value, postId: card.id } )
+    .then((result) => {
+      console.log('댓글 달기 성공')
+    }).catch((err) => {
+      console.log('postCmt axios 에러!'+ err )
+    })
+
+  };
 
   const handleNCmtSubmit = (e) => { //대댓글 등록
     e.preventDefault()
@@ -297,7 +311,7 @@ function Detail({ card }) {
 
               )}
 
-                <CommentForm >
+                <CommentForm onSubmit = { handleCmtSubmit  }>
                   <CommentFormItem as="div">
                     <Link to="마이페이지path">
                       <img
