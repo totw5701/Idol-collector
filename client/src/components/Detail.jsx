@@ -29,7 +29,7 @@ function Detail({ card }) {
   const [tag,setTag] = useState()
   const [tags,setTags] = useState([])
 
-  const [upCmt,setUpCmt] = useState([]) // 댓글 수정후
+  const [cmt,setCmt] = useState() // 댓글,대댓글 담을 state
 
   const dispatch = useDispatch();
 
@@ -64,18 +64,20 @@ function Detail({ card }) {
   }
 
   const handleCmtSubmit = e => { // 댓글 등록
-
     //inputRef.current.style.height = '39px';
     e.preventDefault() // submit할 떄 새로고침 방지
-    //let comment = { content: inputRef.current.value, postId: card.id }
-    //console.log(comment)
-    ApiService.postCmt( { content: inputRef.current.value, postId: card.id } )
-    .then((result) => {
-      console.log('댓글 달기 성공')
-    }).catch((err) => {
-      console.log('postCmt axios 에러!'+ err )
-    })
-
+    let comment = { content: inputRef.current.value, postId: card.id }
+    console.log(comment)
+    if(inputRef.current.value == null || inputRef.current.value === ''){
+      alert('내용을 입력해주세요!')
+    }else{
+      ApiService.postCmt( { content: inputRef.current.value, postId: card.id } )
+      .then((result) => {
+        console.log('댓글 달기 성공')
+      }).catch((err) => {
+        console.log('postCmt axios 에러!'+ err )
+      })
+    }
   };
 
   const handleDelCmt = e => { // 댓글 삭제
@@ -92,19 +94,21 @@ function Detail({ card }) {
   }
 
   const handleCmtUpdate = id => { // 댓글 수정
-    console.log({ id: Number(id), content: upCmt })
+    console.log({ id: Number(id), content: cmt })
 
-    ApiService.putCmtUpdate({ id: Number(id), content: upCmt })
-    .then((result) => {
-      console.log('댓글 수정 완료')
-    })
-    .catch((err)=> {
-      console.log('putCmtUpdate axios 에러!'+ err )
-    })
-
+    if(cmt ==null){
+      alert('내용을 입력해주세요!')
+    }else{
+      ApiService.putCmtUpdate({ id: Number(id), content: cmt })
+      .then((result) => {
+        console.log('댓글 수정 완료')
+        setCmt(null)// 값 입력 후 cmt state 비워주기
+      })
+      .catch((err)=> {
+        console.log('putCmtUpdate axios 에러!'+ err )
+      })
+    }
   }
-
-
 
   const handleCmtLike = id => { //댓글 좋아요
     // console.log(id) //cmt.id
@@ -118,16 +122,21 @@ function Detail({ card }) {
 
   }
 
-  const handleNCmtSubmit = (e) => { //대댓글 등록
-    e.preventDefault()
-    //let nComment = {  commentId: e.target[0].value ,content: e.target[1].value }
-    //console.log(nComment)
+  const handleNCmtSubmit = id => { //대댓글 등록
 
-    ApiService.postNCmt({ commentId: e.target[0].value ,content: e.target[1].value })
-    .then((result) => {
-       alert('대댓글 등록 완료')
-    })
-    .catch((err) => {console.log('postNCmt axios 에러! '+err )})
+    let nComment = {  commentId: id ,content: cmt }
+    console.log(nComment)
+
+    if(cmt ==null){
+      alert('내용을 입력해주세요!')
+    }else{
+      ApiService.postNCmt({ commentId: Number(id) ,content: cmt })
+      .then((result) => {
+         console.log('대댓글 등록 완료')
+         setCmt(null)// 값 입력 후 cmt state 비워주기
+      })
+      .catch((err) => {console.log('postNCmt axios 에러! '+err )})
+    }
 
   }
 
@@ -314,7 +323,7 @@ function Detail({ card }) {
                         <CommentText
                           type="text"
                           placeholder="댓글을 입력하세요."
-                          onChange = {(e) => { setUpCmt(e.target.value) }}
+                          onChange = {(e) => { setCmt(e.target.value) }}
                         />
                         <button type="button" onClick = { () => { setIsUpCmt(false) }}>취소</button>
                         <button type="button" onClick = { () => { handleCmtUpdate(cmt.id) }}>완료</button>
@@ -341,35 +350,29 @@ function Detail({ card }) {
                       <MoreHorizIcon />
                       <button type='button' onClick = {() => { handleDelNCmt(nCmt.id) }}>대댓글 삭제</button>
 
-                        { isReNCmt && (
-                          <NCommentForm onSubmit = { handleNCmtSubmit } >
-                            <NCommentFormItem as="div">
-                              <Link to="마이페이지path">
-                                <img
-                                src="/images/업로더-사진.png"
-                                alt={`아이디 이미지`}
-                                />
-                              </Link>
-                              <NCommentInfo>
-                                <input
-                                  type = 'hidden'
-                                  value = {nCmt.id}
-                                />
-                                <CommentText
-                                  type = 'text'
-                                  placeholder = '대댓글 추가'
-                                />
-                              </NCommentInfo>
+                      { isReNCmt && (
+                        <NCommentItem as="div">
+                          <Link to="마이페이지path">
+                            <img
+                            src="/images/업로더-사진.png"
+                            alt={`아이디 이미지`}
+                            />
+                          </Link>
+                          <NCommentInfo>
+                            <CommentText
+                              type = 'text'
+                              placeholder = '대댓글 추가'
+                              onChange = {(e) => { setCmt(e.target.value) }}
+                            />
+                          </NCommentInfo>
 
-                              <button onClick = {()=>{ setIsReNCmt(false) } }>취소</button>
-                              <button type = 'submit'>완료</button>
-                            </NCommentFormItem>
-                          </NCommentForm>
-                          )
-                        }
+                          <button type = 'button' onClick = {()=>{ setIsReNCmt(false) }}>취소</button>
+                          <button type = 'button' onClick = {() => { handleNCmtSubmit(nCmt.id) }}>완료</button>
+                        </NCommentItem>
+                      )}
 
-                      </NCommentForm>
-                     )
+                    </NCommentForm>
+                    )
                   )}
 
                 { isNCmt && (
