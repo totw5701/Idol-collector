@@ -19,13 +19,17 @@ function Detail({ card }) {
   //console.log(member)
 
   const history = useHistory();
-  const [isShow, setIsShow] = useState(false)
-  const [isNCmt, setIsNCmt] = useState(false)
-  const [isReNCmt, setIsReNCmt] = useState(false)
-  const [didScrap, setDidScrap] = useState(false)
-  const [isUpdate, setIsUpdate] = useState(false)
+  const [isShow, setIsShow] = useState(false) // 댓글 보기 스위치
+  const [isNCmt, setIsNCmt] = useState(false) // 댓글 작성칸 스위치
+  const [isUpCmt, setIsUpCmt] = useState(false) // 댓글 수정창 스위치
+  const [isReNCmt, setIsReNCmt] = useState(false) //대댓글 작성칸 스위치
+  const [didScrap, setDidScrap] = useState(false) // 스크랩 언스크랩 버튼 스위치
+  const [isUpdate, setIsUpdate] = useState(false) // 카드 수정 창 스위치
+
   const [tag,setTag] = useState()
   const [tags,setTags] = useState([])
+
+  const [upCmt,setUpCmt] = useState([]) // 댓글 수정후
 
   const dispatch = useDispatch();
 
@@ -86,6 +90,20 @@ function Detail({ card }) {
     })
 
   }
+
+  const handleCmtUpdate = id => { // 댓글 수정
+    console.log({ id: Number(id), content: upCmt })
+
+    ApiService.putCmtUpdate({ id: Number(id), content: upCmt })
+    .then((result) => {
+      console.log('댓글 수정 완료')
+    })
+    .catch((err)=> {
+      console.log('putCmtUpdate axios 에러!'+ err )
+    })
+
+  }
+
 
 
   const handleCmtLike = id => { //댓글 좋아요
@@ -284,6 +302,25 @@ function Detail({ card }) {
                   <ChatBubbleIcon onClick = { toggleNCmt } />
                   <button type='button' onClick = { handleDelCmt } value = { cmt.id } >삭제</button>
                   <MoreHorizIcon />
+                  <button type='button' onClick = {() => { setIsUpCmt(true) }}>댓글 수정</button>
+                    { isUpCmt && (
+                      <CommentFormItem as="div">
+                        <Link to="마이페이지path">
+                          <img
+                            src="/images/업로더-사진.png"
+                            alt={`아이디 이미지`}
+                          />
+                        </Link>
+                        <CommentText
+                          type="text"
+                          placeholder="댓글을 입력하세요."
+                          onChange = {(e) => { setUpCmt(e.target.value) }}
+                        />
+                        <button type="button" onClick = { () => { setIsUpCmt(false) }}>취소</button>
+                        <button type="button" onClick = { () => { handleCmtUpdate(cmt.id) }}>완료</button>
+                      </CommentFormItem>
+
+                    )}
 
                   { cmt.nestedComments.map((nCmt, nIdx) =>
                     (<NCommentForm>
@@ -320,7 +357,7 @@ function Detail({ card }) {
                                 />
                                 <CommentText
                                   type = 'text'
-                                  placeholder = '댓글 추가'
+                                  placeholder = '대댓글 추가'
                                 />
                               </NCommentInfo>
 
