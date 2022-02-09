@@ -45,15 +45,8 @@ public class PageApiController {
     private final ResponseService responseService;
 
     @ApiOperation(value = "루트 페이지", notes = "루트 페이지에 필요한 데이터 조회한다. Path variable로 카드 페이지수 지정가능")
-    @ApiResponses({
-            @ApiResponse(
-                    code = 200
-                    , response = RootPageClass.class
-                    , message = "생성 성공"
-            )
-    })
     @GetMapping({"/home/{page}", "/home"})
-    public CommonResult homePageList(@PathVariable(name = "page", required = false) Optional<Integer> page) {
+    public CommonResult<RootPageDto> homePageList(@PathVariable(name = "page", required = false) Optional<Integer> page) {
 
         int pageNum = 0;
         if (page.isPresent()) pageNum = page.get();
@@ -66,20 +59,12 @@ public class PageApiController {
         MemberBrifInfo memberBrifInfo = new MemberBrifInfo(memberService.findById(memberId));
 
         return responseService.getResult(new RootPageDto(memberBrifInfo, homePostListResponseDtos));
-
     }
 
 
     @ApiOperation(value = "태그 검색", notes = "검색후 루트 페이지에 필요한 데이터 조회한다. Path variable로 카드 페이지수 지정가능")
-    @ApiResponses({
-            @ApiResponse(
-                    code = 200
-                    , response = RootPageClass.class
-                    , message = "생성 성공"
-            )
-    })
     @GetMapping({"/search/{page}", "/search"})
-    public CommonResult homePageListSearch(@PathVariable(name = "page", required = false) Optional<Integer> page,
+    public CommonResult<RootPageDto> homePageListSearch(@PathVariable(name = "page", required = false) Optional<Integer> page,
                                           @ApiParam(value = "검색 태그", required = true) @RequestParam(value = "keywords", required = true) List<String> keywords) {
 
         int pageNum = 0;
@@ -94,12 +79,4 @@ public class PageApiController {
 
         return responseService.getResult(new RootPageDto(memberBrifInfo, homePostListResponseDtos));
     }
-
-
-    /**
-     * Swagger Response API docs 용 클래스
-     */
-
-    private class RootPageClass extends CommonResult<RootPageDto>{ }
-
 }

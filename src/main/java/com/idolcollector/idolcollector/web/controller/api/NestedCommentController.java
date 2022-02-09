@@ -28,14 +28,14 @@ public class NestedCommentController {
 
     @ApiOperation(value = "대댓글 생성", notes = "대댓글 생성한다.")
     @PostMapping(value = "/")
-    public CommonResult create(@ApiParam @Validated @RequestBody NestedCommentSaveRequestDto form){
+    public CommonResult<Object> create(@ApiParam @Validated @RequestBody NestedCommentSaveRequestDto form){
         nestedCommentService.save(form);
         return responseService.getSuccessResult();
     }
 
     @ApiOperation(value = "대댓글 수정", notes = "대댓글 수정한다.")
     @PatchMapping("/")
-    public CommonResult update(@ApiParam @Validated @RequestBody NestedCommentUpdateRequestDto form) {
+    public CommonResult<Object> update(@ApiParam @Validated @RequestBody NestedCommentUpdateRequestDto form) {
         nestedCommentService.update(form);
         return responseService.getSuccessResult();
 
@@ -43,7 +43,7 @@ public class NestedCommentController {
 
     @ApiOperation(value = "대댓글 삭제", notes = "대댓글 삭제한다.")
     @DeleteMapping("/{id}")
-    public CommonResult delete(@PathVariable("id") Long id) {
+    public CommonResult<Object> delete(@PathVariable("id") Long id) {
 
         nestedCommentService.delete(id);
         return responseService.getSuccessResult();
@@ -52,7 +52,7 @@ public class NestedCommentController {
 
     @ApiOperation(value = "대댓글 좋아요", notes = "대댓글 좋아요한다.")
     @PatchMapping("/like/{id}")
-    public CommonResult addLike(@PathVariable("id") Long id) {
+    public CommonResult<Object> addLike(@PathVariable("id") Long id) {
         nestedCommentService.like(id);
         return responseService.getSuccessResult();
 

@@ -30,28 +30,28 @@ public class CommentController {
 
     @ApiOperation(value = "댓글 생성", notes = "댓글을 생성합니다.")
     @PostMapping(value = "/")
-    public CommonResult create(@ApiParam @Validated @RequestBody CommentSaveRequestDto form) throws IOException {
+    public CommonResult<Object> create(@ApiParam @Validated @RequestBody CommentSaveRequestDto form) throws IOException {
         commentService.save(form);
         return responseService.getSuccessResult();
     }
 
     @ApiOperation(value = "댓글 수정", notes = "댓글을 수정합니다.")
     @PatchMapping("/")
-    public CommonResult update(@ApiParam @Validated @RequestBody CommentUpdateRequestDto form) {
+    public CommonResult<Object> update(@ApiParam @Validated @RequestBody CommentUpdateRequestDto form) {
         commentService.update(form);
         return responseService.getSuccessResult();
     }
 
     @ApiOperation(value = "댓글 삭제", notes = "댓글을 삭제합니다.")
     @DeleteMapping("/{id}")
-    public CommonResult delete(@PathVariable("id") Long id) {
+    public CommonResult<Object> delete(@PathVariable("id") Long id) {
         commentService.delete(id);
         return responseService.getSuccessResult();
     }
 
     @ApiOperation(value = "좋아요", notes = "이 댓글을 좋아합니다.")
     @PatchMapping("/like/{id}")
-    public CommonResult addLike(@PathVariable("id") Long id) {
+    public CommonResult<Object> addLike(@PathVariable("id") Long id) {
         commentService.like(id);
         return responseService.getSuccessResult();
     }
