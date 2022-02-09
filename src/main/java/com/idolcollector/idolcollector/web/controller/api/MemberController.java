@@ -66,7 +66,7 @@ public class MemberController {
 
 
     @ApiOperation(value = "회원 정보", notes = "타 회원 정보를 조회합니다. 회원 id를 넘겨 회원 정보와 카드, 카드집을 조회합니다. page를 넣어 다음 페이지를 조회합니다.")
-    @GetMapping({"/member/{id}/{page}", "/member/{id}"})
+    @GetMapping({"/{id}/{page}", "/{id}"})
     public CommonResult<MemberDetailPageDto> memberInfo(@PathVariable(name = "page", required = false) Optional<Integer> page,
                                    @PathVariable(name = "id") Long memberId,
                                    HttpServletResponse res,
