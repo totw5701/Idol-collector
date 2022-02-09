@@ -72,4 +72,19 @@ public class FileStore {
         if(file.exists()) file.delete();
     }
 
+    public void deleteProFile(String uri) {
+
+        String storeFileName = getProfileStoreFileName(uri);
+
+        System.out.println("storeFileName = " + storeFileName);
+
+        File file = new File(getProfileFullPath(storeFileName));
+        if(file.exists()) file.delete();
+    }
+
+    public String getProfileStoreFileName(String uri) {
+
+        int idx = uri.lastIndexOf('/');
+        return uri.substring(idx + 1, uri.length());
+    }
 }

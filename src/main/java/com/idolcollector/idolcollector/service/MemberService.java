@@ -57,6 +57,8 @@ public class MemberService {
         Member member = memberRepository.findById((Long) httpSession.getAttribute("loginMember"))
                 .orElseThrow(() -> new CNotLoginedException());
 
+        fileStore.deleteProFile(member.getPicture());
+
         UploadFile uploadFile = fileStore.storeProFile(form.getProfile());
         String picture = url + uploadFile.getStoreFileName();
 
