@@ -95,9 +95,7 @@ public class CommentService {
                 .orElseThrow(CCommentNotFoundException::new);
 
         Member member = memberRepository.findById((Long) httpSession.getAttribute("loginMember")).get();
-        if (member.getId() != comment.getMember().getId()) {
-            throw new CAccessDeniedException();
-        }
+        if (member.getId() != comment.getMember().getId()) throw new CAccessDeniedException();
 
         return comment.update(form.getContent());
     }
@@ -109,9 +107,7 @@ public class CommentService {
                 .orElseThrow(CCommentNotFoundException::new);
 
         Member member = memberRepository.findById((Long) httpSession.getAttribute("loginMember")).get();
-        if (member.getId() != comment.getMember().getId()) {
-            throw new CAccessDeniedException();
-        }
+        if (member.getId() != comment.getMember().getId()) throw new CAccessDeniedException();
 
         commentRepository.delete(comment);
         return comment.getId();

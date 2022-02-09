@@ -1,5 +1,6 @@
 package com.idolcollector.idolcollector.service;
 
+import com.idolcollector.idolcollector.advice.exception.CAccessDeniedException;
 import com.idolcollector.idolcollector.advice.exception.CBundleNotFoundException;
 import com.idolcollector.idolcollector.advice.exception.CPostNotFoundException;
 import com.idolcollector.idolcollector.domain.bindlepost.BundlePost;
@@ -60,7 +61,8 @@ public class BundleService {
         Bundle bundle = bundleRepository.findById(id)
                 .orElseThrow(CBundleNotFoundException::new);
 
-        // 세션 회원과 일치 확인
+        Member member = memberRepository.findById((Long) httpSession.getAttribute("loginMember")).get();
+        if (member.getId() != bundle.getMember().getId()) throw new CAccessDeniedException();
 
         bundleRepository.delete(bundle);
 
@@ -72,6 +74,9 @@ public class BundleService {
         Bundle bundle = bundleRepository.findById(form.getBundleId())
                 .orElseThrow(CBundleNotFoundException::new);
 
+        Member member = memberRepository.findById((Long) httpSession.getAttribute("loginMember")).get();
+        if (member.getId() != bundle.getMember().getId()) throw new CAccessDeniedException();
+
         return bundle.update(form);
     }
 
@@ -79,6 +84,9 @@ public class BundleService {
     public Long addPost(BundleAddCardDto form) {
         Bundle bundle = bundleRepository.findById(form.getBundleId())
                 .orElseThrow(CBundleNotFoundException::new);
+
+        Member member = memberRepository.findById((Long) httpSession.getAttribute("loginMember")).get();
+        if (member.getId() != bundle.getMember().getId()) throw new CAccessDeniedException();
 
         Post post = postRepository.findById(form.getPostId())
                 .orElseThrow(CPostNotFoundException::new);
@@ -95,8 +103,10 @@ public class BundleService {
         BundlePost bundlePost = bundlePostRepository.findByPostBundleId(form.getPostId(), form.getBundleId())
                 .orElseThrow(() -> new IllegalArgumentException("카드집 안에 카드가 들어있지 않습니다 id=" + form.getBundleId()));
 
+        Member member = memberRepository.findById((Long) httpSession.getAttribute("loginMember")).get();
+        if (member.getId() != bundlePost.getBundle().getMember().getId()) throw new CAccessDeniedException();
+
         bundlePostRepository.delete(bundlePost);
         return bundlePost.getId();
     }
-
 }
