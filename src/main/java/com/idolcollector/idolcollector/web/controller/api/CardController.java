@@ -35,7 +35,7 @@ import java.util.ArrayList;
 @Slf4j
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/card")
+@RequestMapping("/api/cards")
 public class CardController {
 
     private final PostService postService;
@@ -100,7 +100,7 @@ public class CardController {
     }
 
     @ApiOperation(value = "스크랩 취소", notes = "스크랩을 취소합니다.")
-    @DeleteMapping("/unscrap/{id}")
+    @DeleteMapping("/scrap/{id}")
     public CommonResult<Object> unscrap(@PathVariable("id") Long id) {
         postService.cancelScrap(id);
         return responseService.getSuccessResult();

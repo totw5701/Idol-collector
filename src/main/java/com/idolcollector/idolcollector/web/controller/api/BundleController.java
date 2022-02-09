@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 @Api(tags = {"카드집"})
 @Slf4j
 @Controller
-@RequestMapping("/api/bundle")
+@RequestMapping("/api/bundles")
 @RequiredArgsConstructor
 public class BundleController {
 
@@ -62,7 +62,7 @@ public class BundleController {
 
     @ApiOperation(value = "카드 추가", notes = "카드집에 카드를 추가합니다.")
     @ResponseBody
-    @PostMapping("/add-card")
+    @PostMapping("/card")
     public CommonResult<Object> addCard(@ApiParam @Validated @RequestBody BundleAddCardDto form) {
 
         bundleService.addPost(form);
@@ -71,7 +71,7 @@ public class BundleController {
 
     @ApiOperation(value = "카드 삭제", notes = "카드집에서 카드를 삭제합니다.")
     @ResponseBody
-    @PostMapping("/delete-card")
+    @DeleteMapping("/card")
     public CommonResult<Object> deteteCard(@ApiParam @Validated @RequestBody BundleDeleteCardDto form) {
         bundleService.deletePost(form);
         return responseService.getSuccessResult();
