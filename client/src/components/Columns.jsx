@@ -18,54 +18,56 @@ function Columns({ data }) {
 
 
 
-  const [card, setCard] = useState([])
-  const [page, setPage] = useState( 0 ) //PageRequest page 0부터 시작
-  const [loading,setLoading] = useState( false )
-
-  const [last,inView] = useInView()//ref속성값으로 last 들어가면 inView가 true로 변함
-
-/*   api/home/page: 페이지가 바뀔 때마다 해당 page data받기 */
-  const getData = useCallback(() => {
-    setLoading(true)
-
-    ApiService.getHomePage(page)
-    .then((result) => {
-      //console.log(result)
-      setCard([...data,...result.data.data.cards])//dummyDB
-      //setCard([...card,...result.data.data.cards])
-      setLoading(false)
+ const [card, setCard] = useState([])
+ const [page, setPage] = useState( 0 ) //PageRequest page 0부터 시작
+ const [loading,setLoading] = useState( false )
+ 
+ const [last,inView] = useInView()//ref속성값으로 last 들어가면 inView가 true로 변함
+ 
+ 
+ /*   api/home/page: 페이지가 바뀔 때마다 해당 page data받기 */
+ const getData = useCallback(() => {
+   setLoading(true)
+   
+   ApiService.getHomePage(page)
+   .then((result) => {
+     //console.log(result)
+     setCard([...data,...result.data.data.cards])//dummyDB
+     //setCard([...card,...result.data.data.cards])
+     setLoading(false)
     })
     .catch((err) => {
       console.log('getHomePage axios 에러! '+err )
       setCard(data)
       setLoading(false)
     })
-
+    
     /* dummyDB로 test
-      if(page<3){
+    if(page<3){
       const result = copies[page]
-
+      
       setCard([...card,...result])
       //console.log('result: '+ JSON.stringify(copies[page]))
       console.log('page'+page)
     }*/
-
+    
   },[page])
-
+  
   // getData가 바뀔 때마다 실행
   useEffect(() => {
     getData()
     //console.log('카드 개수'+card.length)
   },[getData])
-
+  
   // client가 마지막을 보고있고 로딩중이 아닐경우 page를 더해줌
   useEffect(() => {
     if( inView && !loading ) {
       setPage(page+1)
     }
   }, [inView,loading])
-
-  if (!Array.isArray(card)) return null
+  
+  if (!Array.isArray(data)) return null;
+  
 
   return (
    <ColumnsContainer>
