@@ -5,7 +5,7 @@ import { useInView } from 'react-intersection-observer'
 import ApiService from '../ApiService'
 import { useSelector } from 'react-redux'
 
-function Columns( { pageName } ) {
+function Columns( props ) {
 
   const data = useSelector(({postReducer}) => postReducer )//dummyDB
 
@@ -19,7 +19,7 @@ function Columns( { pageName } ) {
   const getData = useCallback(() => {
     setLoading(true)
 
-    if( pageName == 'main' ){ // 메인페이지
+    if( props.pageName === 'main' ){ // 메인페이지
       ApiService.getHomePage(page)
       .then((result) => {
         //console.log(result)
@@ -33,9 +33,9 @@ function Columns( { pageName } ) {
         setLoading(false)
       })
 
-    }else if( pageName == 'search' ){ // search 페이지
+    }else if( props.pageName === 'search' ){ // search 페이지
 
-      ApiService.getSearchPage(page)
+      ApiService.getSearchPage(page, props.param )
       .then((result) => {
         //console.log(result)
         setCard([...data,...result.data.data.cards])//dummyDB
@@ -43,7 +43,7 @@ function Columns( { pageName } ) {
         setLoading(false)
       })
       .catch((err) => {
-        console.log('getHomePage axios 에러! '+err )
+        console.log('getSearchPage axios 에러! '+err )
         setCard(data)
         setLoading(false)
       })

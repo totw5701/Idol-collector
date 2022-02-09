@@ -5,7 +5,7 @@ import ApiService from '../ApiService'
 
 function DetailContainer() {
 
- let data = useSelector( ({postReducer}) => { return postReducer });
+  let data = useSelector( ({postReducer}) => { return postReducer });
 
   const { cardId } = useParams();
   const db = data;
