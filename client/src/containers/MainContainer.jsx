@@ -5,7 +5,7 @@ function MainContainer({ data }) {
   return (
     <>
       <Jumbotron />
-      <Columns data={data} />
+      <Columns  pageName = 'main' />
     </>
   );
 }
