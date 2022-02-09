@@ -44,7 +44,7 @@ public class CardController {
     private final ResponseService responseService;
 
     @ApiOperation(value = "카드 생성", notes = "카드를 생성합니다.")
-    @PostMapping(value = "/create")
+    @PostMapping(value = "/")
     public CommonResult create(@ApiParam @Validated @ModelAttribute PostSaveRequestDto form) throws IOException {
 
         Long id = postService.create(form);
@@ -72,7 +72,7 @@ public class CardController {
     }
 
     @ApiOperation(value = "카드 수정", notes = "카드를 수정합니다.")
-    @PutMapping("/update")
+    @PatchMapping("/")
     public CommonResult update(@ApiParam @Validated @RequestBody PostUpdateRequestDto form) {
 
         postService.update(form);
@@ -81,7 +81,7 @@ public class CardController {
     }
 
     @ApiOperation(value = "카드 삭제", notes = "카드를 삭제합니다.")
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/{id}")
     public CommonResult delete(@PathVariable("id") Long id) {
 
         postService.delete(id);
@@ -89,7 +89,7 @@ public class CardController {
     }
 
     @ApiOperation(value = "카드 좋아요", notes = "이 카드를 좋아합니다.")
-    @PutMapping("/like/{id}")
+    @PatchMapping("/like/{id}")
     public CommonResult addLike(@PathVariable("id") Long id) {
 
         postService.like(id);

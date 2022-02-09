@@ -132,7 +132,7 @@ public class MemberController {
     }
 
     @ApiOperation(value = "회원 정보수정", notes = "회원 정보를 수정합니다.")
-    @PutMapping("/mypage")
+    @PatchMapping("/mypage")
     public CommonResult updateMember(@ApiParam @Validated @ModelAttribute MemberUpdateRequestDto form) throws IOException {
 
         memberService.update(form);

@@ -45,7 +45,7 @@ public class BundleController {
 
     @ApiOperation(value = "카드집 생성", notes = "카드집을 생성합니다.")
     @ResponseBody
-    @PostMapping("/create")
+    @PostMapping("/")
     public CommonResult create(@ApiParam @Validated @RequestBody BundleSaveDto form) {
 
         Long id = bundleService.save(form);
@@ -61,10 +61,10 @@ public class BundleController {
         return responseService.getSuccessResult();
     }
 
-    @ApiOperation(value = "카드집 삭제", notes = "카드집을 삭제합니다.")
+    @ApiOperation(value = "카드 삭제", notes = "카드집에서 카드를 삭제합니다.")
     @ResponseBody
     @PostMapping("/delete-card")
-    public CommonResult addCard(@ApiParam @Validated @RequestBody BundleDeleteCardDto form) {
+    public CommonResult deteteCard(@ApiParam @Validated @RequestBody BundleDeleteCardDto form) {
         bundleService.deletePost(form);
         return responseService.getSuccessResult();
     }
