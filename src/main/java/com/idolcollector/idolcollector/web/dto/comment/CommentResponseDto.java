@@ -16,6 +16,7 @@ public class CommentResponseDto {
 
     private String authorNickName;
     private Long authorId;
+    private String authorPicture;
     private String content;
     private int likes;
 
@@ -34,6 +35,7 @@ public class CommentResponseDto {
         this.likes = comment.getLikes();
         this.createDate = comment.getCreateDate();
         this.modifyDate = comment.getModifyDate();
+        this.authorPicture = comment.getMember().getPicture();
     }
 
     public void setNCommentsDto(List<NestedCommentResponseDto> nestedComments) {
