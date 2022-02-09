@@ -2,10 +2,7 @@ package com.idolcollector.idolcollector.web.controller.api;
 
 import com.idolcollector.idolcollector.service.BundleService;
 import com.idolcollector.idolcollector.service.ResponseService;
-import com.idolcollector.idolcollector.web.dto.bundle.BundleAddCardDto;
-import com.idolcollector.idolcollector.web.dto.bundle.BundleDeleteCardDto;
-import com.idolcollector.idolcollector.web.dto.bundle.BundleResponseDto;
-import com.idolcollector.idolcollector.web.dto.bundle.BundleSaveDto;
+import com.idolcollector.idolcollector.web.dto.bundle.*;
 import com.idolcollector.idolcollector.web.dto.pageresponsedto.CardDetailPageDto;
 import com.idolcollector.idolcollector.web.dto.response.CommonResult;
 import io.swagger.annotations.*;
@@ -52,7 +49,25 @@ public class BundleController {
         return responseService.getResult(id);
     }
 
-    @ApiOperation(value = "카드집에 카드를 추가합니다.", notes = "카드집에 카드를 추가합니다.")
+    @ApiOperation(value = "카드집 수정", notes = "카드집을 수정합니다.")
+    @ResponseBody
+    @PatchMapping("/")
+    public CommonResult update(@ApiParam @Validated @RequestBody BundleUpdateDto form) {
+
+        Long id = bundleService.update(form);
+        return responseService.getResult(id);
+    }
+
+    @ApiOperation(value = "카드집 삭제", notes = "카드집을 삭제합니다.")
+    @ResponseBody
+    @DeleteMapping("/{id}")
+    public CommonResult delete(@PathVariable("id") Long id) {
+
+        bundleService.delete(id);
+        return responseService.getResult(id);
+    }
+
+    @ApiOperation(value = "카드 추가", notes = "카드집에 카드를 추가합니다.")
     @ResponseBody
     @PostMapping("/add-card")
     public CommonResult addCard(@ApiParam @Validated @RequestBody BundleAddCardDto form) {
