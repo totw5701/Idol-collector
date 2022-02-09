@@ -44,7 +44,7 @@ public class CardController {
     private final ResponseService responseService;
 
     @ApiOperation(value = "카드 생성", notes = "카드를 생성합니다.")
-    @PostMapping(value = "/")
+    @PostMapping()
     public CommonResult<Long> create(@ApiParam @Validated @ModelAttribute PostSaveRequestDto form) throws IOException {
 
         Long id = postService.create(form);
@@ -65,7 +65,7 @@ public class CardController {
     }
 
     @ApiOperation(value = "카드 수정", notes = "카드를 수정합니다.")
-    @PatchMapping("/")
+    @PatchMapping()
     public CommonResult<Object> update(@ApiParam @Validated @RequestBody PostUpdateRequestDto form) {
 
         postService.update(form);

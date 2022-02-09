@@ -39,6 +39,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.ModelAttribute;
 
 import javax.servlet.http.HttpSession;
+import java.io.File;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -186,6 +187,7 @@ public class PostService {
 
         postRepository.delete(post);
 
+        fileStore.deleteFile(post.getStoreFileName());
         return id;
     }
 

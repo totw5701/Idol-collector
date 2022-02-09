@@ -66,5 +66,10 @@ public class FileStore {
         return new UploadFile(originalFilename, storeFileName);
     }
 
+    public void deleteFile(String storeFileName) {
+
+        File file = new File(getFullPath(storeFileName));
+        if(file.exists()) file.delete();
+    }
 
 }
