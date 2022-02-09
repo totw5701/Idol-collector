@@ -35,7 +35,7 @@ public class BundleController {
 
     @ApiOperation(value = "카드집 생성", notes = "카드집을 생성합니다.")
     @ResponseBody
-    @PostMapping("/")
+    @PostMapping()
     public CommonResult<Long> create(@ApiParam @Validated @RequestBody BundleSaveDto form) {
 
         Long id = bundleService.save(form);
@@ -44,7 +44,7 @@ public class BundleController {
 
     @ApiOperation(value = "카드집 수정", notes = "카드집을 수정합니다.")
     @ResponseBody
-    @PatchMapping("/")
+    @PatchMapping()
     public CommonResult<Long> update(@ApiParam @Validated @RequestBody BundleUpdateDto form) {
 
         Long id = bundleService.update(form);

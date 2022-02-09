@@ -27,14 +27,14 @@ public class NestedCommentController {
     private final ResponseService responseService;
 
     @ApiOperation(value = "대댓글 생성", notes = "대댓글 생성한다.")
-    @PostMapping(value = "/")
+    @PostMapping()
     public CommonResult<Object> create(@ApiParam @Validated @RequestBody NestedCommentSaveRequestDto form){
         nestedCommentService.save(form);
         return responseService.getSuccessResult();
     }
 
     @ApiOperation(value = "대댓글 수정", notes = "대댓글 수정한다.")
-    @PatchMapping("/")
+    @PatchMapping()
     public CommonResult<Object> update(@ApiParam @Validated @RequestBody NestedCommentUpdateRequestDto form) {
         nestedCommentService.update(form);
         return responseService.getSuccessResult();

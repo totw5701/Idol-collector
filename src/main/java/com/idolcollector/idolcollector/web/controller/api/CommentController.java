@@ -29,14 +29,14 @@ public class CommentController {
     private final ResponseService responseService;
 
     @ApiOperation(value = "댓글 생성", notes = "댓글을 생성합니다.")
-    @PostMapping(value = "/")
+    @PostMapping()
     public CommonResult<Object> create(@ApiParam @Validated @RequestBody CommentSaveRequestDto form) throws IOException {
         commentService.save(form);
         return responseService.getSuccessResult();
     }
 
     @ApiOperation(value = "댓글 수정", notes = "댓글을 수정합니다.")
-    @PatchMapping("/")
+    @PatchMapping()
     public CommonResult<Object> update(@ApiParam @Validated @RequestBody CommentUpdateRequestDto form) {
         commentService.update(form);
         return responseService.getSuccessResult();

@@ -29,6 +29,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.List;
@@ -121,6 +122,9 @@ public class MemberController {
 
     @GetMapping("/image/{fileName}")
     public Resource imageFile(@PathVariable String fileName) throws MalformedURLException {
+
+        File file = new File(fileStore.getProfileFullPath(fileName));
+        if(!file.exists()) return null;
         return new UrlResource("file:" + fileStore.getProfileFullPath(fileName));
     }
 }

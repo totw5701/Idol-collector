@@ -75,9 +75,6 @@ public class FileStore {
     public void deleteProFile(String uri) {
 
         String storeFileName = getProfileStoreFileName(uri);
-
-        System.out.println("storeFileName = " + storeFileName);
-
         File file = new File(getProfileFullPath(storeFileName));
         if(file.exists()) file.delete();
     }

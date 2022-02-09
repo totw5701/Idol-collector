@@ -25,6 +25,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpSession;
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
@@ -107,6 +109,9 @@ public class CardController {
     @ApiOperation(value = "이미지 파일 받아오기", notes = "이미지 파일을 받아옵니다.")
     @GetMapping("/image/{fileName}")
     public Resource imageFile(@PathVariable String fileName) throws MalformedURLException {
+
+        File file = new File(fileStore.getProfileFullPath(fileName));
+        if(!file.exists()) return null;
         return new UrlResource("file:" + fileStore.getFullPath(fileName));
     }
 }
