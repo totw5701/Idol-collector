@@ -7,10 +7,8 @@ import dummyBundle from '../../data/dummyBundle'
 import dummyMember from '../../data/dummyMember'
 import ApiService from '../../ApiService'
 
-
-
 const post = dummyPost
-/* const post = axiosPost */
+// const post = axiosPost
 const bundle = dummyBundle
 const member = {}
 

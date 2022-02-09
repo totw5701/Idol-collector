@@ -1,11 +1,18 @@
 import { ArrowDropDown, ArrowDropUp } from '@mui/icons-material'
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
+import { useHistory } from 'react-router'
 import styled from 'styled-components/macro'
 import Button from './Button'
 
-function Nav() {
+function Nav({ isLogin, setIsLogin }) {
+  const history = useHistory();
   const [dropdown, setDropdown] = useState(false);
+
+  const backToLogin = () => {
+    setIsLogin(false);
+    history.push('/');
+  };
 
   return (
     <>
@@ -28,15 +35,19 @@ function Nav() {
           {dropdown && (
             <DropdownBar>
               <li>
+                <Link to="/user">
                 <Button src={'나의카드.png'}>나의 카드</Button>
+                </Link>
               </li>
               <li>
                 <Link to="/setting">
                   <Button src={'설정.png'}>설정</Button>
                 </Link>
               </li>
-              <li>
-                <Button src={'로그아웃.png'}>로그아웃</Button>
+              <li onClick={backToLogin}>
+                <Button 
+                src={'로그아웃.png'}     
+                >로그아웃</Button>
               </li>
             </DropdownBar>
           )}

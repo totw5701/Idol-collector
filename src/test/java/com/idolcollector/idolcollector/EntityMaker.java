@@ -5,6 +5,7 @@ import com.idolcollector.idolcollector.domain.comment.Comment;
 import com.idolcollector.idolcollector.domain.like.Likes;
 import com.idolcollector.idolcollector.domain.member.Member;
 import com.idolcollector.idolcollector.domain.member.MemberRole;
+import com.idolcollector.idolcollector.domain.nestedcomment.NestedComment;
 import com.idolcollector.idolcollector.domain.notice.Notice;
 import com.idolcollector.idolcollector.domain.notice.NoticeType;
 import com.idolcollector.idolcollector.domain.post.Post;
@@ -22,8 +23,7 @@ public class EntityMaker {
         return new Member(MemberRole.USER, "testMember", "testEmail@email.net", "1111", "steve", "dsfsdfdsfdsf", LocalDateTime.now());
     }
 
-    public static Post generatePost() {
-        Member member = new Member(MemberRole.USER, "testMember", "testEmail@email.net", "1111", "steve", "dsfsdfdsfdsf", LocalDateTime.now());
+    public static Post generatePost(Member member) {
         Post post = new Post(member, "test card", "test card content", "ste", "ori");
 
         post.getComments().add(new Comment(generateMember(), post, "comment1"));
@@ -33,6 +33,18 @@ public class EntityMaker {
         post.getPostTags().add(new PostTag(post, new Tag("tag2")));
 
         return post;
+    }
+
+    public static Comment generateComment(Post post, Member member) {
+        return new Comment(member, post, "comment content");
+    }
+
+    public static NestedComment generateNComment(Comment comment, Member member) {
+        return new NestedComment(member, comment, "comment content");
+    }
+
+    public static Bundle generateBundle(Member member) {
+        return new Bundle(member, "bundle title", "bundle desc");
     }
 
     public static Notice generateNotice() {

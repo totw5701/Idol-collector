@@ -52,7 +52,7 @@ class ApiService {
   }
 
   putCardUpdate(form) { // 카드 수정
-    return axios.put( '/api/card/update', form )
+    return axios.put( '/api/card/update',form )
   }
 
 /* 댓글 */

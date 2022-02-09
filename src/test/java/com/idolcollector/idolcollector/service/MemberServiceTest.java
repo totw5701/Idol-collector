@@ -1,104 +1,66 @@
 package com.idolcollector.idolcollector.service;
 
-import com.idolcollector.idolcollector.domain.comment.CommentRepository;
+import com.idolcollector.idolcollector.EntityMaker;
+import com.idolcollector.idolcollector.domain.blame.BlameRepository;
 import com.idolcollector.idolcollector.domain.member.Member;
 import com.idolcollector.idolcollector.domain.member.MemberRepository;
-import com.idolcollector.idolcollector.domain.member.MemberRole;
-import com.idolcollector.idolcollector.domain.nestedcomment.NestedCommentRepository;
-import com.idolcollector.idolcollector.web.dto.member.MemberSaveRequestDto;
+import com.idolcollector.idolcollector.domain.notice.NoticeRepository;
+import com.idolcollector.idolcollector.file.FileStore;
 import com.idolcollector.idolcollector.web.dto.member.MemberUpdateRequestDto;
-import org.junit.jupiter.api.BeforeEach;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.transaction.annotation.Transactional;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Spy;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.web.multipart.MultipartFile;
 
-import java.time.LocalDateTime;
+import javax.servlet.http.HttpSession;
 
-import static org.assertj.core.api.Assertions.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.util.Optional;
 
+import static com.idolcollector.idolcollector.EntityMaker.*;
+import static com.idolcollector.idolcollector.EntityMaker.generateUploadFile;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doReturn;
 
-@SpringBootTest
-@Transactional
-class MemberServiceTest {
+@ExtendWith(MockitoExtension.class)
+public class MemberServiceTest {
 
-    @Autowired
-    private MemberService memberService;
+    @InjectMocks MemberService memberService;
 
-    @Autowired NestedCommentRepository nestedCommentRepository;
-    @Autowired MemberRepository memberRepository;
-    @Autowired CommentRepository commentRepository;
+    @Mock MemberRepository memberRepository;
+    @Mock NoticeRepository noticeRepository;
+    @Mock HttpSession httpSession;
+    @Mock BlameRepository blameRepository;
 
-
-    @BeforeEach
-    void before() {
-        Member member = new Member(MemberRole.USER, "nick", "email", "1111", "steve", "dsfsdfdsfdsf", LocalDateTime.now());
-        memberRepository.save(member);
-    }
-
-    @Test
-    void template() {
-
-        // Given
-
-        // When
-
-        // Then
-
-    }
+    @Mock FileStore fileStore;
 
     @Test
-    void 회원가입_조회() {
-
+    void 회원_정보_수정() throws IOException {
         // Given
-        MemberSaveRequestDto form = new MemberSaveRequestDto("nickName", "email@email.com", "1111", "mattew", "picture", LocalDateTime.now());
+        Member member = generateMember();
+
+        Optional<Member> memberOp = Optional.of(member);
+
+        doReturn(1L).when(httpSession).getAttribute(any());
+        doReturn(memberOp).when(memberRepository).findById(1L);
+        doReturn(generateUploadFile()).when(fileStore).storeProFile(any(MultipartFile.class));
+
+        File img = new File("./src/test/resources/test.png");
+        MockMultipartFile mf = new MockMultipartFile("image","test.png", "img", new FileInputStream(img));
+
+        MemberUpdateRequestDto form = new MemberUpdateRequestDto("upNick", "upEmail@email.com", mf);
 
         // When
-        Long memberId = memberService.join(form);
+        Long update = memberService.update(form);
 
-        // Then
-        Member member = memberRepository.findById(memberId).get();
-
-        assertThat(memberId).isEqualTo(member.getId());
-
-    }
-
-    @Test
-    void 회원정보_수정() {
-
-        // Given
-        Member member = memberRepository.findAll().get(0);
-
-        MemberUpdateRequestDto form = new MemberUpdateRequestDto(
-                member.getId(),
-                "update nickName",
-                "update@email.com",
-                "2222",
-                "taylor",
-                "salfhjdsahflh"
-        );
-
-        // When
-        Long updateId = memberService.update(form);
-
-        // Then
-        Member update = memberRepository.findById(updateId).get();
-        assertThat(update.getNickName()).isEqualTo("update nickName");
-        assertThat(update.getEmail()).isEqualTo("update@email.com");
-        assertThat(update.getPwd()).isEqualTo("2222");
-        assertThat(update.getName()).isEqualTo("taylor");
-        assertThat(update.getPicture()).isEqualTo("salfhjdsahflh");
-
-    }
-
-    @Test
-    void 이메일조회() {
-
-        // Given
-
-        // When
-
-        // Then
+        Assertions.assertThat(member.getPicture()).contains("store file name");
     }
 
 }

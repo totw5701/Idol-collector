@@ -44,4 +44,20 @@ class FileDtoStoreTest {
 
     }
 
+    @Test
+    void profileStore() throws IOException {
+
+        // Given
+        File img = new File("./src/test/resources/test.png");
+        MultipartFile mf = new MockMultipartFile("image","test.png", "img",new FileInputStream(img));
+
+        // When
+        UploadFile uploadFile = fileStore.storeProFile(mf);
+
+        // Then
+        File file = new File("./src/test/resources/imgs/profile/" + uploadFile.getStoreFileName());
+        assertThat(file.length()).isEqualTo(img.length());
+
+    }
+
 }
