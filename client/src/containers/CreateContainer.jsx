@@ -28,7 +28,7 @@ function CreateContainer() {
 /* 유효성 검사 */
   const cardDB = [ { id: 'title', value: title },{id: 'description', value: description },{id: 'alt', value: alt },
                  {id: 'tags', value: tags },{id: 'photo', value: selectedPhoto.photo } ]
-    //console.log(cardDB)
+  //console.log(cardDB)
 
   const regTest = () => {
     const validator = new Validator(cardDB,tags)
@@ -41,7 +41,7 @@ function CreateContainer() {
 
   const handleCreateCard = async () => { // 카드 만들기
 
-      console.log( title, description, alt, tags,selectedPhoto)
+      //console.log( title, description, alt, tags,selectedPhoto)
 
       const newCard = new FormData();
 
