@@ -83,8 +83,8 @@ class MemberControllerTest {
     void 마이페이지() throws Exception {
         // Given
         List<HomePostListResponseDto> cards = new ArrayList<>();
-        HomePostListResponseDto dto1 = new HomePostListResponseDto(generatePost());
-        HomePostListResponseDto dto2 = new HomePostListResponseDto(generatePost());
+        HomePostListResponseDto dto1 = new HomePostListResponseDto(generatePost(generateMember()));
+        HomePostListResponseDto dto2 = new HomePostListResponseDto(generatePost(generateMember()));
         cards.add(dto1);
         cards.add(dto2);
 
@@ -112,8 +112,8 @@ class MemberControllerTest {
     void 회원정보() throws Exception {
         // Given
         List<HomePostListResponseDto> cards = new ArrayList<>();
-        HomePostListResponseDto dto1 = new HomePostListResponseDto(generatePost());
-        HomePostListResponseDto dto2 = new HomePostListResponseDto(generatePost());
+        HomePostListResponseDto dto1 = new HomePostListResponseDto(generatePost(generateMember()));
+        HomePostListResponseDto dto2 = new HomePostListResponseDto(generatePost(generateMember()));
         cards.add(dto1);
         cards.add(dto2);
 

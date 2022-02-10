@@ -370,8 +370,7 @@ const Tag = styled.span`
         border-radius: 50%;
         cursor: pointer;
       }
-  }
-`;
+`
 
 const CreateBtn = styled.button`
   position: absolute;

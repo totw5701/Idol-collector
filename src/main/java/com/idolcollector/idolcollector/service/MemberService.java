@@ -9,16 +9,21 @@ import com.idolcollector.idolcollector.domain.member.MemberRepository;
 import com.idolcollector.idolcollector.domain.member.MemberRole;
 import com.idolcollector.idolcollector.domain.notice.Notice;
 import com.idolcollector.idolcollector.domain.notice.NoticeRepository;
+import com.idolcollector.idolcollector.file.FileStore;
 import com.idolcollector.idolcollector.web.dto.blame.BlameRequestDto;
+import com.idolcollector.idolcollector.web.dto.file.UploadFile;
 import com.idolcollector.idolcollector.web.dto.member.MemberDetailDto;
 import com.idolcollector.idolcollector.web.dto.member.MemberSaveRequestDto;
 import com.idolcollector.idolcollector.web.dto.member.MemberUpdateRequestDto;
+import com.idolcollector.idolcollector.web.dto.member.MemberUpdateServiceDto;
 import com.idolcollector.idolcollector.web.dto.notice.NoticeResponseDto;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpSession;
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -34,6 +39,11 @@ public class MemberService {
     private final HttpSession httpSession;
     private final BlameRepository blameRepository;
 
+    private final FileStore fileStore;
+
+    @Value("${url.base}")
+    private String url;
+
     @Transactional
     public Long join(MemberSaveRequestDto form) {
 
@@ -43,13 +53,14 @@ public class MemberService {
 
 
     @Transactional
-    public Long update(MemberUpdateRequestDto form) {
-        Member member = memberRepository.findById(form.getMemberId())
-                .orElseThrow(CMemberNotFoundException::new);
+    public Long update(MemberUpdateRequestDto form) throws IOException {
+        Member member = memberRepository.findById((Long) httpSession.getAttribute("loginMember"))
+                .orElseThrow(() -> new CNotLoginedException());
 
-        // 세션 사용자 일치 확인.
+        UploadFile uploadFile = fileStore.storeProFile(form.getProfile());
+        String picture = url + uploadFile.getStoreFileName();
 
-        return member.update(form);
+        return member.update(new MemberUpdateServiceDto(form.getNickName(), form.getEmail(), picture));
     }
 
 

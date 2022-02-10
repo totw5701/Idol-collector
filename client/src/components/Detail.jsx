@@ -779,10 +779,10 @@ const CommentFormItem = styled(CommentItem)`
 `;
 
 const NCommentFormItem = styled(NCommentItem)`
-  width: 100%
+  width: 100%;
   margin-right: 0px;
 
-  > button {
+   button {
     background-color: #b580d1;
     width: 50px;
     height: 40px;

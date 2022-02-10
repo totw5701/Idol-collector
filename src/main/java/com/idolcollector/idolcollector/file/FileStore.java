@@ -15,8 +15,15 @@ public class FileStore {
     @Value("${file.dir}")
     private String fileDir;
 
+    @Value("${profile.dir}")
+    private String profileDir;
+
     public String getFullPath(String fileName) {
         return fileDir + fileName;
+    }
+
+    public String getProfileFullPath(String fileName) {
+        return profileDir + fileName;
     }
 
     private String createStoreFileName(String fileName) {
@@ -43,4 +50,21 @@ public class FileStore {
 
         return new UploadFile(originalFilename, storeFileName);
     }
+
+
+    public UploadFile storeProFile(MultipartFile multipartFile) throws IOException {
+        if (multipartFile == null) {
+            return null;
+        }
+
+        String originalFilename = multipartFile.getOriginalFilename();
+
+        String storeFileName = createStoreFileName(originalFilename);
+
+        multipartFile.transferTo(new File(getProfileFullPath(storeFileName)));
+
+        return new UploadFile(originalFilename, storeFileName);
+    }
+
+
 }

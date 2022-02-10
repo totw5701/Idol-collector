@@ -5,7 +5,6 @@ import DetailPage from './pages/DetailPage';
 import MainPage from './pages/MainPage';
 import CreatePage from './pages/CreatePage';
 import SettingPage from './pages/SettingPage';
-import SearchPage from './pages/SearchPage';
 import { useSelector,useDispatch } from 'react-redux';
 import ApiService from './ApiService'
 
@@ -44,8 +43,6 @@ function App() {
 
 
 
-
-
   return (
     <BrowserRouter>
       <Nav />
@@ -61,9 +58,6 @@ function App() {
         </Route>
         <Route path="/" exact>
           <MainPage data={data} />
-        </Route>
-        <Route path="/search/:keywords">
-          <SearchPage />
         </Route>
       </Switch>
       <TopBtn />
