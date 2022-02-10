@@ -3,20 +3,11 @@ import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 import { useInView } from 'react-intersection-observer'
 import ApiService from '../ApiService'
+import { useSelector } from 'react-redux'
 
+function Columns( props ) {
 
-function Columns({ data }) {
-
-
-/*  dummyDB copy로 무한 스크롤 테스트
-  const copy = data.filter(e => e.id < 10)
-  const copy2 = data.filter(e => e.id > 10 && e.id <20)
-  const copy3 = data.filter(e => e.id > 20)
-  const copies = [copy,copy2,copy3]
-  console.log(copies)
-  */
-
-
+  const data = useSelector(({postReducer}) => postReducer )//dummyDB
 
   const [card, setCard] = useState([])
   const [page, setPage] = useState( 0 ) //PageRequest page 0부터 시작
@@ -28,28 +19,36 @@ function Columns({ data }) {
   const getData = useCallback(() => {
     setLoading(true)
 
-    ApiService.getHomePage(page)
-    .then((result) => {
-      //console.log(result)
-      setCard([...data,...result.data.data.cards])//dummyDB
-      //setCard([...card,...result.data.data.cards])
-      setLoading(false)
-    })
-    .catch((err) => {
-      console.log('getHomePage axios 에러! '+err )
-      setCard(data)
-      setLoading(false)
-    })
+    if( props.pageName === 'main' ){ // 메인페이지
+      ApiService.getHomePage(page)
+      .then((result) => {
+        //console.log(result)
+        setCard([...data,...result.data.data.cards])//dummyDB
+        //setCard([...card,...result.data.data.cards])
+        setLoading(false)
+      })
+      .catch((err) => {
+        console.log('getHomePage axios 에러! '+err )
+        setCard(data)
+        setLoading(false)
+      })
 
-    /* dummyDB로 test
-      if(page<3){
-      const result = copies[page]
+    }else if( props.pageName === 'search' ){ // search 페이지
 
-      setCard([...card,...result])
-      //console.log('result: '+ JSON.stringify(copies[page]))
-      console.log('page'+page)
-    }*/
+      ApiService.getSearchPage(page, props.param )
+      .then((result) => {
+        //console.log(result)
+        setCard([...data,...result.data.data.cards])//dummyDB
+        //setCard([...card,...result.data.data.cards])
+        setLoading(false)
+      })
+      .catch((err) => {
+        console.log('getSearchPage axios 에러! '+err )
+        setCard(data)
+        setLoading(false)
+      })
 
+    }
   },[page])
 
   // getData가 바뀔 때마다 실행
