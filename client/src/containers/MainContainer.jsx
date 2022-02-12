@@ -5,7 +5,9 @@ function MainContainer({ data }) {
   return (
     <>
       <Jumbotron />
-      <Columns data={data} />
+
+      { /* 이미지와 내부메뉴 */ }
+      <Columns  pageName = 'main' />
     </>
   );
 }

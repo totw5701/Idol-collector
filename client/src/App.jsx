@@ -1,27 +1,27 @@
+import MainPage from './pages/MainPage';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import Nav from './components/Nav';
 import TopBtn from './components/TopBtn';
 import DetailPage from './pages/DetailPage';
-import MainPage from './pages/MainPage';
 import CreatePage from './pages/CreatePage';
 import SettingPage from './pages/SettingPage';
-import { useSelector, useDispatch } from 'react-redux';
-import ApiService from './ApiService';
-import { useState } from 'react';
+import SearchPage from './pages/SearchPage';
 import LoginPage from './pages/LoginPage';
 import UserPage from './pages/UserPage';
+import { useSelector,useDispatch } from 'react-redux';
+import ApiService from './ApiService'
+import { useState } from 'react';
 
 function App() {
-  const dispatch = useDispatch();
+
+  const dispatch = useDispatch()
   const [isLogin, setIsLogin] = useState(false);
 
-  /*  post */
-  let data = useSelector(({ postReducer }) => {
-    return postReducer;
-  });
-  // let data = useSelector((state)=> { return state.postReducer })
 
-  /*   let axiosPost = [];
+/*  post */
+   let data = useSelector(({postReducer})=> { return postReducer })
+  // let data = useSelector((state)=> { return state.postReducer })
+/*   let axiosPost = [];
 
   ApiService.getHome().then(( result ) => {
     //console.log(result.data.data.member)
@@ -32,22 +32,24 @@ function App() {
     console.log('axiosPost 데이터 가져오기 에러! '+err )
   }) */
 
-  /* member */
-  let axiosMember = {};
+/* member */
+  let axiosMember = {}
 
-  ApiService.getHome()
-    .then(result => {
-      //console.log(result.data.data.member)
-      axiosMember = { ...axiosMember, ...result.data.data.member };
-      //console.log(axiosMember)
-      dispatch({ type: 'axiosMember', payload: axiosMember });
-    })
-    .catch(err => {
-      console.log('axiosMember 데이터 가져오기 에러! ' + err);
-    });
+  ApiService.getHome().then(( result ) => {
+    //console.log(result.data.data.member)
+    axiosMember = {...axiosMember,...result.data.data.member}
+    //console.log(axiosMember)
+    dispatch({ type:'axiosMember', payload: axiosMember })
+  }).catch((err) => {
+    console.log('axiosMember 데이터 가져오기 에러! '+err )
+
+  })
+
 
   return (
     <BrowserRouter>
+
+
       {isLogin ? (
         <>
           <Nav isLogin={isLogin} setIsLogin={setIsLogin} />
@@ -64,6 +66,9 @@ function App() {
             <Route path="/card/:cardId">
               <DetailPage />
             </Route>
+            <Route path="/search/:keywords">
+              <SearchPage />
+            </Route>
             <Route path="/" exact>
               <MainPage data={data} />
             </Route>
@@ -79,4 +84,4 @@ function App() {
   );
 }
 
-export default App;
+export default App

@@ -1,103 +1,103 @@
 export default [
 
  {
-  authorId: 0,
+  authorId: 1,
   authorNickName: "회원 별명",
   createDate: "2022-02-06T15:19:49.146Z",
   comments: [
     {
-      authorId: 0,
+      authorId: 1,
       authorNickName: "별명0",
       content: "댓글내용 여기 써요!",
       createDate: "2022-02-06T15:19:49.146Z",
       didLike: true,
-      id: 0,
+      id: 200,
       likes: 0,
       modifyDate: "2022-02-06T15:19:49.146Z",
       nestedComments: [
         {
-          authorId: 1,
+          authorId: 3,
           authorNickName: "별명1",
           content: "대댓글",
           createDate: "2022-02-06T15:19:49.146Z",
           didLike: true,
-          id: 0,
+          id: 201,
           likes: 0,
           modifyDate: "2022-02-06T15:19:49.146Z"
         },
         {
-          authorId: 1,
+          authorId: 5,
           authorNickName: "별명1",
           content: "대댓글",
           createDate: "2022-02-06T15:19:49.146Z",
           didLike: true,
-          id: 1,
+          id: 202,
           likes: 0,
           modifyDate: "2022-02-06T15:19:49.146Z"
         }
       ]
     },
     {
-      authorId: 1,
+      authorId: 7,
       authorNickName: "별명1",
       content: "댓글내용 여기 써요1!",
       createDate: "2022-02-06T15:19:49.146Z",
       didLike: true,
-      id: 1,
+      id: 203,
       likes: 0,
       modifyDate: "2022-02-06T15:19:49.146Z",
       nestedComments: [
         {
-          authorId: 1,
+          authorId: 9,
           authorNickName: "별명1",
           content: "대댓글",
           createDate: "2022-02-06T15:19:49.146Z",
           didLike: true,
-          id: 2,
+          id: 204,
           likes: 0,
           modifyDate: "2022-02-06T15:19:49.146Z"
         }
       ]
     },
     {
-      authorId: 2,
+      authorId: 11,
       authorNickName: "별명2",
       content: "댓글내용 여기 써요2!",
       createDate: "2022-02-06T15:19:49.146Z",
       didLike: true,
-      id: 2,
+      id: 205,
       likes: 0,
       modifyDate: "2022-02-06T15:19:49.146Z",
       nestedComments: [
         {
-          authorId: 1,
+          authorId: 13,
           authorNickName: "별명1",
           content: "대댓글",
           createDate: "2022-02-06T15:19:49.146Z",
           didLike: true,
-          id: 3,
+          id: 206,
           likes: 0,
           modifyDate: "2022-02-06T15:19:49.146Z"
         }
       ]
     },
     {
-      authorId: 3,
+      authorId: 15,
       authorNickName: "별명3",
       content: "댓글내용 여기 써요3!",
       createDate: "2022-02-06T15:19:49.146Z",
       didLike: true,
-      id: 3,
+      id: 207,
       likes: 0,
       modifyDate: "2022-02-06T15:19:49.146Z",
       nestedComments: [
         {
-          authorId: 1,
+          authorId: 17,
           authorNickName: "별명1",
           content: "대댓글",
           createDate: "2022-02-06T15:19:49.146Z",
           didLike: true,
-          id: 4,
+          id: 208,
           likes: 0,
           modifyDate: "2022-02-06T15:19:49.146Z"
         }
@@ -112,8 +112,7 @@ export default [
   likes: 1,
   oriFileName: "string",
   storeFileName:
-        'https://www.smlounge.co.kr/upload/woman/article/201911/thumb/43390-393024-sampleM.jpg',
-  tags: [
+'https://pds.joongang.co.kr/news/component/htmlphoto_mmdata/202012/09/4b713b30-3499-4cf7-a95d-1e877f0367d4.jpg',  tags: [
     {
       name: "로운"
     }

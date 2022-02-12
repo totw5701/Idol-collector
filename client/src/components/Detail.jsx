@@ -10,6 +10,11 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import Columns from './Columns';
 import { useSelector, useDispatch } from 'react-redux';
 import ApiService from '../ApiService'
+import Comment from './Comment'
+import NComment from './NComment'
+import Update from './Update'
+import Validator from '../Validator'
+
 
 function Detail({ card }) {
 
@@ -27,7 +32,11 @@ function Detail({ card }) {
   const [didScrap, setDidScrap] = useState(false) // 스크랩 언스크랩 버튼 스위치
   const [isUpdate, setIsUpdate] = useState(false) // 카드 수정 창 스위치
 
+  const [title, setTitle] = useState()
+  const [content, setContent] = useState()
+  const [postId, setPostId] = useState(card.id)
   const [tag,setTag] = useState()
+
   const [tags,setTags] = useState([])
 
   const [cmt,setCmt] = useState() // 댓글,대댓글 담을 state
@@ -44,14 +53,41 @@ function Detail({ card }) {
 
   const handlePage = () => history.push('/');
 
+  const addTag = () => {
+    if(tags.length<5){
+      setTags([...tags,tag])
+    }
+  }
 
-  const handleUpdateCard = e => { // 카드 수정
+  const handleCloseTag = tag => { //태그 닫기
+    setTags(tags.filter( cur => cur !== tag))
+  }
 
+/* 유효성 검사 */
+  const regTest = () => {
+
+    const cardDB =
+      [ { id: 'title', value: title },
+        { id: 'description', value: content },
+        { id: 'tags', value: tags }
+      ]
+
+    console.log(cardDB)
+
+    const validator = new Validator(cardDB,tags)
+
+    if(validator.regTest()){
+      handleUpdateCard(title,content,postId)
+    }
+  }
+
+
+  const handleUpdateCard = (title,content,postId) => { // 카드 수정
     ApiService.putCardUpdate(
       {
-        title: e.target.title.value,
-        content: e.target.content.value,
-        postId: Number(e.target.postId.value),
+        title: title,
+        content: content,
+        postId: postId,
         tags: tags
       }
     )
@@ -250,13 +286,14 @@ function Detail({ card }) {
 
   return (
     <DetailBase>
-     <button onClick={()=>{ setIsUpdate(true) }}>카드 수정</button>
+
       {!card
         ? (
            <span>Loading...</span>
           )
         : (
         <DetailBlock>
+      { /* 이미지와 내부메뉴 */ }
           <ImgBlock>
             <img src={card.storeFileName} alt={`${card.title} 사진`} />
             <Buttons>
@@ -271,6 +308,8 @@ function Detail({ card }) {
               </Button>
             </Buttons>
           </ImgBlock>
+
+      { /* 이미지 아래칸 */ }
           <Info>
             <Wrapper>
               <UserInfo>{card.title}</UserInfo>
@@ -302,168 +341,40 @@ function Detail({ card }) {
             </Wrapper>
             <CommentWrapper>
               <h3>댓글</h3>
-              <span>몇 개</span>
+              <span>{ card.comments.length }개</span>
               <CommentButton onClick={toggleShow} isShow={isShow}>
                 <ArrowForwardIos />
               </CommentButton>
             </CommentWrapper>
-            {!isShow && (
-              <>
-              { card.comments.map((cmt,idx) =>
-                <CommentList key={cmt.id}>
-                  <CommentItem>
-                    <Link to="">
-                      <img
-                        src="/images/업로더-사진.png"
-                        alt={`아이디 이미지`}
-                      />
-                    </Link>
-                    <CommentInfo>
-                      <UserLink to="/member/: card.comments[0].authorId" >comments authorId {cmt.authorId}</UserLink>
-                      <CommentContent>comments content { cmt.content }</CommentContent>
-                    </CommentInfo>
-                  </CommentItem>
 
-                  <FavoriteIcon type = 'button' onClick = { () => { handleCmtLike(cmt.id) }} />
-                  <ChatBubbleIcon onClick = { toggleNCmt } />
-                  <button type='button' onClick = { handleDelCmt } value = { cmt.id } >삭제</button>
-                  <MoreHorizIcon />
-                  <button type='button' onClick = {() => { setIsUpCmt(true) }}>댓글 수정</button>
-                    { isUpCmt && (
-                      <CommentFormItem as="div">
-                        <Link to="마이페이지path">
-                          <img
-                            src="/images/업로더-사진.png"
-                            alt={`아이디 이미지`}
-                          />
-                        </Link>
-                        <CommentText
-                          type="text"
-                          placeholder="댓글을 입력하세요."
-                          onChange = {(e) => { setCmt(e.target.value) }}
-                        />
-                        <button type="button" onClick = { () => { setIsUpCmt(false) }}>취소</button>
-                        <button type="button" onClick = { () => { handleCmtUpdate(cmt.id) }}>완료</button>
-                      </CommentFormItem>
 
-                    )}
+       <button onClick={()=>{ setIsUpdate(true) }}>카드 수정</button>
 
-                    { isNCmt && (
-                      <NCommentForm onSubmit = { handleNCmtSubmit } >
-                        <NCommentFormItem as="div">
-                          <Link to="마이페이지path">
-                            <img
-                            src="/images/업로더-사진.png"
-                            alt={`아이디 이미지`}
-                            />
-                          </Link>
-                          <NCommentInfo>
-                            <input
-                              type = 'hidden'
-                              value = {cmt.id}
-                            />
-                            <CommentText
-                              type = 'text'
-                              placeholder = '댓글 추가'
-                            />
-                          </NCommentInfo>
 
-                          <button onClick = {()=>{ setIsNCmt(false) } }>취소</button>
-                          <button type = 'submit'>완료</button>
-                        </NCommentFormItem>
-                      </NCommentForm>
-                      )
-                    }
+      { /* Comment 댓글 리스트
+           isShow (댓글몇개) 스위치가 true && 코멘트가 존재하는 경우만 */ }
 
-                  { cmt.nestedComments.map((nCmt, nIdx) =>
-                    (<NCommentForm>
-                      <NCommentItem as="div" key={nCmt.id}>
-                      <Link to="">
-                        <img
-                          src="/images/업로더-사진.png"
-                          alt={`아이디 이미지`}
-                        />
-                      </Link>
-                      <CommentInfo>
-                        <UserLink to="/member/: card.comments[0].authorId" >comments authorId {nCmt.authorId}</UserLink>
-                        <CommentContent>comments content {nCmt.content}</CommentContent>
-                      </CommentInfo>
-                      </NCommentItem>
-                      <FavoriteIcon onClick = {() => { handleNCmtLike(nCmt.id) }} />
-                      <ChatBubbleIcon onClick = { toggleReNCmt } />
-                      <MoreHorizIcon />
-                      <button type='button' onClick = {() => { handleDelNCmt(nCmt.id) }}>대댓글 삭제</button>
-                      <button type='button' onClick = {() => { setIsUpNCmt(true) }}>대댓글 수정</button>
-
-                      { isReNCmt && (
-                        <NCommentItem as="div">
-                          <Link to="마이페이지path">
-                            <img
-                            src="/images/업로더-사진.png"
-                            alt={`아이디 이미지`}
-                            />
-                          </Link>
-                          <NCommentInfo>
-                            <CommentText
-                              type = 'text'
-                              placeholder = '대댓글 추가'
-                              onChange = {(e) => { setCmt(e.target.value) }}
-                            />
-                          </NCommentInfo>
-
-                          <button type = 'button' onClick = {()=>{ setIsReNCmt(false) }}>취소</button>
-                          <button type = 'button' onClick = {() => { handleNCmtSubmit(nCmt.id) }}>완료</button>
-                        </NCommentItem>
-                      )}
-
-                      { isUpNCmt && (
-                        <NCommentItem as="div">
-                          <Link to="마이페이지path">
-                            <img
-                            src="/images/업로더-사진.png"
-                            alt={`아이디 이미지`}
-                            />
-                          </Link>
-                          <NCommentInfo>
-                            <CommentText
-                              type = 'text'
-                              placeholder = '대댓글 수정'
-                              onChange = {(e) => { setCmt(e.target.value) }}
-                            />
-                          </NCommentInfo>
-
-                          <button type = 'button' onClick = {()=>{ setIsUpNCmt(false) }}>취소</button>
-                          <button type = 'button' onClick = {() => { handleNCmtUpdate(nCmt.id) }}>완료</button>
-                        </NCommentItem>
-                      )}
-
-                    </NCommentForm>
-                    )
-                  )}
-
-                </CommentList>
-
-              )}
-
-                <CommentForm onSubmit = { handleCmtSubmit  }>
-                  <CommentFormItem as="div">
-                    <Link to="마이페이지path">
-                      <img
-                        src="/images/업로더-사진.png"
-                        alt={`아이디 이미지`}
-                      />
-                    </Link>
-                    <CommentText
-                      type="text"
-                      ref={inputRef}
-                      placeholder="댓글을 입력하세요."
-                    />
-                    <button type="submit">완료</button>
-                  </CommentFormItem>
-                </CommentForm>
-              </>
-
+            {!isShow && card.comments.length> 0 &&(
+              <Comment comments = { card.comments }/>
             )}
+
+      { /* 카드에 대한 댓글 입력 */ }
+            <CommentForm onSubmit = { handleCmtSubmit }>
+              <CommentFormItem as="div">
+                <Link to="마이페이지path">
+                  <img
+                    src="/images/업로더-사진.png"
+                    alt={`아이디 이미지`}
+                  />
+                </Link>
+                <CommentText
+                  type="text"
+                  ref={inputRef}
+                  placeholder="댓글을 입력하세요."
+                />
+                <button type="submit">완료</button>
+              </CommentFormItem>
+            </CommentForm>
 
           </Info>
         </DetailBlock>
@@ -472,56 +383,64 @@ function Detail({ card }) {
         <ArrowForward />
       </BackButton>
       <Line />
-      <UpdateForm isUpdate={isUpdate} onSubmit = { handleUpdateCard }>
+
+      <UpdateForm isUpdate={isUpdate} onSubmit = { regTest }>
         <Title>카드 수정</Title>
 
         <UpdateFormItem>
           <UpdateInfo>
               <Label> 제목
-                <Input type='text' name='title' placeholder={ card.title }/>
+                <Input type='text' name='title' placeholder={ card.title }  onChange = {(e)=> { setTitle(e.target.value) }}/>
               </Label>
               <Label> 설명
-                <Input type='text' name='content'/>
+                <Input type='text' name='content'  onChange = {(e)=> { setContent(e.target.value) }}/>
               </Label>
               <Label> 태그
                 <Input type='text' name='tag' onChange = {(e)=> { setTag(e.target.value) }}/>
-                <div onClick = { () => { setTags([...tags,tag]) }}>태그등록</div>
+                <AddTag onClick = { addTag }>태그등록</AddTag>
               </Label>
               <Label>
-                <TagsArea name='tags' placeholder = { tags }/>
+              <TagField>
+                { tags.length > 0 && (
+                  tags.map( (tag,idx) =>
+                    <Tag key={idx}>
+                      {tag}
+                      <CancelIcon onClick={() => { handleCloseTag(tag) }} />
+                    </Tag>
+                  )
+                )}
+              </TagField>
               </Label>
-              <Label>
-                <input type='hidden' name='postId' value= { card.id }/>
-              </Label>
+              <ButtonItem>
+                <NoBtn type = 'button' onClick = { ()=>{ setIsUpdate(false) }} >취소</NoBtn>
+                <YesBtn type = 'button' onClick = { regTest }>완료</YesBtn>
+              </ButtonItem>
           </UpdateInfo>
           <UpdateImg src={card.storeFileName} alt={`${card.title} 사진`} />
+
         </UpdateFormItem>
-        <ButtonItem>
-          <NoBtn onClick = { ()=>{ setIsUpdate(false) }} >취소</NoBtn>
-          <YesBtn type = 'onSubmit' >완료</YesBtn>
-        </ButtonItem>
+
       </UpdateForm>
+
+{/*       { isUpdate  && (
+       <UpdatePage isUpdate={isUpdate} >
+         <Update card = { card } isUpdate = { isUpdate }/>
+       </UpdatePage>
+      )}       */}
       <Announcement>비슷한 순간들을 확인하세요</Announcement>
-      <Columns data={data} />
+      <Columns pageName = 'main' />
     </DetailBase>
   );
 }
 
 export default Detail;
 
-
-const Title = styled.div`
-  font-size: 40px;
-  font-weight: 800;
-  margin: 50px auto 20px auto;
-`;
-
-const UpdateForm = styled.form`
+const UpdatePage = styled.div`
   display: ${ props => props.isUpdate ? 'block':'none'};
-  height: 650px;
-  width: 1012px;
+  min-height: 650px;
+  width: 1040px;
   position: fixed;
-  top: 25%;
+  top: 20%;
   left: 50%;
   transform: translateX( -50%);
   border-radius: 20px;
@@ -531,42 +450,6 @@ const UpdateForm = styled.form`
     top: 15%;
     height: 870px;
     width: 60%;
-  }
-
-`;
-
-const UpdateFormItem = styled.div`
-  display: flex;
-  justify-content: space-between;
-  margin: 40px auto 0 auto;
-
-  @media screen and (max-width: 1100px) {
-    display: flex;
-    flex-direction: column-reverse;
-    align-items: center;
-  }
-`;
-
-const UpdateInfo = styled.div`
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-
-`;
-
-const UpdateImg =styled.img`
-  width: 100%;
-  height: 100%;
-  max-width: 300px;
-  max-height: 380px;
-  margin: 15px 40px 0 0;
-  object-fit: cover;
-  border-radius: 10px;
-
-  @media screen and (max-width: 1100px) {
-    width: 100%;
-    height: 100%;
-    margin: 0 auto 0 auto;
   }
 
 `;
@@ -589,37 +472,18 @@ const Input = styled.input`
   }
 `;
 
-const TagsArea = styled(Input)`
-  width: 70%;
-  height: 70px;
-  margin: 0px 0 0px 70px;
-  border: 3px solid #e0e0e0;
-  border-radius: 10px;
-
-  @media screen and (max-width: 1100px) {
-    width: 70%;
-    height: 50px;
-    padding-left: 20px;
-    margin: 0px 0 0px 20px;
-    border: 3px solid #e0e0e0;
-  }
-`;
-
-const Label = styled.label`
-  text-align: center;
-  font-size: 16px;
-  font-weight: bold;
-`;
-
 const ButtonItem = styled.div`
   position: absolute;
-  top: 570px;
-  left: 790px;
+  top: 85%;
+  left: 80%;
 
   @media screen and (max-width: 1100px) {
-    position: absolute;
-    top: 790px;
-    left: 250px;
+
+  position: relative;
+    top: 0%;
+    left: 0%;
+    text-align: right;
+    margin: 4px 30px 0 0;
   }
 
 `;
@@ -940,3 +804,128 @@ const CommentText = styled(TextareaAutosize)`
   border-radius: 6px;
   line-height: 1.4;
 `;
+
+const greyColor = '#e0e0e0';
+
+const AddTag = styled.div`
+  text-align: right;
+  cursor: pointer;
+  margin: 0 60px 0 0;
+
+  @media screen and (max-width: 1100px) {
+    margin: 0 50px 0 0;
+  }
+
+}
+`;
+
+const TagField = styled.div`
+  display: flex;
+  margin: 2rem 2rem 0 2rem;
+`;
+
+const Tag = styled.span`
+    position: relative;
+    padding: 0.4rem 0.6rem;
+    border: 1px solid ${ greyColor };
+    border-radius: 1rem;
+    margin: 0 1rem 0 0;
+
+      svg {
+        position: absolute;
+        right: -10px;
+        top: -5px;
+
+        font-size: 18px;
+        padding: 2px;
+        background: #f0f0f0;
+        border-radius: 50%;
+        cursor: pointer;
+      }
+  }
+`;
+
+const Title = styled.div`
+  font-size: 40px;
+  font-weight: 800;
+  margin: 50px auto 20px auto;
+`;
+
+const UpdateForm = styled.form`
+  display: ${ props => props.isUpdate ? 'block':'none'};
+  min-height: 650px;
+  width: 1040px;
+  position: fixed;
+  top: 50px;
+  left: 50%;
+  transform: translateX( -50%);
+  border-radius: 20px;
+  background: white;
+
+  @media screen and (max-width: 1100px) {
+    top: 15%;
+    height: 1000px;
+    width: 60%;
+  }
+
+`;
+
+const UpdateFormItem = styled.div`
+  display: flex;
+  justify-content: space-between;
+  margin: 40px auto 0 auto;
+
+  @media screen and (max-width: 1100px) {
+    display: flex;
+    flex-direction: column-reverse;
+    align-items: center;
+  }
+`;
+
+const UpdateInfo = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+
+`;
+
+const UpdateImg =styled.img`
+  width: 100%;
+  height: 100%;
+  max-width: 300px;
+  max-height: 380px;
+  margin: 15px 40px 0 0;
+  object-fit: cover;
+  border-radius: 10px;
+
+  @media screen and (max-width: 1100px) {
+    width: 100%;
+    height: 100%;
+    margin: 0 auto 0 auto;
+  }
+
+`;
+
+const TagsArea = styled(Input)`
+  width: 70%;
+  height: 70px;
+  margin: 0px 0 0px 70px;
+  border: 3px solid #e0e0e0;
+  border-radius: 10px;
+
+  @media screen and (max-width: 1100px) {
+    width: 70%;
+    height: 50px;
+    padding-left: 20px;
+    margin: 0px 0 0px 20px;
+    border: 3px solid #e0e0e0;
+  }
+`;
+
+const Label = styled.label`
+  text-align: center;
+  font-size: 16px;
+  font-weight: bold;
+
+`;
+

@@ -1,10 +1,14 @@
 import { useEffect, useState } from 'react';
+import { useHistory } from 'react-router-dom';
 import styled from 'styled-components';
 import { css } from 'styled-components';
+import ApiService from '../ApiService'
 
 function SearchBar() {
   const [isFixed, setIsFixed] = useState(false);
   const [searchValue, setSearchValue] = useState();
+  const [keywords, setKeywords] = useState([searchValue]);
+  const history = useHistory()
 
   useEffect(() => {
     window.addEventListener('scroll', onScroll);
@@ -25,18 +29,33 @@ function SearchBar() {
   };
 
   const handleSearch = e => {
-    e.preventDefault();
-    console.log(searchValue);
+    e.preventDefault()
+    console.log(searchValue)
+    let keywords = [searchValue]
+    if(searchValue != null && searchValue != ''){
+      if(searchValue.includes(' ')){
+        keywords = [searchValue,...searchValue.split(' ')]
+        console.log(keywords)
+      }
+        history.push('/search/'+ keywords)
+
+    }else{
+      alert('검색어를 입력해주세요!')
+    }
   };
 
   return (
-    <StyledSearchBar onSubmit={handleSearch} fixed={isFixed}>
-      <SearchIcon src="./images/검색.png" />
+    <StyledSearchBar
+      onSubmit={ handleSearch }
+      fixed={isFixed}>
       <SearchInput
         onChange={e => setSearchValue(e.target.value)}
         type="search"
         placeholder="원하는 순간을 검색해보세요"
       />
+      <button type = 'onSubmit'>
+        <SearchIcon src="/images/검색.png" />
+      </button>
     </StyledSearchBar>
   );
 }

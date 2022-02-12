@@ -3,7 +3,6 @@ import axios from 'axios'
 class ApiService {
 
 /* 루트 페이지 */
-
   getHome() { // 로그인시 메인페이지 post
     return axios.get( '/api/home' )
   }
@@ -12,12 +11,12 @@ class ApiService {
     return axios.get( '/api/home/'+ page )
   }
 
-  getSearch( tag ) { //태그로 검색한 결과 페이지
-    return axios.get( '/api/search/'+tag )
+  getSearch( param ) { //태그로 검색한 결과 페이지
+    return axios.get( '/api/search/', param )
   }
 
-  getSearchPage( page ) { //위 페이지에서 화면에 보인는 개수 지정
-    return axios.get( '/api/search/'+page )
+  getSearchPage( page, param ) { //위 페이지에서 화면에 보인는 개수 지정
+    return axios.get( '/api/search/'+page, param )
   }
 
 
