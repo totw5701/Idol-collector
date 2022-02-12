@@ -123,7 +123,6 @@ const AddTag = styled.div`
   height: 50px;
   cursor: pointer;
   margin: -60px 0 0 auto;
-}
 `;
 
 const TagField = styled.div`
@@ -149,7 +148,6 @@ const Tag = styled.span`
         border-radius: 50%;
         cursor: pointer;
       }
-  }
 `;
 
 const Title = styled.div`
