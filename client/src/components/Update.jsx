@@ -14,9 +14,8 @@ import NComment from './NComment'
 import Validator from '../Validator'
 
 
-function Update ({card}) { //card, isUpdate
-  const [isUpdate, setIsUpdate] = useState(false) // 카드 수정 창 스위치
-
+function Update (props) { //card, isUpdate, setIsUpdate
+  const card = props.card
   const [title, setTitle] = useState()
   const [content, setContent] = useState()
   const [postId, setPostId] = useState(card.id)
@@ -73,7 +72,7 @@ function Update ({card}) { //card, isUpdate
 
   return (
 
-  <UpdateForm onSubmit = { regTest }>
+  <UpdateForm onSubmit = { regTest } isUpdate = { props.isUpdate }>
     <Title>카드 수정</Title>
 
     <UpdateFormItem>
@@ -104,7 +103,7 @@ function Update ({card}) { //card, isUpdate
       <UpdateImg src={card.storeFileName} alt={`${card.title} 사진`} />
     </UpdateFormItem>
     <ButtonItem>
-      <NoBtn type = 'button' onClick = { ()=>{ setIsUpdate(false) }} >취소</NoBtn>
+      <NoBtn type = 'button' onClick = { ()=>{ props.setIsUpdate(false) }} >취소</NoBtn>
       <YesBtn type = 'button' onClick = { regTest }>완료</YesBtn>
     </ButtonItem>
   </UpdateForm>

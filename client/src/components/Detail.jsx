@@ -383,50 +383,13 @@ function Detail({ card }) {
         <ArrowForward />
       </BackButton>
       <Line />
+      { /* 카드 수정 폼 */ }
 
-      <UpdateForm isUpdate={isUpdate} onSubmit = { regTest }>
-        <Title>카드 수정</Title>
-
-        <UpdateFormItem>
-          <UpdateInfo>
-              <Label> 제목
-                <Input type='text' name='title' placeholder={ card.title }  onChange = {(e)=> { setTitle(e.target.value) }}/>
-              </Label>
-              <Label> 설명
-                <Input type='text' name='content'  onChange = {(e)=> { setContent(e.target.value) }}/>
-              </Label>
-              <Label> 태그
-                <Input type='text' name='tag' onChange = {(e)=> { setTag(e.target.value) }}/>
-                <AddTag onClick = { addTag }>태그등록</AddTag>
-              </Label>
-              <Label>
-              <TagField>
-                { tags.length > 0 && (
-                  tags.map( (tag,idx) =>
-                    <Tag key={idx}>
-                      {tag}
-                      <CancelIcon onClick={() => { handleCloseTag(tag) }} />
-                    </Tag>
-                  )
-                )}
-              </TagField>
-              </Label>
-              <ButtonItem>
-                <NoBtn type = 'button' onClick = { ()=>{ setIsUpdate(false) }} >취소</NoBtn>
-                <YesBtn type = 'button' onClick = { regTest }>완료</YesBtn>
-              </ButtonItem>
-          </UpdateInfo>
-          <UpdateImg src={card.storeFileName} alt={`${card.title} 사진`} />
-
-        </UpdateFormItem>
-
-      </UpdateForm>
-
-{/*       { isUpdate  && (
-       <UpdatePage isUpdate={isUpdate} >
-         <Update card = { card } isUpdate = { isUpdate }/>
+      { isUpdate  && (
+       <UpdatePage>
+         <Update card = { card } isUpdate = { isUpdate } setIsUpdate = { setIsUpdate }/>
        </UpdatePage>
-      )}       */}
+      )}
       <Announcement>비슷한 순간들을 확인하세요</Announcement>
       <Columns pageName = 'main' />
     </DetailBase>
@@ -436,22 +399,7 @@ function Detail({ card }) {
 export default Detail;
 
 const UpdatePage = styled.div`
-  display: ${ props => props.isUpdate ? 'block':'none'};
-  min-height: 650px;
-  width: 1040px;
-  position: fixed;
-  top: 20%;
-  left: 50%;
-  transform: translateX( -50%);
-  border-radius: 20px;
-  background: white;
-
-  @media screen and (max-width: 1100px) {
-    top: 15%;
-    height: 870px;
-    width: 60%;
-  }
-
+  background: black;
 `;
 
 const Input = styled.input`
@@ -804,128 +752,3 @@ const CommentText = styled(TextareaAutosize)`
   border-radius: 6px;
   line-height: 1.4;
 `;
-
-const greyColor = '#e0e0e0';
-
-const AddTag = styled.div`
-  text-align: right;
-  cursor: pointer;
-  margin: 0 60px 0 0;
-
-  @media screen and (max-width: 1100px) {
-    margin: 0 50px 0 0;
-  }
-
-}
-`;
-
-const TagField = styled.div`
-  display: flex;
-  margin: 2rem 2rem 0 2rem;
-`;
-
-const Tag = styled.span`
-    position: relative;
-    padding: 0.4rem 0.6rem;
-    border: 1px solid ${ greyColor };
-    border-radius: 1rem;
-    margin: 0 1rem 0 0;
-
-      svg {
-        position: absolute;
-        right: -10px;
-        top: -5px;
-
-        font-size: 18px;
-        padding: 2px;
-        background: #f0f0f0;
-        border-radius: 50%;
-        cursor: pointer;
-      }
-  }
-`;
-
-const Title = styled.div`
-  font-size: 40px;
-  font-weight: 800;
-  margin: 50px auto 20px auto;
-`;
-
-const UpdateForm = styled.form`
-  display: ${ props => props.isUpdate ? 'block':'none'};
-  min-height: 650px;
-  width: 1040px;
-  position: fixed;
-  top: 50px;
-  left: 50%;
-  transform: translateX( -50%);
-  border-radius: 20px;
-  background: white;
-
-  @media screen and (max-width: 1100px) {
-    top: 15%;
-    height: 1000px;
-    width: 60%;
-  }
-
-`;
-
-const UpdateFormItem = styled.div`
-  display: flex;
-  justify-content: space-between;
-  margin: 40px auto 0 auto;
-
-  @media screen and (max-width: 1100px) {
-    display: flex;
-    flex-direction: column-reverse;
-    align-items: center;
-  }
-`;
-
-const UpdateInfo = styled.div`
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-
-`;
-
-const UpdateImg =styled.img`
-  width: 100%;
-  height: 100%;
-  max-width: 300px;
-  max-height: 380px;
-  margin: 15px 40px 0 0;
-  object-fit: cover;
-  border-radius: 10px;
-
-  @media screen and (max-width: 1100px) {
-    width: 100%;
-    height: 100%;
-    margin: 0 auto 0 auto;
-  }
-
-`;
-
-const TagsArea = styled(Input)`
-  width: 70%;
-  height: 70px;
-  margin: 0px 0 0px 70px;
-  border: 3px solid #e0e0e0;
-  border-radius: 10px;
-
-  @media screen and (max-width: 1100px) {
-    width: 70%;
-    height: 50px;
-    padding-left: 20px;
-    margin: 0px 0 0px 20px;
-    border: 3px solid #e0e0e0;
-  }
-`;
-
-const Label = styled.label`
-  text-align: center;
-  font-size: 16px;
-  font-weight: bold;
-
-`;
-
