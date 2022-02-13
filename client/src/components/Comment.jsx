@@ -453,7 +453,6 @@ const NCommentItem = styled.div`
 const CommentInfo = styled(UserInfo)`
   flex-direction: column;
   align-items: flex-start;
-  position: relative;
   width: 85%;
   margin-left: 10px;
 `;

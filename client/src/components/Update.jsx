@@ -116,53 +116,12 @@ export default Update
 
 const greyColor = '#e0e0e0';
 
-const AddTag = styled.div`
-  padding-top: 17px;
-  width: 100px;
-  height: 50px;
-  cursor: pointer;
-  margin: -60px 0 0 auto;
-}
-`;
-
-const TagField = styled.div`
-  display: flex;
-  margin: 0 2rem 0 2rem;
-`;
-
-const Tag = styled.span`
-    position: relative;
-    padding: 0.4rem 0.6rem;
-    border: 1px solid ${ greyColor };
-    border-radius: 1rem;
-    margin: 0 1rem 0 0;
-
-      svg {
-        position: absolute;
-        right: -10px;
-        top: -5px;
-
-        font-size: 18px;
-        padding: 2px;
-        background: #f0f0f0;
-        border-radius: 50%;
-        cursor: pointer;
-      }
-  }
-`;
-
-const Title = styled.div`
-  font-size: 40px;
-  font-weight: 800;
-  margin: 50px auto 20px auto;
-`;
-
 const UpdateForm = styled.form`
   display: ${ props => props.isUpdate ? 'block':'none'};
   min-height: 650px;
   width: 1040px;
   position: fixed;
-  top: 50px;
+  top: 20%;
   left: 50%;
   transform: translateX( -50%);
   border-radius: 20px;
@@ -170,10 +129,16 @@ const UpdateForm = styled.form`
 
   @media screen and (max-width: 1100px) {
     top: 15%;
-    height: 870px;
+    height: 1000px;
     width: 60%;
   }
 
+`;
+
+const Title = styled.div`
+  font-size: 40px;
+  font-weight: 800;
+  margin: 50px auto 20px auto;
 `;
 
 const UpdateFormItem = styled.div`
@@ -212,6 +177,18 @@ const UpdateImg =styled.img`
 
 `;
 
+const AddTag = styled.div`
+  text-align: right;
+  cursor: pointer;
+  margin: 0 60px 0 0;
+
+  @media screen and (max-width: 1100px) {
+    margin: 0 50px 0 0;
+  }
+
+}
+`;
+
 const Input = styled.input`
   width: 70%;
   height: 70px;
@@ -229,6 +206,38 @@ const Input = styled.input`
     border-radius: 10px;
   }
 `;
+
+const TagField = styled.div`
+  display: flex;
+  margin: 2rem 2rem 0 2rem;
+  max- width: 1000px;
+
+  @media screen and (max-width: 1100px) {
+   width:60%;
+  }
+`;
+
+const Tag = styled.span`
+    position: relative;
+    padding: 0.4rem 0.6rem;
+    border: 1px solid ${ greyColor };
+    border-radius: 1rem;
+    margin: 0 1rem 0 0;
+
+      svg {
+        position: absolute;
+        right: -10px;
+        top: -5px;
+
+        font-size: 18px;
+        padding: 2px;
+        background: #f0f0f0;
+        border-radius: 50%;
+        cursor: pointer;
+      }
+  }
+`;
+
 
 const TagsArea = styled(Input)`
   width: 70%;

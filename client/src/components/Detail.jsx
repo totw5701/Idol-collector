@@ -1,5 +1,6 @@
 import { useRef, useState, useEffect } from 'react';
 import { Link, useHistory } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
 import styled,{ css } from 'styled-components';
 import { ArrowForwardIos, ArrowForward } from '@mui/icons-material';
 import CancelIcon from '@mui/icons-material/Cancel';
@@ -8,7 +9,6 @@ import TextareaAutosize from 'react-textarea-autosize';
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import Columns from './Columns';
-import { useSelector, useDispatch } from 'react-redux';
 import ApiService from '../ApiService'
 import Comment from './Comment'
 import NComment from './NComment'
@@ -339,6 +339,19 @@ function Detail({ card }) {
                 <span>{card.tags[0].name}</span>
               </SmallUserInfo>
             </Wrapper>
+
+      { /* 카드 수정 메뉴 */ }
+      { member.id === card.authorId && (
+        <UpdateBtn onClick={()=>{ setIsUpdate(true) }}> 카드 수정 </UpdateBtn>
+      )}
+        <UpdateBtn onClick={()=>{ setIsUpdate(true) }}> 카드 수정 </UpdateBtn>
+      { /* 카드 수정 모달창 */ }
+
+        <UpdatePage isUpdate = { isUpdate } >
+          <Update card = { card } isUpdate = { isUpdate } setIsUpdate = { setIsUpdate }/>
+        </UpdatePage>
+
+      { /* 댓글 토글 */ }
             <CommentWrapper>
               <h3>댓글</h3>
               <span>{ card.comments.length }개</span>
@@ -346,10 +359,6 @@ function Detail({ card }) {
                 <ArrowForwardIos />
               </CommentButton>
             </CommentWrapper>
-
-
-       <button onClick={()=>{ setIsUpdate(true) }}>카드 수정</button>
-
 
       { /* Comment 댓글 리스트
            isShow (댓글몇개) 스위치가 true && 코멘트가 존재하는 경우만 */ }
@@ -383,13 +392,7 @@ function Detail({ card }) {
         <ArrowForward />
       </BackButton>
       <Line />
-      { /* 카드 수정 폼 */ }
 
-      { isUpdate  && (
-       <UpdatePage>
-         <Update card = { card } isUpdate = { isUpdate } setIsUpdate = { setIsUpdate }/>
-       </UpdatePage>
-      )}
       <Announcement>비슷한 순간들을 확인하세요</Announcement>
       <Columns pageName = 'main' />
     </DetailBase>
@@ -398,8 +401,35 @@ function Detail({ card }) {
 
 export default Detail;
 
+const BtnBgColor = '#b580d1';
+const textColor = '#fff';
+const modalBgColor = '#2b2b2b';
+
+const UpdateBtn = styled.div`
+  width: 27%;
+  height: 40px;
+  margin: 20px 0 10px auto;
+  padding-top: 10px;
+  text-align: center;
+  font-size: 17px;
+  background: ${ BtnBgColor };
+  color: ${ textColor };
+  border-radius: 7px;
+  cursor: pointer;
+`;
+
 const UpdatePage = styled.div`
-  background: black;
+
+  ${ props => props.isUpdate && css`
+    z-index: 1;
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background: ${ modalBgColor };
+  `}
+
 `;
 
 const Input = styled.input`
@@ -455,14 +485,23 @@ const YesBtn = styled.button`
   border-radius: 30px;
   margin-left: 20px;
 `;
+
 const DetailBase = styled.section`
   position: relative;
   padding: 50px 30px;
   text-align: center;
-
   > span {
     font-size: 20px;
   }
+
+  ${ props => props.isUpdate && css`
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background: ${ modalBgColor };
+  `}
 `;
 
 const BackButton = styled.button`
