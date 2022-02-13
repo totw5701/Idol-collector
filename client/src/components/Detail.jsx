@@ -312,11 +312,12 @@ function Detail({ card }) {
       { /* 이미지 아래칸 */ }
           <Info>
             <Wrapper>
-              <UserInfo>{card.title}</UserInfo>
+              <TitleInfo>{card.title}</TitleInfo>
               <InfoButton onClick = { handleLike }>
                 <img src="/images/라이크.png" alt="좋아요 버튼" />
               </InfoButton>
             </Wrapper>
+
             <Wrapper>
               <UserInfo>{card.authorNickName}</UserInfo>
               { !didScrap
@@ -328,17 +329,18 @@ function Detail({ card }) {
                   </InfoButton>
               }
             </Wrapper>
-            <UserInfo as="p">{card.content}</UserInfo>
-            <Wrapper>
-              <SmallUserInfo>
-                <span>업로드날짜</span>
-                <span>{card.createDate}</span>
-              </SmallUserInfo>
-              <SmallUserInfo>
+            <UserInfo as='p'>{card.content}</UserInfo>
+            <SmallUserInfo>
+              <span>업로드 날짜</span>
+              <span>{card.createDate}</span>
+            </SmallUserInfo>
+            <SmallUserInfo>
                 <span>카드태그</span>
-                <span>{card.tags[0].name}</span>
-              </SmallUserInfo>
-            </Wrapper>
+                { card.tags.slice(0,2).map((tag) =>
+                  <span value={tag}>{tag}</span>
+                )}
+            </SmallUserInfo>
+
 
       { /* 카드 수정 메뉴 */ }
       { member.id === card.authorId && (
@@ -404,7 +406,24 @@ export default Detail;
 const BtnBgColor = '#b580d1';
 const textColor = '#fff';
 const modalBgColor = '#2b2b2b';
+{/*  const greyBgColor = rgba(143, 143, 143, 0.15); */}
+const InfoBgColor = '#fff';
+const borderColor = '#e2e2e2';
 
+
+const TitleInfo = styled.div`
+  display: flex;
+  align-items: center;
+  width: 100%;
+  min-height: 50px;
+  margin-top: 8px;
+  padding: 10px;
+  border-radius: 6px;
+  background-color: #fff;
+  text-align: left;
+  font-size: 28px;
+  font-weight: bolder;
+`;
 const UpdateBtn = styled.div`
   width: 27%;
   height: 40px;
@@ -432,23 +451,6 @@ const UpdatePage = styled.div`
 
 `;
 
-const Input = styled.input`
-  width: 70%;
-  height: 70px;
-  padding-left: 20px;
-  margin: 17px 0 20px 70px;
-  border: 3px solid #e0e0e0;
-  border-radius: 10px;
-
-  @media screen and (max-width: 1100px) {
-    width: 70%;
-    height: 50px;
-    padding-left: 20px;
-    margin: 17px 0 10px 20px;
-    border: 3px solid #e0e0e0;
-    border-radius: 10px;
-  }
-`;
 
 const ButtonItem = styled.div`
   position: absolute;
@@ -520,6 +522,7 @@ const BackButton = styled.button`
 
 const DetailBlock = styled.div`
   display: flex;
+  justify-content: space-between;
   overflow: hidden;
   width: 1016px;
   min-height: 400px;
@@ -527,7 +530,7 @@ const DetailBlock = styled.div`
   border-radius: 32px;
   box-shadow: 5px 5px 8px rgba(0, 0, 0, 0.3);
 
-  @media (max-width: 1015px) {
+  @media screen and (max-width: 1015px) {
     flex-direction: column;
     width: 100%;
     max-width: 508px;
@@ -545,7 +548,7 @@ const ImgBlock = styled.div`
     width: 100%;
   }
 
-  @media (max-width: 1015px) {
+  @media screen and (max-width: 1015px) {
     width: 100%;
     border-radius: 0;
   }
@@ -585,29 +588,18 @@ const InfoButton = styled(Button)`
 `;
 
 const Info = styled.div`
-  width: 50%;
+  width: 500px;
   min-height: 100%;
   padding: 30px 30px 20px 30px;
   border-radius: 0 32px 32px 0;
-  background-color: rgba(143, 143, 143, 0.15);
+  background-color: ${ InfoBgColor }
 
-  @media (max-width: 1015px) {
+  @media screen and(max-width: 1015px) {
     width: 100%;
     border-radius: 0;
   }
 `;
 
-const UserInfo = styled.div`
-  display: flex;
-  align-items: center;
-  width: 100%;
-  min-height: 50px;
-  margin-top: 8px;
-  padding: 10px;
-  border-radius: 6px;
-  background-color: #fff;
-  text-align: left;
-`;
 
 const Wrapper = styled.div`
   display: flex;
@@ -634,13 +626,24 @@ const CommentButton = styled.button`
   }
 `;
 
+const UserInfo = styled.div`
+  display: flex;
+  align-items: center;
+  width: 100%;
+  min-height: 50px;
+  margin-top: 8px;
+  padding: 10px;
+  border-radius: 6px;
+  background-color: #fff;
+  text-align: left;
+`;
+
 const SmallUserInfo = styled(UserInfo)`
-  width: 50%;
   height: 34px;
   min-height: 0;
   font-size: 14px;
 
-  & + & {
+{/*   & + & { //SmallUserInfo 사이에 넣는 보라색 선
     ::before {
       content: '';
       position: absolute;
@@ -651,12 +654,19 @@ const SmallUserInfo = styled(UserInfo)`
       height: 80%;
       background-color: #b580d1;
     }
-  }
+  } */}
 
   > span:nth-of-type(1) {
     font-weight: 600;
     margin-right: 10px;
+    width: 120px;
   }
+
+  > span:nth-of-type(2), span:nth-of-type(3), span:nth-of-type(4), span:nth-of-type(5), span:nth-of-type(6){
+
+    margin-right: 5px;
+  }
+
 `;
 
 
@@ -739,17 +749,8 @@ const CommentInfo = styled(UserInfo)`
   margin-left: 10px;
 `;
 
-const NCommentInfo = styled(UserInfo)`
-  margin: 8px 5px 0 8px;
-`;
 
 const CommentForm = styled.form``;
-
-const NCommentForm = styled.form`
-  width: 85%;
-  height: 50%;
-  margin: 0 10px 0 auto;
-`;
 
 const CommentFormItem = styled(CommentItem)`
   width: 100%;
@@ -758,36 +759,24 @@ const CommentFormItem = styled(CommentItem)`
     background-color: #b580d1;
     width: 50px;
     height: 40px;
-    margin-top: 10px;
+    margin-top: 12px;
     margin-left: 10px;
     border-radius: 25px;
     color: #fff;
   }
 `;
 
-const NCommentFormItem = styled(NCommentItem)`
-  width: 100%;
-  margin-right: 0px;
 
-   button {
-    background-color: #b580d1;
-    width: 50px;
-    height: 40px;
-    margin-top: 10px;
-    margin-left: 10px;
-    border-radius: 25px;
-    color: #fff;
-  }
-`;
 
 const CommentText = styled(TextareaAutosize)`
   resize: none;
   outline: none;
   border: none;
   flex: 1;
-  margin-top: 10px;
+  margin-top: 12px;
   margin-left: 10px;
   padding: 10px;
   border-radius: 6px;
   line-height: 1.4;
+  border: 1px solid ${ borderColor };
 `;
