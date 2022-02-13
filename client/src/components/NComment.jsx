@@ -17,9 +17,9 @@ function NComment({nestedComments}) { // cmt.nestedComments 대댓글 리스트�
 
   const [isShow, setIsShow] = useState(false) // 댓글 보기 스위치
   const [isNCmt, setIsNCmt] = useState(false) // 댓글 작성칸 스위치
-  const [isUpCmt, setIsUpCmt] = useState(false) // 댓글 수정창 스위치
   const [isUpNCmt, setIsUpNCmt] = useState(false) // 대댓글 수정창 스위치
   const [isReNCmt, setIsReNCmt] = useState(false) // 대댓글 작성칸 스위치
+  const [isEditMenu,setIsEditMenu] =useState(false) //댓글 삭제, 수정 햄버거 스위치
 
   const [openEditor,setOpenEditor] = useState('') // 댓글 입력창 위치:  cmt.id 저장 후 해당 id인 댓글 아래만 나타나게
 
@@ -28,6 +28,7 @@ function NComment({nestedComments}) { // cmt.nestedComments 대댓글 리스트�
   const toggleNCmt =() => setIsNCmt(prev => !prev)
 
   const toggleReNCmt = () => setIsReNCmt(prev => !prev)
+  const toggleEdit = () => setIsEditMenu(prev => !prev)
 
 // 대댓글 등록
   const handleNCmtSubmit = id => {
@@ -117,19 +118,37 @@ function NComment({nestedComments}) { // cmt.nestedComments 대댓글 리스트�
       <Menu>
         <FavoriteIcon onClick = {() => { handleNCmtLike(nCmt.id) }} />
         <ChatBubbleIcon onClick = { () => { toggleReNCmt(); setOpenEditor(nCmt.id) }} />
-        <MoreHorizIcon />
-      </Menu>
+
+        <MoreHorizIcon onClick = {() => {
+          setOpenEditor(nCmt.id);
+          toggleEdit();
+        }}/>
+
   { /* 본인인 경우만 삭제,수정  */ }
       { nCmt.authorId === member.id && (
-        <>
-        <button type='button' onClick = {() => { handleDelNCmt(nCmt.id) }}>대댓글 삭제</button>
-        <button type='button' onClick = {() => {
-          setIsUpNCmt(true)
-          setOpenEditor(nCmt.id)
-        }}>대댓글 수정</button>
-        </>
+          <MoreHorizIcon onClick = {() => {
+            setOpenEditor(nCmt.id);
+            toggleEdit();
+          }}/>
       )}
+
+      </Menu>
       </ButtonItem>
+  { /* 본인 댓글만 삭제수정가능  */ }
+
+      { isEditMenu && openEditor === nCmt.id  && (
+        <EditMenu>
+          <EditBtn type='button' onClick = {() => { handleDelNCmt(nCmt.id); toggleEdit(); }}>대댓글 삭제</EditBtn>
+          <EditBtn type='button' onClick = {() => {
+            setOpenEditor(nCmt.id);
+            setIsUpNCmt(true);
+            toggleEdit();
+          }}>대댓글 수정</EditBtn>
+        </EditMenu>
+      )}
+
+
+
       { isUpNCmt && openEditor === nCmt.id && (
       <ItemContainer>
         <NCommentItem as="div">
@@ -139,22 +158,21 @@ function NComment({nestedComments}) { // cmt.nestedComments 대댓글 리스트�
             alt={`아이디 이미지`}
             />
           </Link>
-          <NCommentInfo>
-            <CommentText
-              type = 'text'
-              placeholder = '대댓글 수정'
-              onChange = {(e) => { setCmtValue(e.target.value) }}
-            />
-          </NCommentInfo>
+          <CommentText
+            type = 'text'
+            placeholder = '대댓글 수정'
+            onChange = {(e) => { setCmtValue(e.target.value) }}
+          />
         </NCommentItem>
           <button type = 'button' onClick = {()=>{ setIsUpNCmt(false); setOpenEditor('') }}>취소</button>
-          <button type = 'button' onClick = {() => { handleNCmtUpdate(nCmt.id); setOpenEditor('') }}>완료</button>
+          <button type = 'button' onClick = {() => { setIsUpNCmt(false); handleNCmtUpdate(nCmt.id); setOpenEditor('') }}>완료</button>
       </ItemContainer>
       )}
 
   { /* 대댓글에 대댓글 달기 */ }
 
       { isReNCmt && openEditor === nCmt.id && (
+
       <ItemContainer>
         <NCommentItem as="div">
           <Link to="마이페이지path">
@@ -163,17 +181,14 @@ function NComment({nestedComments}) { // cmt.nestedComments 대댓글 리스트�
             alt={`아이디 이미지`}
             />
           </Link>
-          <NCommentInfo>
-            <CommentText
-              type = 'text'
-              placeholder = '대댓글 추가'
-              onChange = {(e) => { setCmtValue(e.target.value) }}
-            />
-          </NCommentInfo>
+          <CommentText
+            type = 'text'
+            placeholder = '대댓글 추가'
+            onChange = {(e) => { setCmtValue(e.target.value) }}
+          />
         </NCommentItem>
           <button type = 'button' onClick = {()=>{ setIsReNCmt(false); setOpenEditor('') }}>취소</button>
           <button type = 'button' onClick = {() => { handleNCmtSubmit(nCmt.id); setOpenEditor('') }}>완료</button>
-
       </ItemContainer>
       )}
 
@@ -186,6 +201,30 @@ function NComment({nestedComments}) { // cmt.nestedComments 대댓글 리스트�
 }
 
 export default NComment
+
+const shadowColor = 'rgba(0, 0, 0, 0.3)';
+const hoverColor = '#f0f0f0';
+const borderColor = '#e2e2e2';
+
+const EditMenu = styled.div`
+  z-index: 1;
+  width: 30%;
+  height: 60px;
+  margin: 0 0 0 auto;
+  display: flex;
+  flex-direction: column;
+  border-radius: 10px;
+  box-shadow: 5px 5px 10px ${ shadowColor };
+`;
+
+const EditBtn = styled.button`
+  height: auto;
+  padding: 6px 0 6px 0;
+  font-size: 15px;
+  :hover {
+     background: ${ hoverColor };
+  }
+`;
 
 const Menu = styled.div`
   margin: 6px 10px 0 0;
@@ -299,6 +338,7 @@ const UserInfo = styled.div`
   border-radius: 6px;
   background-color: #fff;
   text-align: left;
+  border: 1px solid ${ borderColor };
 `;
 
 const Wrapper = styled.div`
@@ -443,6 +483,7 @@ const CommentText = styled(TextareaAutosize)`
   padding: 10px;
   border-radius: 6px;
   line-height: 1.4;
+  border: 1px solid ${ borderColor };
 `;
 
 const NoBtn = styled.button`
