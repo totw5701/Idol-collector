@@ -1,14 +1,15 @@
-import { useRef, useState, useEffect } from 'react';
-import { Link, useHistory } from 'react-router-dom';
-import { useSelector, useDispatch } from 'react-redux';
-import styled,{ css } from 'styled-components';
-import { ArrowForwardIos, ArrowForward } from '@mui/icons-material';
-import CancelIcon from '@mui/icons-material/Cancel';
-import ChatBubbleIcon from '@mui/icons-material/ChatBubble';
-import TextareaAutosize from 'react-textarea-autosize';
-import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
-import FavoriteIcon from '@mui/icons-material/Favorite';
-import Columns from './Columns';
+import { useRef, useState, useEffect } from 'react'
+import { Link, useHistory } from 'react-router-dom'
+import { useSelector, useDispatch } from 'react-redux'
+import styled,{ css } from 'styled-components'
+import moment from 'moment'
+import { ArrowForwardIos, ArrowForward } from '@mui/icons-material'
+import CancelIcon from '@mui/icons-material/Cancel'
+import ChatBubbleIcon from '@mui/icons-material/ChatBubble'
+import TextareaAutosize from 'react-textarea-autosize'
+import MoreHorizIcon from '@mui/icons-material/MoreHoriz'
+import FavoriteIcon from '@mui/icons-material/Favorite'
+import Columns from './Columns'
 import ApiService from '../ApiService'
 import Comment from './Comment'
 import NComment from './NComment'
@@ -31,6 +32,12 @@ function Detail({ card }) {
   const [isReNCmt, setIsReNCmt] = useState(false) // 대댓글 작성칸 스위치
   const [didScrap, setDidScrap] = useState(false) // 스크랩 언스크랩 버튼 스위치
   const [isUpdate, setIsUpdate] = useState(false) // 카드 수정 창 스위치
+
+  const [limit,setLimit] = useState(1) // 댓글 배열 slice 끝값 설정
+  const limitEnd = card.comments.length
+
+  const createDate = moment(card.createDate).format('YYYY-MM-DD')
+  const likes = Number(card.likes).toString().replace(/\B(?=(\d{3})+(?!\d))/g,',')
 
   const [title, setTitle] = useState()
   const [content, setContent] = useState()
@@ -61,6 +68,15 @@ function Detail({ card }) {
 
   const handleCloseTag = tag => { //태그 닫기
     setTags(tags.filter( cur => cur !== tag))
+  }
+
+/* 댓글 페이징 */
+  const cmtPage = () => {
+    if(limit+3> limitEnd){
+      setLimit(limitEnd)
+    }else{
+      setLimit(limit+3)
+    }
   }
 
 /* 유효성 검사 */
@@ -307,7 +323,13 @@ function Detail({ card }) {
                 <img src="/images/하트.png" alt="좋아요" />
               </Button>
             </Buttons>
+              <Wrapper>
+                <span>좋아요</span>
+                <span>{likes}</span>
+                <span>개</span>
+              </Wrapper>
           </ImgBlock>
+
 
       { /* 이미지 아래칸 */ }
           <Info>
@@ -324,39 +346,42 @@ function Detail({ card }) {
                 ? <InfoButton onClick = { handleScrap }>
                     <img src="/images/스크랩.png" alt="스크랩 버튼" />
                   </InfoButton>
-                : <InfoButton onClick = { handleUnScrap }>
-                     스크랩 취소
-                  </InfoButton>
+                : <UnScrap onClick = { handleUnScrap }>
+                     UNSCRAP
+                  </UnScrap>
               }
             </Wrapper>
             <UserInfo as='p'>{card.content}</UserInfo>
             <SmallUserInfo>
               <span>업로드 날짜</span>
-              <span>{card.createDate}</span>
+              <span>{createDate}</span>
             </SmallUserInfo>
             <SmallUserInfo>
                 <span>카드태그</span>
                 { card.tags.slice(0,2).map((tag) =>
-                  <span value={tag}>{tag}</span>
+                  <span value={tag.name}>{tag.name}</span>
                 )}
             </SmallUserInfo>
 
 
       { /* 카드 수정 메뉴 */ }
-      { member.id === card.authorId && (
-        <UpdateBtn onClick={()=>{ setIsUpdate(true) }}> 카드 수정 </UpdateBtn>
-      )}
-        <UpdateBtn onClick={()=>{ setIsUpdate(true) }}> 카드 수정 </UpdateBtn>
+            { member.id === card.authorId && (
+              <UpdateBtn onClick={()=>{ setIsUpdate(true) }}> 카드 수정 </UpdateBtn>
+            )}
+              <UpdateBtn onClick={()=>{ setIsUpdate(true) }}> 카드 수정 </UpdateBtn>
       { /* 카드 수정 모달창 */ }
 
-        <UpdatePage isUpdate = { isUpdate } >
-          <Update card = { card } isUpdate = { isUpdate } setIsUpdate = { setIsUpdate }/>
-        </UpdatePage>
+            <UpdatePage isUpdate = { isUpdate } >
+              <Update card = { card } isUpdate = { isUpdate } setIsUpdate = { setIsUpdate }/>
+            </UpdatePage>
 
       { /* 댓글 토글 */ }
             <CommentWrapper>
-              <h3>댓글</h3>
-              <span>{ card.comments.length }개</span>
+            { isShow
+              ? <h3>댓글 열기</h3>
+              : <h3>댓글 닫기</h3>
+
+            }
               <CommentButton onClick={toggleShow} isShow={isShow}>
                 <ArrowForwardIos />
               </CommentButton>
@@ -366,7 +391,14 @@ function Detail({ card }) {
            isShow (댓글몇개) 스위치가 true && 코멘트가 존재하는 경우만 */ }
 
             {!isShow && card.comments.length> 0 &&(
-              <Comment comments = { card.comments }/>
+            <>
+              <Comment comments = { card.comments } limit = { limit }/>
+
+              { limit < card.comments.length
+                ? <button onClick={ cmtPage }> 댓글 더보기 </button>
+                : <button onClick={ () => { setLimit(1) }}> 댓글 줄이기 </button>
+              }
+            </>
             )}
 
       { /* 카드에 대한 댓글 입력 */ }
@@ -409,6 +441,7 @@ const modalBgColor = '#2b2b2b';
 {/*  const greyBgColor = rgba(143, 143, 143, 0.15); */}
 const InfoBgColor = '#fff';
 const borderColor = '#e2e2e2';
+
 
 
 const TitleInfo = styled.div`
@@ -558,7 +591,7 @@ const Buttons = styled.div`
   display: flex;
   position: absolute;
   right: 20px;
-  bottom: 20px;
+  bottom: 35px;
 `;
 
 const Button = styled.button`
@@ -580,17 +613,34 @@ const Button = styled.button`
 `;
 
 const InfoButton = styled(Button)`
-  overflow: hidden;
-  width: 150px;
+    margin-top: 8px;
+    width: 160px;
+
+    > img {
+      width: 100%;
+      position: relative;
+      left: 8px;
+
+
+    }
+`;
+
+
+const UnScrap = styled.button`
+  width: 130px;
+  height: 45px;
+  border-radius: 10px;
+  font-weight: 500;
+  font-size: 16px;
   margin-top: 8px;
-  border-radius: 30px;
-  background: none;
+  background: ${ BtnBgColor };
+  color: ${ textColor };
 `;
 
 const Info = styled.div`
   width: 500px;
   min-height: 100%;
-  padding: 30px 30px 20px 30px;
+  padding: 10px 30px 20px 30px;
   border-radius: 0 32px 32px 0;
   background-color: ${ InfoBgColor }
 
@@ -605,6 +655,18 @@ const Wrapper = styled.div`
   display: flex;
   align-items: center;
   position: relative;
+
+  span {
+    text-align: left;
+    margin: 10px 0 0 10px;
+  }
+  > span: nth-of-type(2) {
+    font-weight: bold;
+  }
+  > span: nth-of-type(3) {
+    margin: 10px 0 0 0px;
+  }
+
 `;
 
 const CommentButton = styled.button`
@@ -662,8 +724,7 @@ const SmallUserInfo = styled(UserInfo)`
     width: 120px;
   }
 
-  > span:nth-of-type(2), span:nth-of-type(3), span:nth-of-type(4), span:nth-of-type(5), span:nth-of-type(6){
-
+  > span:nth-of-type(2), span:nth-of-type(3), span:nth-of-type(4){
     margin-right: 5px;
   }
 
@@ -750,7 +811,10 @@ const CommentInfo = styled(UserInfo)`
 `;
 
 
-const CommentForm = styled.form``;
+const CommentForm = styled.form`
+  margin-top: 10px;
+`;
+
 
 const CommentFormItem = styled(CommentItem)`
   width: 100%;
