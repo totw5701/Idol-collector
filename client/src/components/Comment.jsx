@@ -14,11 +14,14 @@ import NComment from './NComment'
 
 
 
-function Comment({ comments }) {
- //comments(card.comments 카드의 코멘트들 배열 props로 받아 올 예정)
-  console.log(comments)
+function Comment(props) {
+ //comments(card.comments 카드의 코멘트들 배열 props로 받아 올 예정), limit(댓글 slice 끝 수)
+
   const member = useSelector ( ({memberReducer}) => { return memberReducer})
 
+  const comments = props.comments
+
+  const limit = props.limit
   const [isShow, setIsShow] = useState(false) // 댓글 보기 스위치
   const [isNCmt, setIsNCmt] = useState(false) // 댓글 작성칸 스위치
   const [isUpCmt, setIsUpCmt] = useState(false) // 댓글 수정창 스위치
@@ -33,6 +36,17 @@ function Comment({ comments }) {
 
   const toggleNCmt =() => setIsNCmt(prev => !prev)
   const toggleEdit = () => setIsEditMenu(prev => !prev)
+
+  const [nCmtLimit,setNCmtLimit] = useState(1) // 대댓글  페이징
+/* 대댓글 페이징 */
+  const nCmtPage = (nCmtLimitEnd) => {
+    if(nCmtLimit+3> nCmtLimitEnd){
+      setNCmtLimit(nCmtLimitEnd)
+    }else{
+      setNCmtLimit(nCmtLimit+3)
+    }
+  }
+
 
 //대댓글 등록
   const handleNCmtSubmit = e => {
@@ -106,7 +120,7 @@ const nCmtToggle = () =>  setShowNCmt(prev => !prev )
 
   return (
   <>
-  { comments.map((cmt,idx) =>
+  { comments.slice(0,limit).map((cmt,idx) =>
 
     <CommentList key={cmt.id}>
 
@@ -131,29 +145,39 @@ const nCmtToggle = () =>  setShowNCmt(prev => !prev )
              nCmtToggle();
              setOpenEditor(cmt.id);
           }}>
-            { showNCmt? cmt.nestedComments.length+'개 댓글 숨기기' : cmt.nestedComments.length+'개 댓글 보기' }
+            { showNCmt && openEditor === cmt.id ? cmt.nestedComments.length+'개 댓글 숨기기' : cmt.nestedComments.length+'개 댓글 보기' }
          </NCmtToggle>
 
         : <NCmtToggle></NCmtToggle>
       }
-      <Menu>
-        <FavoriteIcon type = 'button' onClick = { () => { handleCmtLike(cmt.id) }} />
-        <ChatBubbleIcon onClick = { () => {
-           toggleNCmt();
-           setOpenEditor(cmt.id);
-        }}/>
-        <MoreHorizIcon onClick = {() => {
-          setOpenEditor(cmt.id);
-          toggleEdit();
-        }}/>
+        <Menu>
+          <li>
+            <FavoriteIcon type = 'button' onClick = { () => { handleCmtLike(cmt.id) }} />
+          </li>
+          <li>
+            <ChatBubbleIcon onClick = { () => {
+              toggleNCmt();
+              setOpenEditor(cmt.id);
+            }}/>
+          </li>
+          <li>
+            <MoreHorizIcon onClick = {() => {
+              setOpenEditor(cmt.id);
+              toggleEdit();
+            }}/>
+          </li>
   { /* 본인 댓글만 삭제수정가능 */ }
-       { cmt.authorId === member.id &&(
-          <MoreHorizIcon onClick = {() => {
-            setOpenEditor(cmt.id);
-            toggleEdit();
-          }}/>
-       )}
-      </Menu>
+
+           { cmt.authorId === member.id &&(
+             <li>
+              <MoreHorizIcon onClick = {() => {
+                setOpenEditor(cmt.id);
+                toggleEdit();
+              }}/>
+            </li>
+           )}
+
+        </Menu>
       </ButtonItem>
 
   { /* 삭제수정 버튼 모달  */ }
@@ -223,7 +247,14 @@ const nCmtToggle = () =>  setShowNCmt(prev => !prev )
 
   { /* 대댓글 리스트 컴포넌트 */ }
         { showNCmt && openEditor === cmt.id &&(
-           <NComment nestedComments = { cmt.nestedComments } />
+        <>
+           <NComment nestedComments = { cmt.nestedComments } nCmtLimit = { nCmtLimit }/>
+
+           { nCmtLimit < cmt.nestedComments.length
+             && (<button onClick={ () => { nCmtPage(cmt.nestedComments.length) }}> 대댓글 더보기 </button>)
+
+           }
+        </>
         )}
 
 
@@ -242,9 +273,10 @@ const shadowColor = 'rgba(0, 0, 0, 0.3)';
 const hoverColor = '#f0f0f0';
 
 const EditBtn = styled.button`
-  height: auto;
+  height: 50%;
   padding: 6px 0 6px 0;
   font-size: 15px;
+  border-radius: 10px;
   :hover {
      background: ${ hoverColor };
   }
@@ -253,7 +285,7 @@ const EditBtn = styled.button`
 const EditMenu = styled.div`
   z-index: 1;
   width: 30%;
-  height: 60px;
+  height: 70px;
   margin: 0 0 0 auto;
   display: flex;
   flex-direction: column;
@@ -262,7 +294,20 @@ const EditMenu = styled.div`
 `;
 
 const Menu = styled.div`
-  margin: 6px 10px 0 0;
+  margin: 6px 0 0 0;
+  display: flex;
+  justify-content: flex-end;
+
+ > li {
+    cursor: pointer;
+    border-radius: 50px;
+    margin: 0 0 0 10px;
+ }
+
+ > li: hover {
+    background: ${ hoverColor };
+ }
+
 `;
 const NCmtToggle = styled.button`
   margin: 0 0 0 70px;
