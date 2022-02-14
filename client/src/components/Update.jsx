@@ -121,21 +121,27 @@ function Update (props) { //card, isUpdate, setIsUpdate
 export default Update
 
 const greyColor = '#e0e0e0';
+const yesBgColor = '#b580d1';
 
 const UpdateForm = styled.form`
   display: ${ props => props.isUpdate ? 'block':'none'};
   min-height: 650px;
   width: 1040px;
   position: fixed;
-  top: 20%;
+  top: 10%;
   left: 50%;
   transform: translateX( -50%);
   border-radius: 20px;
   background: white;
-
   @media screen and (max-width: 1100px) {
     top: 15%;
     width: 60%;
+    height: auto;
+  }
+
+  @media screen and (max-width: 560px) {
+    top: 15%;
+    width: 95%;
     height: auto;
   }
 
@@ -295,7 +301,7 @@ const NoBtn = styled.button`
 const YesBtn = styled.button`
   width: 70px;
   height: 50px;
-  background: red;
+  background: ${ yesBgColor };
   color: white;
   font-size: 17px;
   font-weight: 800;
