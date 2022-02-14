@@ -24,9 +24,14 @@ function Update (props) { //card, isUpdate, setIsUpdate
   const [tags,setTags] = useState([])
 
   const addTag = () => {
-    if(tags.length<5){
+    if(tags.length > 4) {
+      alert('태그는 최대 5개까지 등록 가능합니다!')
+    }else if( !tag.match(/^[a-zA-Zㄱ-ㅎ가-힣]{1,15}$/) ){
+      alert('태그는 띄어쓰기 없이 15자 이내 한글로만 입력해주세요!')
+    }else{
       setTags([...tags,tag])
     }
+
   }
 
   const handleCloseTag = tag => { //태그 닫기
@@ -99,13 +104,14 @@ function Update (props) { //card, isUpdate, setIsUpdate
             )}
           </TagField>
           </Label>
+          <ButtonItem>
+            <NoBtn type = 'button' onClick = { ()=>{ props.setIsUpdate(false) }} >취소</NoBtn>
+            <YesBtn type = 'button' onClick = { regTest }>완료</YesBtn>
+          </ButtonItem>
       </UpdateInfo>
       <UpdateImg src={card.storeFileName} alt={`${card.title} 사진`} />
     </UpdateFormItem>
-    <ButtonItem>
-      <NoBtn type = 'button' onClick = { ()=>{ props.setIsUpdate(false) }} >취소</NoBtn>
-      <YesBtn type = 'button' onClick = { regTest }>완료</YesBtn>
-    </ButtonItem>
+
   </UpdateForm>
 
   )
@@ -129,8 +135,8 @@ const UpdateForm = styled.form`
 
   @media screen and (max-width: 1100px) {
     top: 15%;
-    height: 1000px;
     width: 60%;
+    height: auto;
   }
 
 `;
@@ -209,11 +215,12 @@ const Input = styled.input`
 
 const TagField = styled.div`
   display: flex;
-  margin: 2rem 2rem 0 2rem;
-  max- width: 1000px;
+  flex-wrap: wrap;
+  margin: 25px 0 0 40px;
+  max-width: 1000px;
 
   @media screen and (max-width: 1100px) {
-   width:60%;
+    width: 100%;
   }
 `;
 
@@ -264,13 +271,14 @@ const Label = styled.label`
 
 const ButtonItem = styled.div`
   position: absolute;
-  top: 570px;
-  left: 790px;
+  top: 85%;
+  left: 80%;
+
 
   @media screen and (max-width: 1100px) {
-    position: absolute;
-    top: 790px;
-    left: 250px;
+    position: relative;
+    left: 16%;
+    margin: 20px 0 20px 0;
   }
 
 `;
