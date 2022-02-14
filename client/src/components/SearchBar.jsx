@@ -5,12 +5,12 @@ import { css } from 'styled-components';
 import ApiService from '../ApiService'
 
 function SearchBar() {
-  const [isFixed, setIsFixed] = useState(false);
+  const [isFixed, setIsFixed] = useState(true);
   const [searchValue, setSearchValue] = useState();
   const [keywords, setKeywords] = useState([searchValue]);
   const history = useHistory()
 
-/*   useEffect(() => {
+  useEffect(() => {
     window.addEventListener('scroll', onScroll);
 
     return () => {
@@ -21,12 +21,12 @@ function SearchBar() {
   const onScroll = () => {
     // console.log(window.innerHeight);
     // console.log(window.scrollY);
-    if (window.scrollY >= window.innerHeight * 0.32) {
-      return setIsFixed(true);
-    } else if (window.scrollY < window.innerHeight * 0.32) {
+    if (window.scrollY >= window.innerHeight * 0.1) {
       return setIsFixed(false);
+    } else if (window.scrollY < window.innerHeight * 0.32) {
+      return setIsFixed(true);
     }
-  }; */
+  };
 
   const handleSearch = e => {
     e.preventDefault()
@@ -91,6 +91,7 @@ const StyledSearchBar = styled.form`
     top: 70px;
     left: 50%;
     transform: translateX(-50%);
+    display: ${({fixed})=> !fixed && 'none'};
   }
 
    @media screen and (max-width: 400px) {
