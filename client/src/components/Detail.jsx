@@ -346,9 +346,9 @@ function Detail({ card }) {
                 ? <InfoButton onClick = { handleScrap }>
                     <img src="/images/스크랩.png" alt="스크랩 버튼" />
                   </InfoButton>
-                : <UnScrap onClick = { handleUnScrap }>
-                     UNSCRAP
-                  </UnScrap>
+                : <InfoButton onClick = { handleUnScrap }>
+                    <img src="/images/unscrap.jpg" alt="언스크랩 버튼" />
+                  </InfoButton>
               }
             </Wrapper>
             <UserInfo as='p'>{card.content}</UserInfo>
@@ -375,6 +375,24 @@ function Detail({ card }) {
               <Update card = { card } isUpdate = { isUpdate } setIsUpdate = { setIsUpdate }/>
             </UpdatePage>
 
+
+      { /* 카드에 대한 댓글 입력 */ }
+            <CommentForm onSubmit = { handleCmtSubmit }>
+              <CommentFormItem as="div">
+                <Link to="마이페이지path">
+                  <img
+                    src="/images/업로더-사진.png"
+                    alt={`아이디 이미지`}
+                  />
+                </Link>
+                <CommentText
+                  type="text"
+                  ref={inputRef}
+                  placeholder="댓글을 입력하세요."
+                />
+                <button type="submit">완료</button>
+              </CommentFormItem>
+            </CommentForm>
       { /* 댓글 토글 */ }
             <CommentWrapper>
             { isShow
@@ -401,23 +419,6 @@ function Detail({ card }) {
             </>
             )}
 
-      { /* 카드에 대한 댓글 입력 */ }
-            <CommentForm onSubmit = { handleCmtSubmit }>
-              <CommentFormItem as="div">
-                <Link to="마이페이지path">
-                  <img
-                    src="/images/업로더-사진.png"
-                    alt={`아이디 이미지`}
-                  />
-                </Link>
-                <CommentText
-                  type="text"
-                  ref={inputRef}
-                  placeholder="댓글을 입력하세요."
-                />
-                <button type="submit">완료</button>
-              </CommentFormItem>
-            </CommentForm>
 
           </Info>
         </DetailBlock>
@@ -441,7 +442,7 @@ const modalBgColor = '#2b2b2b';
 {/*  const greyBgColor = rgba(143, 143, 143, 0.15); */}
 const InfoBgColor = '#fff';
 const borderColor = '#e2e2e2';
-
+const CmtBntColor ='#ED1E79';
 
 
 const TitleInfo = styled.div`
@@ -456,6 +457,12 @@ const TitleInfo = styled.div`
   text-align: left;
   font-size: 28px;
   font-weight: bolder;
+
+  @media screen and (max-width: 1012px) {
+    font-size: 19px;
+    padding: 10px 0 0 0;
+  }
+
 `;
 const UpdateBtn = styled.div`
   width: 27%;
@@ -468,6 +475,11 @@ const UpdateBtn = styled.div`
   color: ${ textColor };
   border-radius: 7px;
   cursor: pointer;
+
+  @media screen and (max-width: 560px) {
+    width: 30%;
+    height: 35px;
+  }
 `;
 
 const UpdatePage = styled.div`
@@ -501,25 +513,6 @@ const ButtonItem = styled.div`
 
 `;
 
-const NoBtn = styled.button`
-  width: 70px;
-  height: 50px;
-  background: #e0e0e0;
-  font-size: 17px;
-  font-weight: 800;
-  border-radius: 30px;
-`;
-
-const YesBtn = styled.button`
-  width: 70px;
-  height: 50px;
-  background: red;
-  color: white;
-  font-size: 17px;
-  font-weight: 800;
-  border-radius: 30px;
-  margin-left: 20px;
-`;
 
 const DetailBase = styled.section`
   position: relative;
@@ -566,7 +559,7 @@ const DetailBlock = styled.div`
   @media screen and (max-width: 1015px) {
     flex-direction: column;
     width: 100%;
-    max-width: 508px;
+    max-width: 365px;
   }
 `;
 
@@ -591,7 +584,12 @@ const Buttons = styled.div`
   display: flex;
   position: absolute;
   right: 20px;
-  bottom: 35px;
+  z-index: 1;
+
+  @media screen and (max-width: 1015px) {
+    bottom: 35px;
+  }
+
 `;
 
 const Button = styled.button`
@@ -613,41 +611,43 @@ const Button = styled.button`
 `;
 
 const InfoButton = styled(Button)`
-    margin-top: 8px;
-    width: 160px;
+  margin-top: 8px;
+  width: 160px;
 
-    > img {
-      width: 100%;
-      position: relative;
-      left: 8px;
-
-
+  > img {
+    width: 100%;
+    position: relative;
+    left: 8px;
     }
 `;
 
 
-const UnScrap = styled.button`
-  width: 130px;
-  height: 45px;
+const UnScrap = styled(InfoButton)`
+
   border-radius: 10px;
   font-weight: 500;
   font-size: 16px;
   margin-top: 8px;
   background: ${ BtnBgColor };
   color: ${ textColor };
+
+  @media screen and (max-width: 560px) {
+    width: 91px;
+    height: 42px;
+  }
+
 `;
 
 const Info = styled.div`
-  width: 500px;
   min-height: 100%;
   padding: 10px 30px 20px 30px;
   border-radius: 0 32px 32px 0;
-  background-color: ${ InfoBgColor }
+  background-color: ${ InfoBgColor };
 
-  @media screen and(max-width: 1015px) {
-    width: 100%;
-    border-radius: 0;
+  @media screen and (max-width: 560px) {
+    padding: 10px 10px 20px 14px;
   }
+
 `;
 
 
@@ -658,14 +658,22 @@ const Wrapper = styled.div`
 
   span {
     text-align: left;
-    margin: 10px 0 0 10px;
+    margin: 10px 0 40px 10px;
+    @media screen and (max-width: 1015px) {
+      margin: 10px 0 0px 10px;
+    }
   }
   > span: nth-of-type(2) {
     font-weight: bold;
   }
   > span: nth-of-type(3) {
-    margin: 10px 0 0 0px;
+    margin: 10px 0 40px 0px;
+    @media screen and (max-width: 1015px) {
+      margin: 10px 0 0px 0px;
+    }
   }
+
+
 
 `;
 
@@ -698,6 +706,11 @@ const UserInfo = styled.div`
   border-radius: 6px;
   background-color: #fff;
   text-align: left;
+
+  @media screen and (max-width: 560px) {
+    padding: 0 5px 0 5px;
+  }
+
 `;
 
 const SmallUserInfo = styled(UserInfo)`
@@ -759,10 +772,9 @@ const Announcement = styled.p`
 const CommentWrapper = styled.div`
   display: flex;
   align-items: center;
-  margin-top: 10px;
+  margin-top: 20px;
 
   > * {
-    margin-left: 10px;
     font-size: 18px;
     font-weight: 600;
   }
@@ -820,7 +832,7 @@ const CommentFormItem = styled(CommentItem)`
   width: 100%;
 
   > button {
-    background-color: #b580d1;
+    background-color: ${ CmtBntColor };
     width: 50px;
     height: 40px;
     margin-top: 12px;
