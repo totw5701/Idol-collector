@@ -188,7 +188,7 @@ const nCmtToggle = () =>  setShowNCmt(prev => !prev )
            setOpenEditor(cmt.id);
            setIsUpCmt(true);
            toggleEdit();
-        }}>댓글 수정</EditBtn>
+        }}>수정</EditBtn>
       </EditMenu>
       )}
 
@@ -210,8 +210,8 @@ const nCmtToggle = () =>  setShowNCmt(prev => !prev )
                />
              </NCommentFormItem>
 
-             <button type='button' onClick = { () => { setIsUpCmt(false); setOpenEditor(''); }}>취소</button>
-             <button type='button' onClick = { () => { setIsUpCmt(false); handleCmtUpdate(cmt.id); setOpenEditor('') }}>완료</button>
+             <NoBtn type='button' onClick = { () => { setIsUpCmt(false); setOpenEditor(''); }}>취소</NoBtn>
+             <YesBtn type='button' onClick = { () => { setIsUpCmt(false); handleCmtUpdate(cmt.id); setOpenEditor('') }}>완료</YesBtn>
             </ItemContainer>
          </NCommentForm >
         )}
@@ -238,8 +238,8 @@ const nCmtToggle = () =>  setShowNCmt(prev => !prev )
                 />
             </NCommentFormItem>
 
-              <button type='button' onClick = {()=>{ setIsNCmt(false) } }>취소</button>
-              <button type = 'onSubmit'>완료</button>
+              <NoBtn type='button' onClick = {()=>{ setIsNCmt(false) } }>취소</NoBtn>
+              <YesBtn type = 'onSubmit'>완료</YesBtn>
             </ItemContainer>
           </NCommentForm>
 
@@ -271,6 +271,8 @@ export default Comment
 const borderColor = '#e2e2e2';
 const shadowColor = 'rgba(0, 0, 0, 0.3)';
 const hoverColor = '#f0f0f0';
+const noBgColor = '#e0e0e0';
+const yesBgColor = '#ED1E79';
 
 const EditBtn = styled.button`
   height: 50%;
@@ -282,26 +284,45 @@ const EditBtn = styled.button`
   }
 `;
 
+
 const EditMenu = styled.div`
-  z-index: 1;
-  width: 30%;
+  z-index: 5;
+  width: 25%;
   height: 70px;
   margin: 0 0 0 auto;
   display: flex;
   flex-direction: column;
   border-radius: 10px;
   box-shadow: 5px 5px 10px ${ shadowColor };
+
 `;
 
+
+const NoBtn = styled.button`
+  width: 70px;
+  height: 50px;
+  background: ${ noBgColor };
+  border-radius: 30px;
+`;
+
+const YesBtn = styled.button`
+  width: 70px;
+  height: 50px;
+  background: ${ yesBgColor };
+  color: white;
+  border-radius: 30px;
+  margin-left: 20px;
+`;
+
+
 const Menu = styled.div`
-  margin: 6px 0 0 0;
   display: flex;
   justify-content: flex-end;
 
  > li {
     cursor: pointer;
     border-radius: 50px;
-    margin: 0 0 0 10px;
+    margin: 0 0 0 4px;
  }
 
  > li: hover {
@@ -319,8 +340,8 @@ const ItemContainer = styled.div`
   height: 50%;
   margin: 0 0 0 auto;
   display: span;
+
   > button {
-    background-color: #b580d1;
     width: 50px;
     height: 40px;
     position: relative;
@@ -328,8 +349,12 @@ const ItemContainer = styled.div`
     left: 120px;
     margin: 10px 0 20px 10px;
     border-radius: 25px;
-    color: #fff;
+    @media screen and (max-width: 1014px) {
+      top: 10px;
+      left: 25%;
+    }
   }
+
 
 `;
 
@@ -598,26 +623,6 @@ const CommentText = styled(TextareaAutosize)`
   border-radius: 6px;
   line-height: 1.4;
   border: 1px solid ${ borderColor };
-`;
-
-const NoBtn = styled.button`
-  width: 70px;
-  height: 50px;
-  background: #e0e0e0;
-  font-size: 17px;
-  font-weight: 800;
-  border-radius: 30px;
-`;
-
-const YesBtn = styled.button`
-  width: 70px;
-  height: 50px;
-  background: red;
-  color: white;
-  font-size: 17px;
-  font-weight: 800;
-  border-radius: 30px;
-  margin-left: 20px;
 `;
 
 const ButtonItem = styled.div`

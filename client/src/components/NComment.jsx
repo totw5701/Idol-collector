@@ -120,13 +120,18 @@ function NComment(props) { // cmt.nestedComments 대댓글 리스트, nCmtLimit 
        : <NCmtToggle></NCmtToggle>
       }
       <Menu>
-        <FavoriteIcon onClick = {() => { handleNCmtLike(nCmt.id) }} />
-        <ChatBubbleIcon onClick = { () => { toggleReNCmt(); setOpenEditor(nCmt.id) }} />
-
-        <MoreHorizIcon onClick = {() => {
-          setOpenEditor(nCmt.id);
-          toggleEdit();
-        }}/>
+        <li>
+          <FavoriteIcon onClick = {() => { handleNCmtLike(nCmt.id) }} />
+        </li>
+        <li>
+          <ChatBubbleIcon onClick = { () => { toggleReNCmt(); setOpenEditor(nCmt.id) }} />
+        </li>
+        <li>
+          <MoreHorizIcon onClick = {() => {
+            setOpenEditor(nCmt.id);
+            toggleEdit();
+          }}/>
+        </li>
 
   { /* 본인인 경우만 삭제,수정  */ }
       { nCmt.authorId === member.id && (
@@ -142,12 +147,12 @@ function NComment(props) { // cmt.nestedComments 대댓글 리스트, nCmtLimit 
 
       { isEditMenu && openEditor === nCmt.id  && (
         <EditMenu>
-          <EditBtn type='button' onClick = {() => { handleDelNCmt(nCmt.id); toggleEdit(); }}>대댓글 삭제</EditBtn>
+          <EditBtn type='button' onClick = {() => { handleDelNCmt(nCmt.id); toggleEdit(); }}>삭제</EditBtn>
           <EditBtn type='button' onClick = {() => {
             setOpenEditor(nCmt.id);
             setIsUpNCmt(true);
             toggleEdit();
-          }}>대댓글 수정</EditBtn>
+          }}>수정</EditBtn>
         </EditMenu>
       )}
 
@@ -168,8 +173,8 @@ function NComment(props) { // cmt.nestedComments 대댓글 리스트, nCmtLimit 
             onChange = {(e) => { setCmtValue(e.target.value) }}
           />
         </NCommentItem>
-          <button type = 'button' onClick = {()=>{ setIsUpNCmt(false); setOpenEditor('') }}>취소</button>
-          <button type = 'button' onClick = {() => { setIsUpNCmt(false); handleNCmtUpdate(nCmt.id); setOpenEditor('') }}>완료</button>
+          <NoBtn type = 'button' onClick = {()=>{ setIsUpNCmt(false); setOpenEditor('') }}>취소</NoBtn>
+          <YesBtn type = 'button' onClick = {() => { setIsUpNCmt(false); handleNCmtUpdate(nCmt.id); setOpenEditor('') }}>완료</YesBtn>
       </ItemContainer>
       )}
 
@@ -191,8 +196,8 @@ function NComment(props) { // cmt.nestedComments 대댓글 리스트, nCmtLimit 
             onChange = {(e) => { setCmtValue(e.target.value) }}
           />
         </NCommentItem>
-          <button type = 'button' onClick = {()=>{ setIsReNCmt(false); setOpenEditor('') }}>취소</button>
-          <button type = 'button' onClick = {() => { handleNCmtSubmit(nCmt.id); setOpenEditor('') }}>완료</button>
+          <NoBtn type = 'button' onClick = {()=>{ setIsReNCmt(false); setOpenEditor('') }}>취소</NoBtn>
+          <YesBtn type = 'button' onClick = {() => { handleNCmtSubmit(nCmt.id); setOpenEditor('') }}>완료</YesBtn>
       </ItemContainer>
       )}
 
@@ -209,29 +214,60 @@ export default NComment
 const shadowColor = 'rgba(0, 0, 0, 0.3)';
 const hoverColor = '#f0f0f0';
 const borderColor = '#e2e2e2';
+const noBgColor = '#e0e0e0';
+const yesBgColor = '#ED1E79';
 
 const EditMenu = styled.div`
   z-index: 1;
   width: 30%;
-  height: 60px;
+  height: 70px;
   margin: 0 0 0 auto;
   display: flex;
   flex-direction: column;
   border-radius: 10px;
   box-shadow: 5px 5px 10px ${ shadowColor };
+
 `;
 
 const EditBtn = styled.button`
-  height: auto;
+  height: 50%;
   padding: 6px 0 6px 0;
   font-size: 15px;
+  border-radius: 10px;
   :hover {
      background: ${ hoverColor };
   }
 `;
 
+const NoBtn = styled.button`
+  width: 70px;
+  height: 50px;
+  background: ${ noBgColor };
+  border-radius: 30px;
+`;
+
+const YesBtn = styled.button`
+  width: 70px;
+  height: 50px;
+  background: ${ yesBgColor };
+  color: white;
+  border-radius: 30px;
+  margin-left: 20px;
+`;
+
 const Menu = styled.div`
-  margin: 6px 10px 0 0;
+  display: flex;
+  justify-content: flex-end;
+
+ > li {
+    cursor: pointer;
+    border-radius: 50px;
+    margin: 0 0 0 4px;
+ }
+
+ > li: hover {
+    background: ${ hoverColor };
+ }
 `;
 
 {/* Comment 컴포넌트보다 margin 더줌 */}
@@ -257,7 +293,6 @@ const ItemContainer = styled.div`
   display: span;
 
   > button {
-    background-color: #b580d1;
     width: 50px;
     height: 40px;
     position: relative;
@@ -265,8 +300,10 @@ const ItemContainer = styled.div`
     left: 120px;
     margin: 10px 0 20px 10px;
     border-radius: 25px;
-    color: #fff;
-  }
+    @media screen and (max-width: 1014px) {
+      top: 10px;
+      left: 25%;
+    }
 `;
 
 const ImgBlock = styled.div`
@@ -488,24 +525,4 @@ const CommentText = styled(TextareaAutosize)`
   border-radius: 6px;
   line-height: 1.4;
   border: 1px solid ${ borderColor };
-`;
-
-const NoBtn = styled.button`
-  width: 70px;
-  height: 50px;
-  background: #e0e0e0;
-  font-size: 17px;
-  font-weight: 800;
-  border-radius: 30px;
-`;
-
-const YesBtn = styled.button`
-  width: 70px;
-  height: 50px;
-  background: red;
-  color: white;
-  font-size: 17px;
-  font-weight: 800;
-  border-radius: 30px;
-  margin-left: 20px;
 `;
