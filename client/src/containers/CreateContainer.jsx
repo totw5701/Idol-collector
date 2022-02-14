@@ -157,7 +157,7 @@ function CreateContainer() {
             <input
               type="text"
               name='tags'
-              placeholder="태그를 넣어 주세요 (최대 5개, 띄어쓰기 없이 한글 영어만 가능)"
+              placeholder="최대 5개 띄어쓰기 없이 15자이내 한글 영어만 가능"
               required
             />
             <button type='onSubmit'>태그등록</button>
@@ -198,6 +198,12 @@ const CreateWrap = styled.div`
 
   display: flex;
   justify-content: center;
+
+  @media screen and (max-width: 750px) {
+    flex-direction: column;
+    margin: 0 auto 0 auto;
+  }
+
 `;
 
 /////////////////
@@ -220,6 +226,12 @@ const CreateLeft = styled.div`
     top: 80%;
     transform: translate(-50%);
   }
+
+  @media screen and (max-width: 750px) {
+    width: 100%;
+    height: 40%;
+  }
+
 `;
 
 const PhotoHolder = styled.div`
@@ -282,6 +294,10 @@ const CenterLine = styled.div`
   height: 100%;
   background: #b580d1;
   margin: auto 3rem;
+
+  @media screen and (max-width: 750px) {
+    display: none;
+  }
 `;
 
 /////////////////
@@ -294,6 +310,12 @@ const CreateRight = styled.div`
 
   width: 40%;
   height: 100%;
+
+  @media screen and (max-width: 750px) {
+    width: 100%;
+    height: 50%;
+  }
+
 `;
 
 const InputField = styled.div`
@@ -312,6 +334,11 @@ const InputField = styled.div`
     &:focus {
       outline: none;
     }
+
+    @media screen and (max-width: 750px) {
+
+      font-size: 12px;
+    }
   }
   input::placeholder {
     color: ${ props => props? 'black': 'red'}
@@ -321,6 +348,9 @@ const InputField = styled.div`
       animation: ${ warning }  1s ease;
   `}
 
+  @media screen and (max-width: 750px) {
+    margin: 25px auto 0 auto;
+  }
 
 `;
 
@@ -350,6 +380,10 @@ const InputFailField = styled.div`
 
 const TagField = styled.div`
   display: flex;
+  flex-wrap: wrap;
+  @media screen and (max-width) {
+
+  }
 `;
 
 const Tag = styled.span`
@@ -370,6 +404,9 @@ const Tag = styled.span`
         border-radius: 50%;
         cursor: pointer;
       }
+   @media screen and (max-width: 750px) {
+     margin-top: 20px;
+   }
 `
 
 const CreateBtn = styled.button`
@@ -388,6 +425,13 @@ const CreateBtn = styled.button`
     cursor: pointer;
     opacity: 0.8;
   }
+
+  @media screen and (max-width: 750px) {
+    position: relative;
+    width: 100px;
+    margin: 20px 0 0 auto;
+  }
+
 `;
 
 // 참고한 사이트
