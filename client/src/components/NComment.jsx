@@ -11,7 +11,11 @@ import Columns from './Columns';
 import { useSelector, useDispatch } from 'react-redux';
 import ApiService from '../ApiService'
 
-function NComment({nestedComments}) { // cmt.nestedComments 대댓글 리스트를 받아옴
+function NComment(props) { // cmt.nestedComments 대댓글 리스트, nCmtLimit slice 끝값 를 받아옴
+
+  const nestedComments = props.nestedComments
+  const nCmtLimit = props.nCmtLimit
+
   //console.log(nestedComments)
   const member = useSelector ( ({memberReducer}) => { return memberReducer})
 
@@ -94,7 +98,7 @@ function NComment({nestedComments}) { // cmt.nestedComments 대댓글 리스트�
   }
  return(
  <>
-  { nestedComments.map((nCmt, nIdx) =>
+  { nestedComments.slice(0,nCmtLimit).map((nCmt, nIdx) =>
     <NCommentList>
       <NCommentItem as="div" key={nCmt.id}>
       <Link to="">
