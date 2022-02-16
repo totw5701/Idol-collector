@@ -10,7 +10,8 @@ import LoginPage from './pages/LoginPage';
 import UserPage from './pages/UserPage';
 import { useSelector,useDispatch } from 'react-redux';
 import ApiService from './ApiService'
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { getMember } from './redux/modules/actions'
 
 function App() {
 
@@ -32,7 +33,7 @@ function App() {
     console.log('axiosPost 데이터 가져오기 에러! '+err )
   }) */
 
-/* member */
+/* member
   let axiosMember = {}
 
   ApiService.getHome().then(( result ) => {
@@ -44,11 +45,18 @@ function App() {
     console.log('axiosMember 데이터 가져오기 에러! '+err )
 
   })
+*/
+/* 로그인 시 회원 정보 dispatch */
+  useEffect(()=>{
+    getMember().then((result) => {
+      dispatch(result)
+    })
+  },[isLogin])
+
 
 
   return (
     <BrowserRouter>
-
 
       {isLogin ? (
         <>

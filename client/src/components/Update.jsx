@@ -121,7 +121,8 @@ function Update (props) { //card, isUpdate, setIsUpdate
 export default Update
 
 const greyColor = '#e0e0e0';
-const yesBgColor = '#b580d1';
+const yesBgColor = '#ED1E79';
+const noBgColor = '#e0e0e0';
 
 const UpdateForm = styled.form`
   display: ${ props => props.isUpdate ? 'block':'none'};
@@ -139,10 +140,19 @@ const UpdateForm = styled.form`
     height: auto;
   }
 
+  @media screen and (max-width: 1100px) {
+    top: 15%;
+    width: 70%;
+    height: 800px;
+    overflow-y: auto;
+  }
+
   @media screen and (max-width: 560px) {
     top: 15%;
-    width: 95%;
-    height: auto;
+    width: 90%;
+    height: 800px;
+    overflow-y: auto;
+    overflow-x: hidden;
   }
 
 `;
