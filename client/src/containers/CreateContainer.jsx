@@ -5,13 +5,7 @@ import ApiService from '../ApiService'
 import axios from 'axios'
 import Validator from '../Validator'
 
-
 //null검사, reg검사
-
-
-
-
-
 
 function CreateContainer() {
 

@@ -4,6 +4,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import ApiService2 from '../ApiService2';
 import UserCard from '../components/UserCard';
 import UserScrap from '../components/UserScrap';
+import member from '../data/dummyMember';
 
 const UserPage = () => {
   const [isChange, setIsChange] = useState(false);
