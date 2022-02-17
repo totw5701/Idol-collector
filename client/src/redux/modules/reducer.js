@@ -78,7 +78,6 @@ const reducer = combineReducers({
   postReducer, 
   bundleReducer, 
   memberReducer,
-  userReducer,
 });
 
 export default reducer

@@ -6,7 +6,7 @@ import { MdCached } from 'react-icons/md';
 
 function SettingContainer() {
   const nicknameRef = useRef();
-  const data = useSelector (({userReducer}) => { return userReducer })
+  const data = useSelector (({memberReducer}) => { return memberReducer })
   // console.log(data)
 
   const [changeUserInfo, setchangeUserInfo] = useState(false);
