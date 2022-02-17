@@ -36,7 +36,7 @@ class ApiService2 {
 
   /* 카드집 */
 
-  getNotice(id) {
+  getCardBundleInfo(id) {
     // 카드집 정보
     return axios.get('/api/bundle' + id);
   }

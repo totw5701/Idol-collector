@@ -72,7 +72,7 @@ function Detail({ card }) {
         { id: 'tags', value: tags }
       ]
 
-    console.log(cardDB)
+    console.log(cardDB);
 
     const validator = new Validator(cardDB,tags)
 
@@ -93,6 +93,7 @@ function Detail({ card }) {
     )
     .then((result) => {
       alert('카드 수정이 완료됐습니다!')
+      console.log(result)
     })
     .catch((err) => {
       console.log('putCardUpdate axios 에러! '+err )

@@ -1,6 +1,15 @@
+import React, { useState } from 'react';
 import styled from 'styled-components';
+import member from '../data/dummyMember';
 
 function SettingContainer() {
+  const [changeUserInfo, setchangeUserInfo] = useState(false);
+  const [isUserInfo, setUserInfo] = useState(member[0]);
+
+  const handelChangeUserInfo = () => {
+    setchangeUserInfo(!changeUserInfo);
+  };
+
   return (
     <SettingWrap>
       <SettingLeft>
@@ -19,23 +28,38 @@ function SettingContainer() {
       <CenterLine />
       <SettingRight>
         <h1>회원 개인정보</h1>
-        <input type="text" placeholder="닉네임을 수정하세요" />
         <InfoField>
-          <h3>닉네임</h3>
-          <span></span>
-          <h4>nickname</h4>
+          {changeUserInfo ? (
+            <>
+              <h3>닉네임</h3>
+              <span></span>
+              <input
+                type="text"
+                placeholder={isUserInfo.name}
+                value={isUserInfo.name}
+              ></input>
+            </>
+          ) : (
+            <>
+              <h3>닉네임</h3>
+              <span></span>
+              <h4>{isUserInfo.name}</h4>
+            </>
+          )}
         </InfoField>
         <InfoField>
           <h3>가입일</h3>
           <span></span>
-          <h4>2021. 12. 25.</h4>
+          <h4>{isUserInfo.dateOfBirth.slice(0, 10)}</h4>
         </InfoField>
         <InfoField>
           <h3>이메일</h3>
           <span></span>
-          <h4>abc@naver.com</h4>
+          <h4>{isUserInfo.email}</h4>
         </InfoField>
-        <ModifyBtn>수정하기</ModifyBtn>
+        <ModifyBtn onClick={handelChangeUserInfo}>
+          {changeUserInfo ? '수정완료' : '수정하기'}
+        </ModifyBtn>
       </SettingRight>
     </SettingWrap>
   );

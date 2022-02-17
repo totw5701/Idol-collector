@@ -8,10 +8,6 @@ import UserScrap from '../components/UserScrap';
 const UserPage = () => {
   const [isChange, setIsChange] = useState(false);
 
-  const mydata = useSelector ( ({memberReducer}) => { return memberReducer } )
-
-  console.log(mydata)
-
   const handleChangeCard = () => {
     setIsChange(true);
   };
@@ -20,7 +16,17 @@ const UserPage = () => {
     setIsChange(false);
   };
 
-  console.log(ApiService2.getUserCard())
+  // console.log(ApiService2.getNotice())
+
+  useEffect((id) => {
+    ApiService2.getCardBundleInfo()
+    .then((result) => {
+      console.log(result)
+    })
+    .catch((err) => {
+      console.log(err);
+    })
+  }, []);
 
   return (
     <>
@@ -43,7 +49,7 @@ const UserPage = () => {
           {isChange ? (
             <>
               <CardList>
-                <UserCard mydata={mydata} />
+                <UserCard />
               </CardList>
             </>
           ) : (

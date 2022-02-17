@@ -11,7 +11,7 @@ const LoginPage = ({ isLogin, setIsLogin }) => {
     };
 
     const googleLoginHandle = () => {
-      window.location = "http://ec2-52-79-146-243.ap-northeast-2.compute.amazonaws.com:8080/oauth2/authorization/google"
+      window.location = "http://ec2-52-79-146-243.ap-northeast-2.compute.amazonaws.com:8080/"
     }
 
 
@@ -26,7 +26,7 @@ const LoginPage = ({ isLogin, setIsLogin }) => {
           <LoginModal>
             <Logo src="/images/로고.png" alt="homepage logo" />
             <LoginInput>
-                <GoogleLogin onClick={goToMain}>
+                <GoogleLogin onClick={googleLoginHandle}>
                   <img className="googleLogo" src={googleLogo} />
                   <div className="googleLogin">Login with Google</div>
                 </GoogleLogin>
