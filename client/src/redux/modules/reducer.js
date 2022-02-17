@@ -1,5 +1,5 @@
 import { combineReducers } from 'redux'
-import { ADD_LIKE, REMOVE_LIKE, ADD_VIEW } from './types'
+import { ADD_LIKE, REMOVE_LIKE, ADD_VIEW, GET_MEMBER } from './types'
 import dummyPost from '../../data/dummyPost'
 import axiosPost from '../../data/axiosPost'
 //import axiosMember from '../../data/axiosMember'
@@ -38,25 +38,28 @@ const postReducer = ( state = post, action = { type: '' } ) => {
 
   }
 
-}//postReducer
+}
 
 /* bundle: mypage 카드집 */
 const bundleReducer = ( state = bundle, action = { type: '' } ) => {
     let copy = [...bundle]
 
     return state
-}//bundleReducer
+}
 
 /* 회원관리 */
 const memberReducer = ( state = member, action = {type: ''} ) => {
-    let copy = {...member}
+  let copy = {...member}
 
-    if(action.type === 'axiosMember'){
-      return action.payload
-    }
-    return state
+  switch(action.type){
 
-}//memberReducer
+    case GET_MEMBER:  return action.payload
+
+  }
+
+  return state
+
+}
 
 
 /* reduder들 combine */

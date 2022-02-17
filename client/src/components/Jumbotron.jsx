@@ -16,8 +16,8 @@ function Jumbotron() {
 export default Jumbotron;
 
 const StyledJumbotron = styled.section`
-  height: 20vh;
-  margin-bottom: 140px;
+  height: 20%;
+  margin-bottom: 10px;
   padding-top: 65px;
 `;
 
@@ -27,11 +27,23 @@ const Banner = styled.div`
   justify-content: center;
   width: 100%;
   height: 100%;
-  margin-bottom: 80px;
+  margin-bottom: 40px;
 `;
 
 const BannerTitle = styled.p`
   font-size: 5rem;
   font-weight: 700;
   color: #b580d1;
+
+  @media screen and (max-width: 1000px) {
+    font-size: 3rem;
+  }
+
+  @media screen and (max-width: 600px) {
+    font-size: 1.8rem;
+  }
+
+  @media screen and (max-width: 400px) {
+    font-size: 1.5rem;
+  }
 `;

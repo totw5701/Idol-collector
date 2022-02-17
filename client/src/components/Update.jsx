@@ -14,9 +14,8 @@ import NComment from './NComment'
 import Validator from '../Validator'
 
 
-function Update ({card}) { //card, isUpdate
-  const [isUpdate, setIsUpdate] = useState(false) // 카드 수정 창 스위치
-
+function Update (props) { //card, isUpdate, setIsUpdate
+  const card = props.card
   const [title, setTitle] = useState()
   const [content, setContent] = useState()
   const [postId, setPostId] = useState(card.id)
@@ -25,9 +24,14 @@ function Update ({card}) { //card, isUpdate
   const [tags,setTags] = useState([])
 
   const addTag = () => {
-    if(tags.length<5){
+    if(tags.length > 4) {
+      alert('태그는 최대 5개까지 등록 가능합니다!')
+    }else if( !tag.match(/^[a-zA-Zㄱ-ㅎ가-힣]{1,15}$/) ){
+      alert('태그는 띄어쓰기 없이 15자 이내 한글로만 입력해주세요!')
+    }else{
       setTags([...tags,tag])
     }
+
   }
 
   const handleCloseTag = tag => { //태그 닫기
@@ -73,7 +77,7 @@ function Update ({card}) { //card, isUpdate
 
   return (
 
-  <UpdateForm onSubmit = { regTest }>
+  <UpdateForm onSubmit = { regTest } isUpdate = { props.isUpdate }>
     <Title>카드 수정</Title>
 
     <UpdateFormItem>
@@ -100,13 +104,14 @@ function Update ({card}) { //card, isUpdate
             )}
           </TagField>
           </Label>
+          <ButtonItem>
+            <NoBtn type = 'button' onClick = { ()=>{ props.setIsUpdate(false) }} >취소</NoBtn>
+            <YesBtn type = 'button' onClick = { regTest }>완료</YesBtn>
+          </ButtonItem>
       </UpdateInfo>
       <UpdateImg src={card.storeFileName} alt={`${card.title} 사진`} />
     </UpdateFormItem>
-    <ButtonItem>
-      <NoBtn type = 'button' onClick = { ()=>{ setIsUpdate(false) }} >취소</NoBtn>
-      <YesBtn type = 'button' onClick = { regTest }>완료</YesBtn>
-    </ButtonItem>
+
   </UpdateForm>
 
   )
@@ -161,18 +166,38 @@ const UpdateForm = styled.form`
   min-height: 650px;
   width: 1040px;
   position: fixed;
-  top: 50px;
+  top: 10%;
   left: 50%;
   transform: translateX( -50%);
   border-radius: 20px;
   background: white;
+  @media screen and (max-width: 1100px) {
+    top: 15%;
+    width: 60%;
+    height: auto;
+  }
 
   @media screen and (max-width: 1100px) {
     top: 15%;
-    height: 870px;
-    width: 60%;
+    width: 70%;
+    height: 800px;
+    overflow-y: auto;
   }
 
+  @media screen and (max-width: 560px) {
+    top: 15%;
+    width: 90%;
+    height: 800px;
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
+
+`;
+
+const Title = styled.div`
+  font-size: 40px;
+  font-weight: 800;
+  margin: 50px auto 20px auto;
 `;
 
 const UpdateFormItem = styled.div`
@@ -211,6 +236,16 @@ const UpdateImg =styled.img`
 
 `;
 
+const AddTag = styled.div`
+  text-align: right;
+  cursor: pointer;
+  margin: 0 60px 0 0;
+
+  @media screen and (max-width: 1100px) {
+    margin: 0 50px 0 0;
+  }
+`;
+
 const Input = styled.input`
   width: 70%;
   height: 70px;
@@ -228,6 +263,38 @@ const Input = styled.input`
     border-radius: 10px;
   }
 `;
+
+const TagField = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  margin: 25px 0 0 40px;
+  max-width: 1000px;
+
+  @media screen and (max-width: 1100px) {
+    width: 100%;
+  }
+`;
+
+const Tag = styled.span`
+    position: relative;
+    padding: 0.4rem 0.6rem;
+    border: 1px solid ${ greyColor };
+    border-radius: 1rem;
+    margin: 0 1rem 0 0;
+
+      svg {
+        position: absolute;
+        right: -10px;
+        top: -5px;
+
+        font-size: 18px;
+        padding: 2px;
+        background: #f0f0f0;
+        border-radius: 50%;
+        cursor: pointer;
+      }
+`;
+
 
 const TagsArea = styled(Input)`
   width: 70%;
@@ -254,13 +321,14 @@ const Label = styled.label`
 
 const ButtonItem = styled.div`
   position: absolute;
-  top: 570px;
-  left: 790px;
+  top: 85%;
+  left: 80%;
+
 
   @media screen and (max-width: 1100px) {
-    position: absolute;
-    top: 790px;
-    left: 250px;
+    position: relative;
+    left: 16%;
+    margin: 20px 0 20px 0;
   }
 
 `;
@@ -277,7 +345,7 @@ const NoBtn = styled.button`
 const YesBtn = styled.button`
   width: 70px;
   height: 50px;
-  background: red;
+  background: ${ yesBgColor };
   color: white;
   font-size: 17px;
   font-weight: 800;

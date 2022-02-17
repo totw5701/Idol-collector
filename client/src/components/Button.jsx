@@ -14,7 +14,7 @@ export default Button;
 const StyledButton = styled.button`
   padding: 5px 10px;
   border-radius: 8px;
-
+  width: 100%;
   display: flex;
   align-items: center;
 
@@ -22,6 +22,11 @@ const StyledButton = styled.button`
 
   &:hover {
     background: rgb(240, 240, 240);
+  }
+
+  @media screen and (max-width: 400px) {
+    width: 100%;
+    font-size: 1rem;
   }
 `;
 

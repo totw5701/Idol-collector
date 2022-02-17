@@ -6,7 +6,7 @@ class Validator {
          title: { rule: /^[ㄱ-ㅎ가-힣a-zA-Z0-9 ]{1,10}$/, msg: '카드 title은 10자 이내로 입력해주세요!' },
          description: { rule: /^[ㄱ-ㅎ가-힣a-zA-Z0-9 ]{1,30}$/, msg: '카드 설명은 30자 내로 입력해주세요'},
          alt: { rule: /^[ㄱ-ㅎ가-힣a-zA-Z0-9 ]/, msg: '카드 이미지 alt값을 입력해주세요!' },
-         tags: { rule: /^[a-zA-Zㄱ-ㅎ가-힣]/, msg: '태그는 띄어쓰기 없이 한글 영어만 가능' },
+         tags: { rule: /^[a-zA-Zㄱ-ㅎ가-힣]{1,15}$/, msg: '태그는 띄어쓰기 없이 15자 이내 한글 영어만 가능' },
          photo: { rule: /[ㄱ-ㅎ가-힣a-zA-Z0-9 ]/, msg: '사진을 등록해주세요' }
       }
 
