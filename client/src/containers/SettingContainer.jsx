@@ -6,12 +6,14 @@ import { MdCached } from 'react-icons/md';
 
 function SettingContainer() {
   const nicknameRef = useRef();
-  const data = useSelector (({memberReducer}) => { return memberReducer })
+  const data = useSelector(({ memberReducer }) => {
+    return memberReducer;
+  });
   // console.log(data)
 
   const [changeUserInfo, setchangeUserInfo] = useState(false);
   const [isPhotoSelected, setIsPhotoSelected] = useState(false);
-  const [nickname, setNickname] = useState(data[0].name)
+  const [nickname, setNickname] = useState(data[0].name);
   const [isUserInfo, setUserInfo] = useState(data[0]);
   const [selectedPhoto, setSelectedPhoto] = useState({
     photo: null,
@@ -20,12 +22,12 @@ function SettingContainer() {
 
   const handelChangeUserInfo = () => {
     setchangeUserInfo(!changeUserInfo);
-    setNickname(nickname)
+    setNickname(nickname);
   };
 
-  const changeUserNickname = (e) => {
-    setNickname(e.target.value)
-  }
+  const changeUserNickname = e => {
+    setNickname(e.target.value);
+  };
 
   const handleSelectPhoto = e => {
     setIsPhotoSelected(true);
@@ -35,7 +37,6 @@ function SettingContainer() {
       photoPreview: URL.createObjectURL(e.target.files[0]),
     });
   };
-
 
   return (
     <SettingWrap>
@@ -89,7 +90,7 @@ function SettingContainer() {
                 placeholder={nickname}
                 value={nickname}
                 ref={nicknameRef}
-                onChange={(e) => changeUserNickname(e)}
+                onChange={e => changeUserNickname(e)}
               ></input>
             </>
           ) : (
