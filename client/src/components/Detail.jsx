@@ -664,10 +664,11 @@ const Wrapper = styled.div`
       margin: 10px 0 0px 10px;
     }
   }
-  >span: nth-of-type(2) {
+
+  > span:nth-of-type(2) {
     font-weight: bold;
   }
-  >span: nth-of-type(3) {
+  > span:nth-of-type(3) {
     margin: 10px 0 40px 0px;
     @media screen and (max-width: 1015px) {
       margin: 10px 0px 0px 0px;

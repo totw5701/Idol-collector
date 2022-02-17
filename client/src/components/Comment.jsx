@@ -325,7 +325,7 @@ const Menu = styled.div`
     margin: 0 0 0 4px;
  }
 
- > li: hover {
+ > li:hover {
     background: ${ hoverColor };
  }
 
