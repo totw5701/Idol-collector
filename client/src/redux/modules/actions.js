@@ -1,4 +1,4 @@
-import { ADD_LIKE, REMOVE_LIKE, ADD_VIEW } from './types'
+import { ADD_LIKE, REMOVE_LIKE, ADD_VIEW, USER_INFO } from './types'
 
 export const addLike = (id) => {
   return {
@@ -19,6 +19,11 @@ export const addView = (id) => {
     type: ADD_VIEW,
     id: id
   }
-
 }
 
+export const userInfo = (id) => {
+  return {
+    type: USER_INFO,
+    id: id
+  }
+}

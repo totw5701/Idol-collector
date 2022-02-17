@@ -1,5 +1,5 @@
 import { combineReducers } from 'redux'
-import { ADD_LIKE, REMOVE_LIKE, ADD_VIEW } from './types'
+import { ADD_LIKE, REMOVE_LIKE, ADD_VIEW, USER_INFO } from './types'
 import dummyPost from '../../data/dummyPost'
 import axiosPost from '../../data/axiosPost'
 //import axiosMember from '../../data/axiosMember'
@@ -10,7 +10,18 @@ import ApiService from '../../ApiService'
 const post = dummyPost
 // const post = axiosPost
 const bundle = dummyBundle
-const member = {}
+const member = dummyMember
+
+const userReducer = ( state = member, action) => {
+  switch(action.type) {
+    case USER_INFO:
+      return {
+        ...state,
+        userData: action.payload
+      }
+      default: return state
+  }
+}
 
 
 /* post: mainPage 카드들 */
@@ -60,6 +71,11 @@ const memberReducer = ( state = member, action = {type: ''} ) => {
 
 
 /* reduder들 combine */
-const reducer = combineReducers({ postReducer, bundleReducer, memberReducer });
+const reducer = combineReducers({ 
+  postReducer, 
+  bundleReducer, 
+  memberReducer,
+  userReducer,
+});
 
 export default reducer
