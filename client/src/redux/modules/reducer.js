@@ -10,7 +10,18 @@ import ApiService from '../../ApiService'
 const post = dummyPost
 // const post = axiosPost
 const bundle = dummyBundle
-const member = {}
+const member = dummyMember
+
+// const userReducer = ( state = member, action) => {
+//   switch(action.type) {
+//     case USER_INFO:
+//       return {
+//         ...state,
+//         userData: action.payload
+//       }
+//       default: return state
+//   }
+// }
 
 
 /* post: mainPage 카드들 */
@@ -63,6 +74,10 @@ const memberReducer = ( state = member, action = {type: ''} ) => {
 
 
 /* reduder들 combine */
-const reducer = combineReducers({ postReducer, bundleReducer, memberReducer });
+const reducer = combineReducers({ 
+  postReducer, 
+  bundleReducer, 
+  memberReducer,
+});
 
 export default reducer

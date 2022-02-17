@@ -1,6 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
-import googleLoge from '../images/googleLogo.jpg';
+import googleLogo from '../images/googleLogo.jpg';
+import KaKaoLogo from '../images/kakaoLogo.png';
+import NaverLogo from '../images/NaverLogo.png';
 
 const LoginPage = ({ isLogin, setIsLogin }) => {
 
@@ -9,7 +11,7 @@ const LoginPage = ({ isLogin, setIsLogin }) => {
     };
 
     const googleLoginHandle = () => {
-      window.location = "http://ec2-52-79-146-243.ap-northeast-2.compute.amazonaws.com:8080/oauth2/authorization/google"
+      window.location = "http://ec2-52-79-146-243.ap-northeast-2.compute.amazonaws.com:8080/"
     }
 
 
@@ -25,32 +27,19 @@ const LoginPage = ({ isLogin, setIsLogin }) => {
             <Logo src="/images/로고.png" alt="homepage logo" />
             <LoginInput>
                 <GoogleLogin onClick={googleLoginHandle}>
-                  <img className="googleLogo" src={googleLoge} />
+                  <img className="googleLogo" src={googleLogo} />
                   <div className="googleLogin">Login with Google</div>
                 </GoogleLogin>
-                <InputIdPw>
-                  <div className="or">or</div>
-                  <input
-                    className="id"
-                    type="text"
-                    placeholder="USER ID"
-                  ></input>
-                  <input
-                    className="pw"
-                    type="password"
-                    placeholder="USER PASSWORD"
-                  ></input>
-                  <button 
-                  className="submit" 
-                  type="submit"
-                  onClick={goToMain}
-                  >
-                    클릭하면 Main으로 진입 (임시)
-                  </button>
-                </InputIdPw>
+                <NaverLogin onClick={goToMain}>
+                  <img className="googleLogo" src={NaverLogo} />
+                  <div className="googleLogin">Login with Naver</div>
+                </NaverLogin>
+                <KakaoLogin onClick={goToMain}>
+                  <img className="googleLogo" src={KaKaoLogo} />
+                  <div className="googleLogin">Login with Kakao</div>
+                </KakaoLogin>
               <ForgotId>
-                <div className="forgotId">Forgot your id?</div>
-                <div className="forgotPath">Click Here</div>
+                <div className="forgotId">Welcome to idol-collector</div>
               </ForgotId>
             </LoginInput>
           </LoginModal>
@@ -128,7 +117,7 @@ flex-direction: row;
 align-items: center;
 width: 300px;
 height: 45px;
-border-radius: 10px;
+border-radius: 5px;
 margin-top: 10px;
 background-color: #4385f5;
 :hover {
@@ -149,46 +138,59 @@ background-color: #4385f5;
   }
 `;
 
-const InputIdPw = styled.div`
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  .or {
-      margin: 10px 0px 10px 0px;
-      color: gray;
+const NaverLogin = styled.div`
+position: relative;
+display: flex;
+flex-direction: row;
+align-items: center;
+width: 300px;
+height: 45px;
+border-radius: 5px;
+margin-top: 10px;
+background-color: #03c75a;
+:hover {
+    cursor: pointer;
+    background-color: #02a94d;
+}
+  .googleLogo {
+      /* background-color: white; */
+    width: 40px;
+    border-radius: 10px;
+    margin-left: 5px;
   }
-  .id {
-    width: auto;
-    height: 35px;
-    border-radius: 7px;
-    border: 1px solid gray;
-    margin-bottom: 7px;
-    ::placeholder {
-        align-items: center;
-        padding-left: 6px;
-    }
-  }
-  .pw {
-    width: auto;
-    height: 35px;
-    border-radius: 7px;
-    border: 1px solid gray;
-    ::placeholder {
-        align-items: center;
-        padding-left: 6px;
-    }
-  }
-  .submit {
-      height: 35px;
-      margin-top: 10px;
-      border-radius: 10px;
-      background-color: #b580d1;
+  .googleLogin {
+      margin-left: 5px;
       font-size: 1em;
-      font-weight: bold;
       color: white;
-      :hover {
-        background-color: #9d6eb6;
-      }
+      font-weight: lighter;
+  }
+`;
+
+const KakaoLogin = styled.div`
+position: relative;
+display: flex;
+flex-direction: row;
+align-items: center;
+width: 300px;
+height: 45px;
+border-radius: 5px;
+margin-top: 10px;
+background-color: #ffdc00;
+:hover {
+    cursor: pointer;
+    background-color: #d7ba01;
+}
+  .googleLogo {
+      /* background-color: white; */
+    width: 26px;
+    border-radius: 10px;
+    margin-left: 11px;
+  }
+  .googleLogin {
+      margin-left: 10px;
+      font-size: 1em;
+      color: black;
+      font-weight: lighter;
   }
 `;
 

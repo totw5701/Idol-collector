@@ -9,8 +9,7 @@ ApiService.getHome().then(( result ) => {
   axiosMember = {...axiosMember,...result.data.data.member}
   //console.log(axiosMember)
 }).catch((err) => {
-  console.log('axiosMember 데이터 가져오기 에러! '+err )
-
+  console.log('axiosMember 데이터 가져오기 에러! '+ err )
 })
 
 export default axiosMember

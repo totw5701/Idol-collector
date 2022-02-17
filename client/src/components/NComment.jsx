@@ -265,7 +265,7 @@ const Menu = styled.div`
     margin: 0 0 0 4px;
  }
 
- > li: hover {
+ > li:hover {
     background: ${ hoverColor };
  }
 `;
@@ -304,6 +304,7 @@ const ItemContainer = styled.div`
       top: 10px;
       left: 25%;
     }
+  }
 `;
 
 const ImgBlock = styled.div`

@@ -21,7 +21,6 @@ export const addView = (id) => {
     type: ADD_VIEW,
     id: id
   }
-
 }
 
 /* 회원 정보 가져오기 */
