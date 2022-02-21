@@ -31,8 +31,7 @@ function Nav({ isLogin, setIsLogin }) {
           </BtnItem>
         </Wrapper>
 
-        <Search>
-        </Search>
+
 
         <LoginRight showMenu = {showMenu} >
           <LoginMakeCard>
@@ -45,29 +44,28 @@ function Nav({ isLogin, setIsLogin }) {
             <Button src={'닉네임.png'}>닉네임</Button>
             {dropdown ? <ArrowDropUp /> : <ArrowDropDown />}
           </LoginNickname>
-
-          {dropdown && (
-            <DropdownBar>
-              <li>
-                <Link to="/user">
-                <Button src={'나의카드.png'}>나의 카드</Button>
-                </Link>
-              </li>
-              <li>
-                <Link to="/setting">
-                  <Button src={'설정.png'}>설정</Button>
-                </Link>
-              </li>
-              <li onClick={backToLogin}>
-                <Link>
-                  <Button src={'로그아웃.png'}>로그아웃</Button>
-                </Link>
-              </li>
-            </DropdownBar>
-          )}
         </LoginRight>
 
       </Navbar>
+      {dropdown &&(
+        <DropdownBar showMenu = { showMenu  } >
+          <li>
+            <Link to="/user">
+            <Button src={'나의카드.png'}>나의 카드</Button>
+            </Link>
+          </li>
+          <li>
+            <Link to="/setting">
+              <Button src={'설정.png'}>설정</Button>
+            </Link>
+          </li>
+          <li onClick={backToLogin}>
+            <Link>
+              <Button src={'로그아웃.png'}>로그아웃</Button>
+            </Link>
+          </li>
+        </DropdownBar>
+      )}
       <Space />
     </>
   );
@@ -108,13 +106,11 @@ const Navbar = styled.nav`
   align-items: center;
   padding: 15px 30px;
   background: #fff;
-  z-index: 5;
+  z-index: 3;
 
   @media screen and (max-width: 400px) {
     flex-direction: column;
   }
-
-
 
 `;
 
@@ -128,11 +124,11 @@ const LoginRight = styled.div`
   align-items: center;
 
   @media screen and (max-width: 400px) {
-  width: 100%;
+    width: 100%;
     flex-direction: column;
     display: ${props => !props.showMenu && 'none'};
     margin: 10px auto auto auto;
-
+    padding-top: 10px;
 
   }
 `;
@@ -164,7 +160,7 @@ const DropdownBar = styled.ul`
   right: 2rem;
   top: 4rem;
   padding: 0.4rem 1rem;
-
+  z-index: 3;
   background: #fff;
   border-radius: 5px;
   -webkit-box-shadow: 0px 5px 10px 1px rgba(0, 0, 0, 0.5);
@@ -176,8 +172,9 @@ const DropdownBar = styled.ul`
 
   @media screen and (max-width: 400px) {
     width: 50%;
-    right: 25px;
-    top: 200px;
+    right: 20px;
+    top: 150px;
+    display: ${ props => !props.showMenu && 'none' };
 
   }
 `;
