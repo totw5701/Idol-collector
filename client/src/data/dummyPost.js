@@ -109,15 +109,13 @@ export default [
   didLike: true,
   didScrap: true,
   id: 0,
-  likes: 1,
+  likes: 10000,
   oriFileName: "string",
   storeFileName:
-'https://pds.joongang.co.kr/news/component/htmlphoto_mmdata/202012/09/4b713b30-3499-4cf7-a95d-1e877f0367d4.jpg',  tags: [
-    {
-      name: "로운"
-    }
-  ],
-  title: "카드제목은 로운",
+  'https://pds.joongang.co.kr/news/component/htmlphoto_mmdata/202012/09/4b713b30-3499-4cf7-a95d-1e877f0367d4.jpg',
+  tags: [{name:'아무나'},{name:'아이돌'}
+    ],
+  title: "카드제목은 로운입니다.",
   views: 0
   },
 
