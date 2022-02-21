@@ -79,7 +79,7 @@ const StyledSearchBar = styled.form`
 
   border: 2px solid ${ borderColor };
   border-radius: 50px;
-  z-index: 5;
+  z-index: 2;
 
    svg {
      flex: 0.6;
@@ -94,13 +94,14 @@ const StyledSearchBar = styled.form`
     display: ${({fixed})=> !fixed && 'none'};
   }
 
+/*
    @media screen and (max-width: 400px) {
      width: 80%;
      top: 60px;
      left: 50%;
      transform: translateX(-50%);
      display: flex;
-/*   fixed랑 sticky 둘 다 쓰는 경우 scroll 위치 fixed여부 받아옴
+     fixed랑 sticky 둘 다 쓰는 경우 scroll 위치 fixed여부 받아옴
      width: ${ props => props.fixed? '80%' : '62%' };
      top: ${ props => props.fixed? '60px' : '140px' };
 */
