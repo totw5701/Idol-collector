@@ -4,17 +4,15 @@ import CancelIcon from '@mui/icons-material/Cancel';
 import ApiService from '../ApiService'
 import axios from 'axios'
 import Validator from '../Validator'
-
+import { useHistory } from 'react-router-dom'
 
 //null검사, reg검사
 
 
 
-
-
-
 function CreateContainer() {
 
+  const [showModal,setShowModal] = useState(false)
   const [isPhotoSelected, setIsPhotoSelected] = useState(false)
   const [title, setTitle] = useState()
   const [description, setDescription] = useState()
@@ -24,6 +22,7 @@ function CreateContainer() {
     photoPreview: null,
   });
   const [tags, setTags] = useState([])
+  const history = useHistory()
 
 /* 유효성 검사 */
   const cardDB = [ { id: 'title', value: title },{id: 'description', value: description },{id: 'alt', value: alt },
@@ -53,7 +52,10 @@ function CreateContainer() {
       console.log(newCard.get('attachFile')) // newCard FormData는 출력안돼,get(key)로 값출력
 
       ApiService.postCard(newCard)
-      .then( (result)=> { console.log('card/create 성공') } )
+      .then( (result)=> {
+        console.log('card/create 성공');
+        setShowModal(true);
+       })
       .catch( (err) => { console.log(err+ 'card/create axios실패!') } )
 
 
@@ -177,11 +179,130 @@ function CreateContainer() {
           regTest()
         }}>만들기</CreateBtn>
       </CreateRight>
+
+{/* 카드 등록 완료 모달 */}
+<Back showModal={showModal} >
+  <CreateModal showModal={showModal} setShowModal={setShowModal} preview = {selectedPhoto.photoPreview} />
+</Back>
+
+<button onClick={()=>{setShowModal(true)}}>setShowModal</button>
     </CreateWrap>
   );
 }
 
 export default CreateContainer;
+
+function CreateModal(props){
+  const showModal = props.showModal
+  const setShowModal = props.setShowModal
+  const history = useHistory()
+  return(
+    <Modal showModal={showModal}>
+      <h1>카드 등록 완료</h1>
+
+      <img src = { props.preview }/>
+      <p/>
+      <button onClick={()=>{setShowModal(false)}}>nono</button>
+      <ButtonItem>
+      <NoBtn onClick={() => {
+        history.push('/')
+      }}>홈으로 이동</NoBtn>
+
+      <YesBtn onClick={() => {
+        history.push('/card')
+      }}>카드 보기</YesBtn>
+
+      </ButtonItem>
+    </Modal>
+
+  )
+}
+
+const greyColor = '#e0e0e0';
+const yesBgColor = '#ED1E79';
+const noBgColor = '#e0e0e0';
+const modalBgColor = '#2b2b2b';
+{/*  const greyBgColor = rgba(143, 143, 143, 0.15); */}
+
+
+const ButtonItem = styled.div`
+  position: absolute;
+  bottom: 10px;
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  margin: 10px 0 10px 0;
+  @media screen and (max-width: 1100px) {
+
+  }
+
+`;
+
+const NoBtn = styled.button`
+  width: 120px;
+  height: 40px;
+  background: #e0e0e0;
+  font-size: 17px;
+  font-weight: 800;
+  border-radius: 30px;
+  margin-right: 20px;
+`;
+
+const YesBtn = styled.button`
+  width: 120px;
+  height: 40px;
+  background: ${ yesBgColor };
+  color: white;
+  font-size: 17px;
+  font-weight: 800;
+  border-radius: 30px;
+  margin-right: 30px;
+`;
+
+const Back = styled.div`
+
+  ${ props => props.showModal && css`
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    right: 0;
+    left: 0;
+    top; 0;
+    bottom: 0;
+    z-index: 1;
+    background: ${ modalBgColor };
+
+  `}
+`;
+
+const Modal = styled.div`
+  display: ${ props => props.showModal ? 'block':'none'};
+  width: 70%;
+  height: 50%;
+  background: white;
+  border: 1px solid black;
+  border-radius: 20px;
+  position: absolute;
+  top: 20%;
+  left: 50%;
+  transform: translateX(-50%);
+  text-align: center;
+
+  > h1 {
+    font-size: 30px;
+    font-weight: bold;
+    margin: 30px auto 10px auto;
+  }
+
+  > img {
+    max-width: 70%;
+    max-height: 60%;
+    object-fit: cover;
+    margin: 15px auto 0 auto;
+  }
+
+
+`;
 
 
 const warning = keyframes`
