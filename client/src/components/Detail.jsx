@@ -439,7 +439,7 @@ export default Detail;
 const BtnBgColor = '#b580d1';
 const textColor = '#fff';
 const modalBgColor = '#2b2b2b';
-{/*  const greyBgColor = rgba(143, 143, 143, 0.15); */}
+/*  const greyBgColor = rgba(143, 143, 143, 0.15); */
 const InfoBgColor = '#fff';
 const borderColor = '#e2e2e2';
 const CmtBntColor ='#ED1E79';
@@ -457,12 +457,10 @@ const TitleInfo = styled.div`
   text-align: left;
   font-size: 28px;
   font-weight: bolder;
-
   @media screen and (max-width: 1012px) {
     font-size: 19px;
     padding: 10px 0 0 0;
   }
-
 `;
 const UpdateBtn = styled.div`
   width: 27%;
@@ -475,7 +473,6 @@ const UpdateBtn = styled.div`
   color: ${ textColor };
   border-radius: 7px;
   cursor: pointer;
-
   @media screen and (max-width: 560px) {
     width: 30%;
     height: 35px;
@@ -483,7 +480,6 @@ const UpdateBtn = styled.div`
 `;
 
 const UpdatePage = styled.div`
-
   ${ props => props.isUpdate && css`
     z-index: 1;
     position: fixed;
@@ -493,7 +489,6 @@ const UpdatePage = styled.div`
     left: 0;
     background: ${ modalBgColor };
   `}
-
 `;
 
 
@@ -501,16 +496,13 @@ const ButtonItem = styled.div`
   position: absolute;
   top: 85%;
   left: 80%;
-
   @media screen and (max-width: 1100px) {
-
   position: relative;
     top: 0%;
     left: 0%;
     text-align: right;
     margin: 4px 30px 0 0;
   }
-
 `;
 
 
@@ -521,7 +513,6 @@ const DetailBase = styled.section`
   > span {
     font-size: 20px;
   }
-
   ${ props => props.isUpdate && css`
     position: fixed;
     top: 0;
@@ -540,7 +531,6 @@ const BackButton = styled.button`
   height: 40px;
   border-radius: 50%;
   transform: rotate(-180deg);
-
   :hover {
     background-color: #f0f0f0;
   }
@@ -555,7 +545,6 @@ const DetailBlock = styled.div`
   margin: 30px auto 50px;
   border-radius: 32px;
   box-shadow: 5px 5px 8px rgba(0, 0, 0, 0.3);
-
   @media screen and (max-width: 1015px) {
     flex-direction: column;
     width: 100%;
@@ -568,12 +557,10 @@ const ImgBlock = styled.div`
   position: relative;
   width: 50%;
   border-radius: 32px 0 0 32px;
-
   > img {
     display: block;
     width: 100%;
   }
-
   @media screen and (max-width: 1015px) {
     width: 100%;
     border-radius: 0;
@@ -585,11 +572,9 @@ const Buttons = styled.div`
   position: absolute;
   right: 20px;
   z-index: 1;
-
   @media screen and (max-width: 1015px) {
     bottom: 35px;
   }
-
 `;
 
 const Button = styled.button`
@@ -600,11 +585,9 @@ const Button = styled.button`
   height: 40px;
   border-radius: 50%;
   background-color: #fff;
-
   & + & {
     margin-left: 6px;
   }
-
   > img {
     width: 100%;
   }
@@ -613,7 +596,6 @@ const Button = styled.button`
 const InfoButton = styled(Button)`
   margin-top: 8px;
   width: 160px;
-
   > img {
     width: 100%;
     position: relative;
@@ -623,19 +605,16 @@ const InfoButton = styled(Button)`
 
 
 const UnScrap = styled(InfoButton)`
-
   border-radius: 10px;
   font-weight: 500;
   font-size: 16px;
   margin-top: 8px;
   background: ${ BtnBgColor };
   color: ${ textColor };
-
   @media screen and (max-width: 560px) {
     width: 91px;
     height: 42px;
   }
-
 `;
 
 const Info = styled.div`
@@ -643,11 +622,9 @@ const Info = styled.div`
   padding: 10px 30px 20px 30px;
   border-radius: 0 32px 32px 0;
   background-color: ${ InfoBgColor };
-
   @media screen and (max-width: 560px) {
     padding: 10px 10px 20px 14px;
   }
-
 `;
 
 
@@ -655,7 +632,6 @@ const Wrapper = styled.div`
   display: flex;
   align-items: center;
   position: relative;
-
   span {
     text-align: left;
     margin: 10px 0 40px 10px;
@@ -663,18 +639,15 @@ const Wrapper = styled.div`
       margin: 10px 0 0px 10px;
     }
   }
-  > span: nth-of-type(2) {
+  > span:nth-of-type(2) {
     font-weight: bold;
   }
-  > span: nth-of-type(3) {
+  > span:nth-of-type(3) {
     margin: 10px 0 40px 0px;
     @media screen and (max-width: 1015px) {
       margin: 10px 0 0px 0px;
     }
   }
-
-
-
 `;
 
 const CommentButton = styled.button`
@@ -685,11 +658,9 @@ const CommentButton = styled.button`
   border-radius: 50%;
   transform: ${({ isShow }) => (isShow ? 'rotate(0)' : 'rotate(90deg)')};
   transition: transform 0.1s ease-in-out;
-
   :hover {
     background-color: #f0f0f0;
   }
-
   svg {
     transform: translateX(3px);
     font-size: 14px;
@@ -706,19 +677,16 @@ const UserInfo = styled.div`
   border-radius: 6px;
   background-color: #fff;
   text-align: left;
-
   @media screen and (max-width: 560px) {
     padding: 0 5px 0 5px;
   }
-
 `;
 
 const SmallUserInfo = styled(UserInfo)`
   height: 34px;
   min-height: 0;
   font-size: 14px;
-
-{/*   & + & { //SmallUserInfo 사이에 넣는 보라색 선
+/*   & + & { //SmallUserInfo 사이에 넣는 보라색 선
     ::before {
       content: '';
       position: absolute;
@@ -729,18 +697,15 @@ const SmallUserInfo = styled(UserInfo)`
       height: 80%;
       background-color: #b580d1;
     }
-  } */}
-
+  } */
   > span:nth-of-type(1) {
     font-weight: 600;
     margin-right: 10px;
     width: 120px;
   }
-
   > span:nth-of-type(2), span:nth-of-type(3), span:nth-of-type(4){
     margin-right: 5px;
   }
-
 `;
 
 
@@ -773,7 +738,6 @@ const CommentWrapper = styled.div`
   display: flex;
   align-items: center;
   margin-top: 20px;
-
   > * {
     font-size: 18px;
     font-weight: 600;
@@ -786,10 +750,8 @@ const CommentList = styled.ul`
 
 const CommentItem = styled.li`
   display: flex;
-
   > a {
     margin-top: 8px;
-
     img {
       width: 48px;
       height: 48px;
@@ -800,18 +762,13 @@ const CommentItem = styled.li`
 const NCommentItem = styled.div`
   display: flex;
   justify-content: flex-end;
-
   > a {
     margin: 8px 0px 0px 0px;
-
     img {
       width: 38px;
       height: 38px;
     }
   }
-
-
-
 `;
 
 const CommentInfo = styled(UserInfo)`
@@ -830,7 +787,6 @@ const CommentForm = styled.form`
 
 const CommentFormItem = styled(CommentItem)`
   width: 100%;
-
   > button {
     background-color: ${ CmtBntColor };
     width: 50px;

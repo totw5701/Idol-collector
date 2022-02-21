@@ -6,7 +6,7 @@ function Jumbotron() {
     <StyledJumbotron>
       <Banner>
         {/* 이미지 들어올 곳 */}
-        <BannerTitle>최애의 순간을 수집하세요!</BannerTitle>
+        {/* <BannerTitle>최애의 순간을 수집하세요!</BannerTitle> */}
       </Banner>
       <SearchBar />
     </StyledJumbotron>

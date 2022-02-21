@@ -139,14 +139,12 @@ const UpdateForm = styled.form`
     width: 60%;
     height: auto;
   }
-
   @media screen and (max-width: 1100px) {
     top: 15%;
     width: 70%;
     height: 800px;
     overflow-y: auto;
   }
-
   @media screen and (max-width: 560px) {
     top: 15%;
     width: 90%;
@@ -154,7 +152,6 @@ const UpdateForm = styled.form`
     overflow-y: auto;
     overflow-x: hidden;
   }
-
 `;
 
 const Title = styled.div`
@@ -167,7 +164,6 @@ const UpdateFormItem = styled.div`
   display: flex;
   justify-content: space-between;
   margin: 40px auto 0 auto;
-
   @media screen and (max-width: 1100px) {
     display: flex;
     flex-direction: column-reverse;
@@ -179,7 +175,6 @@ const UpdateInfo = styled.div`
   width: 100%;
   display: flex;
   flex-direction: column;
-
 `;
 
 const UpdateImg =styled.img`
@@ -190,25 +185,20 @@ const UpdateImg =styled.img`
   margin: 15px 40px 0 0;
   object-fit: cover;
   border-radius: 10px;
-
   @media screen and (max-width: 1100px) {
     width: 100%;
     height: 100%;
     margin: 0 auto 0 auto;
   }
-
 `;
 
 const AddTag = styled.div`
   text-align: right;
   cursor: pointer;
   margin: 0 60px 0 0;
-
   @media screen and (max-width: 1100px) {
     margin: 0 50px 0 0;
   }
-
-}
 `;
 
 const Input = styled.input`
@@ -218,7 +208,6 @@ const Input = styled.input`
   margin: 17px 0 20px 70px;
   border: 3px solid #e0e0e0;
   border-radius: 10px;
-
   @media screen and (max-width: 1100px) {
     width: 70%;
     height: 50px;
@@ -234,7 +223,6 @@ const TagField = styled.div`
   flex-wrap: wrap;
   margin: 25px 0 0 40px;
   max-width: 1000px;
-
   @media screen and (max-width: 1100px) {
     width: 100%;
   }
@@ -246,19 +234,16 @@ const Tag = styled.span`
     border: 1px solid ${ greyColor };
     border-radius: 1rem;
     margin: 0 1rem 0 0;
-
       svg {
         position: absolute;
         right: -10px;
         top: -5px;
-
         font-size: 18px;
         padding: 2px;
         background: #f0f0f0;
         border-radius: 50%;
         cursor: pointer;
       }
-  }
 `;
 
 
@@ -268,7 +253,6 @@ const TagsArea = styled(Input)`
   margin: 0px 0 0px 70px;
   border: 3px solid #e0e0e0;
   border-radius: 10px;
-
   @media screen and (max-width: 1100px) {
     width: 70%;
     height: 50px;
@@ -282,21 +266,17 @@ const Label = styled.label`
   text-align: center;
   font-size: 16px;
   font-weight: bold;
-
 `;
 
 const ButtonItem = styled.div`
   position: absolute;
   top: 85%;
   left: 80%;
-
-
   @media screen and (max-width: 1100px) {
     position: relative;
     left: 16%;
     margin: 20px 0 20px 0;
   }
-
 `;
 
 const NoBtn = styled.button`
@@ -322,7 +302,6 @@ const DetailBase = styled.section`
   position: relative;
   padding: 50px 30px;
   text-align: center;
-
   > span {
     font-size: 20px;
   }

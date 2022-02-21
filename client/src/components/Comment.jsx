@@ -325,7 +325,7 @@ const Menu = styled.div`
     margin: 0 0 0 4px;
  }
 
- > li: hover {
+ > li:hover {
     background: ${ hoverColor };
  }
 
@@ -594,7 +594,7 @@ const CommentFormItem = styled(CommentItem)`
 `;
 
 const NCommentFormItem = styled(NCommentItem)`
-  width: 100%
+  width: 100%;
   margin-right: 0px;
   display: flex;
   justify-content: flex-end;

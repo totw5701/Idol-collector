@@ -1,41 +1,119 @@
+import React, { useRef, useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import styled from 'styled-components';
+import member from '../data/dummyMember';
+import { MdCached } from 'react-icons/md';
 
 function SettingContainer() {
+  const nicknameRef = useRef();
+  const data = useSelector(({ memberReducer }) => {
+    return memberReducer;
+  });
+  // console.log(data)
+
+  const [changeUserInfo, setchangeUserInfo] = useState(false);
+  const [isPhotoSelected, setIsPhotoSelected] = useState(false);
+  const [nickname, setNickname] = useState(data[0].name);
+  const [isUserInfo, setUserInfo] = useState(data[0]);
+  const [selectedPhoto, setSelectedPhoto] = useState({
+    photo: null,
+    photoPreview: null,
+  });
+
+  const handelChangeUserInfo = () => {
+    setchangeUserInfo(!changeUserInfo);
+    setNickname(nickname);
+  };
+
+  const changeUserNickname = e => {
+    setNickname(e.target.value);
+  };
+
+  const handleSelectPhoto = e => {
+    setIsPhotoSelected(true);
+    setSelectedPhoto({
+      ...selectedPhoto,
+      photo: e.target.files[0],
+      photoPreview: URL.createObjectURL(e.target.files[0]),
+    });
+  };
+
   return (
     <SettingWrap>
       <SettingLeft>
-        <input
-          style={{ display: 'none' }}
-          id="profile-input"
-          type="file"
-          accept="image/*"
-          // onChange={handleSelectPhoto}
-        />
-        <SelectProfileLabel htmlFor="profile-input">
-          <img src="images/회원개인정보-사진.png" alt="Createing profile" />
-        </SelectProfileLabel>
-        <h3>권장파일사양: </h3>
+        {isPhotoSelected ? (
+          <>
+            <input
+              style={{ display: 'none' }}
+              id="card-change"
+              type="file"
+              accept="image/*"
+              onChange={handleSelectPhoto}
+            />
+            {changeUserInfo ? (
+              <>
+                <ChangeBtn htmlFor="card-change">
+                  <MdCached size="30" />
+                </ChangeBtn>
+              </>
+            ) : null}
+            <PhotoHolder>
+              <img src={selectedPhoto.photoPreview} alt="selected card" />
+            </PhotoHolder>
+          </>
+        ) : (
+          <>
+            <input
+              style={{ display: 'none' }}
+              id="card-input"
+              type="file"
+              accept="image/*"
+              onChange={handleSelectPhoto}
+            />
+            <SelectProfileLabel htmlFor="card-input">
+              <img src="images/회원개인정보-사진.png" alt="Createing card" />
+            </SelectProfileLabel>
+            <h3>권장파일사양: </h3>
+          </>
+        )}
       </SettingLeft>
       <CenterLine />
       <SettingRight>
         <h1>회원 개인정보</h1>
-        <input type="text" placeholder="닉네임을 수정하세요" />
         <InfoField>
-          <h3>닉네임</h3>
-          <span></span>
-          <h4>nickname</h4>
+          {changeUserInfo ? (
+            <>
+              <h3>닉네임</h3>
+              <span></span>
+              <input
+                type="text"
+                placeholder={nickname}
+                value={nickname}
+                ref={nicknameRef}
+                onChange={e => changeUserNickname(e)}
+              ></input>
+            </>
+          ) : (
+            <>
+              <h3>닉네임</h3>
+              <span></span>
+              <h4>{nickname}</h4>
+            </>
+          )}
         </InfoField>
         <InfoField>
           <h3>가입일</h3>
           <span></span>
-          <h4>2021. 12. 25.</h4>
+          <h4>{isUserInfo.dateOfBirth.slice(0, 10)}</h4>
         </InfoField>
         <InfoField>
           <h3>이메일</h3>
           <span></span>
-          <h4>abc@naver.com</h4>
+          <h4>{isUserInfo.email}</h4>
         </InfoField>
-        <ModifyBtn>수정하기</ModifyBtn>
+        <ModifyBtn onClick={handelChangeUserInfo}>
+          {changeUserInfo ? '수정완료' : '수정하기'}
+        </ModifyBtn>
       </SettingRight>
     </SettingWrap>
   );
@@ -71,6 +149,44 @@ const SettingLeft = styled.div`
   }
 `;
 
+const PhotoHolder = styled.div`
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: white;
+  border-radius: 30px;
+
+  img {
+    max-width: 70%;
+    max-height: 70%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+`;
+
+const ChangeBtn = styled.label`
+  position: absolute;
+  right: 1rem;
+  top: 1rem;
+  z-index: 1;
+
+  padding: 0.2rem;
+  background: #fff;
+  border-radius: 10px;
+
+  &:hover {
+    cursor: pointer;
+    opacity: 0.8;
+  }
+
+  img {
+    width: 1.5rem;
+    height: 1.5rem;
+  }
+`;
+
 const SelectProfileLabel = styled.label`
   position: absolute;
   left: 50%;
@@ -83,7 +199,7 @@ const SelectProfileLabel = styled.label`
   }
 
   img {
-    width: 12rem;
+    width: 10rem;
   }
 `;
 
