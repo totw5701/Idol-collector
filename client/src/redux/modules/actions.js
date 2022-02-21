@@ -3,6 +3,14 @@ import ApiService from '../../ApiService'
 import axios from 'axios'
 
 export const addLike = (id) => {
+
+  ApiService.putCardLike(id)
+  .then((result) => {
+    console.log('카드 좋아요 완료')
+  })
+  .catch((err) => {
+    console.log('putCardLike axios 에러! '+err )
+  })
   return {
     type: ADD_LIKE,
     id: id

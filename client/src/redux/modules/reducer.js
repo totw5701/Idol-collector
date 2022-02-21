@@ -60,11 +60,10 @@ const bundleReducer = ( state = bundle, action = { type: '' } ) => {
 
 /* 회원관리 */
 const memberReducer = ( state = member, action = {type: ''} ) => {
-  let copy = {...member}
 
   switch(action.type){
 
-    case GET_MEMBER:  return action.payload
+    case GET_MEMBER:  return { ...state, userData: action.payload }
 
   }
 

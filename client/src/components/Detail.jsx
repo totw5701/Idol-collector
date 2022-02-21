@@ -4,23 +4,17 @@ import { useSelector, useDispatch } from 'react-redux'
 import styled,{ css } from 'styled-components'
 import moment from 'moment'
 import { ArrowForwardIos, ArrowForward } from '@mui/icons-material'
-import CancelIcon from '@mui/icons-material/Cancel'
-import ChatBubbleIcon from '@mui/icons-material/ChatBubble'
 import TextareaAutosize from 'react-textarea-autosize'
-import MoreHorizIcon from '@mui/icons-material/MoreHoriz'
-import FavoriteIcon from '@mui/icons-material/Favorite'
 import Columns from './Columns'
 import ApiService from '../ApiService'
 import Comment from './Comment'
-import NComment from './NComment'
 import Update from './Update'
 import Validator from '../Validator'
-
+import { addLike } from '../redux/modules/actions'
 
 function Detail({ card }) {
 
-  const data = useSelector ( ({postReducer}) => { return postReducer } )
-  const member = useSelector ( ({memberReducer}) => { return memberReducer})
+  const member = useSelector ( ({memberReducer}) => { return memberReducer.userData })
 
   //console.log(member)
 
@@ -175,65 +169,6 @@ function Detail({ card }) {
 
   }
 
-  const handleNCmtSubmit = id => { //대댓글 등록
-
-    let nComment = {  commentId: id ,content: cmt }
-    console.log(nComment)
-
-    if(cmt ==null){
-      alert('내용을 입력해주세요!')
-    }else{
-      ApiService.postNCmt({ commentId: Number(id) ,content: cmt })
-      .then((result) => {
-         console.log('대댓글 등록 완료')
-         setCmt(null)// 값 입력 후 cmt state 비워주기
-      })
-      .catch((err) => {console.log('postNCmt axios 에러! '+err )})
-    }
-
-  }
-
-  const handleDelNCmt = id => { // 대댓글 삭제
-    //console.log(id) //nCmt.id
-
-    ApiService.delNCmtId(Number(id))
-    .then((result) => {
-      console.log('대댓글 삭제 완료')
-    })
-    .catch((err)=> {
-      console.log('delNCmtId axios 에러!'+ err )
-    })
-
-  }
-
-  const handleNCmtLike = id => { // 대댓글 좋아요
-    //console.log(id) //nCmt.id
-
-    ApiService.putNCmtLike(Number(id))
-    .then((result) => {
-      console.log('대댓글 좋아요 완료')
-    })
-    .catch((err)=> {
-      console.log('putNCmtLike axios 에러!'+ err )
-    })
-
-  }
-
-  const handleNCmtUpdate = id => { // 대댓글 수정
-    //console.log({ id: Number(id), content: cmt })
-    if(id == null || id === '' ){
-      alert('내용을 입력해주세요!')
-    }else{
-      ApiService.putNCmtUpdate({ id: Number(id), content: cmt })
-      .then((result) => {
-        console.log('대댓글 수정 완료')
-        setCmt(null)
-      })
-      .catch((err)=> {
-        console.log('putNCmtUpdate axios 에러!'+ err )
-      })
-    }
-  }
 
   const handleDelCard = () => { // 카드 삭제
 
@@ -259,17 +194,12 @@ function Detail({ card }) {
     })
 
   }
+/* 좋아요 */
 
-    const handleLike = () => { // 카드 좋아요
+  const handleAddLike = () => {
+      dispatch(addLike(card.id))
+  }
 
-      ApiService.putCardLike(card.id)
-      .then((result) => {
-        console.log('카드 좋아요 완료')
-      })
-      .catch((err) => {
-        console.log('putCardLike axios 에러! '+err )
-      })
-    }
 
   const handleScrap = () => { // 카드 스크랩
 
@@ -295,9 +225,6 @@ function Detail({ card }) {
     setDidScrap(false)
   }
 
-  useEffect(() => {
-    console.log(isUpdate)
-  },[isUpdate])
 
 
   return (
@@ -319,7 +246,7 @@ function Detail({ card }) {
               <Button onClick = { handleDownload }>
                 <img src="/images/다운로드.png" alt="다운로드" />
               </Button>
-              <Button onClick = { handleLike }>
+              <Button onClick = { handleAddLike }>
                 <img src="/images/하트.png" alt="좋아요" />
               </Button>
             </Buttons>
@@ -335,7 +262,7 @@ function Detail({ card }) {
           <Info>
             <Wrapper>
               <TitleInfo>{card.title}</TitleInfo>
-              <InfoButton onClick = { handleLike }>
+              <InfoButton onClick = { handleAddLike }>
                 <img src="/images/라이크.png" alt="좋아요 버튼" />
               </InfoButton>
             </Wrapper>
@@ -368,7 +295,6 @@ function Detail({ card }) {
             { member.id === card.authorId && (
               <UpdateBtn onClick={()=>{ setIsUpdate(true) }}> 카드 수정 </UpdateBtn>
             )}
-              <UpdateBtn onClick={()=>{ setIsUpdate(true) }}> 카드 수정 </UpdateBtn>
       { /* 카드 수정 모달창 */ }
 
             <UpdatePage isUpdate = { isUpdate } >
