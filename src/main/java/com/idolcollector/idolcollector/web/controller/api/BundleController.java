@@ -3,7 +3,6 @@ package com.idolcollector.idolcollector.web.controller.api;
 import com.idolcollector.idolcollector.service.BundleService;
 import com.idolcollector.idolcollector.service.ResponseService;
 import com.idolcollector.idolcollector.web.dto.bundle.*;
-import com.idolcollector.idolcollector.web.dto.pageresponsedto.CardDetailPageDto;
 import com.idolcollector.idolcollector.web.dto.response.CommonResult;
 import io.swagger.annotations.*;
 import lombok.RequiredArgsConstructor;

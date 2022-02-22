@@ -1,7 +1,5 @@
 package com.idolcollector.idolcollector.web.controller.api;
 
-import com.idolcollector.idolcollector.domain.blame.Blame;
-import com.idolcollector.idolcollector.domain.notice.NoticeRepository;
 import com.idolcollector.idolcollector.file.FileStore;
 import com.idolcollector.idolcollector.service.BundleService;
 import com.idolcollector.idolcollector.service.MemberService;
@@ -39,7 +37,7 @@ import java.util.Optional;
 @Slf4j
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/member")
+@RequestMapping("/api/members")
 public class MemberController {
 
     private final MemberService memberService;

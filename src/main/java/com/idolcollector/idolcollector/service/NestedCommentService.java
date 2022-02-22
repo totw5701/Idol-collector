@@ -14,8 +14,6 @@ import com.idolcollector.idolcollector.domain.nestedcomment.NestedCommentReposit
 import com.idolcollector.idolcollector.domain.notice.Notice;
 import com.idolcollector.idolcollector.domain.notice.NoticeRepository;
 import com.idolcollector.idolcollector.domain.notice.NoticeType;
-import com.idolcollector.idolcollector.domain.trending.Trending;
-import com.idolcollector.idolcollector.domain.trending.TrendingType;
 import com.idolcollector.idolcollector.web.dto.nestedcomment.NestedCommentResponseDto;
 import com.idolcollector.idolcollector.web.dto.nestedcomment.NestedCommentSaveRequestDto;
 import com.idolcollector.idolcollector.web.dto.nestedcomment.NestedCommentUpdateRequestDto;
@@ -24,7 +22,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpSession;
-import java.time.LocalDateTime;
 import java.util.Optional;
 
 
@@ -75,6 +72,7 @@ public class NestedCommentService {
         return nComment.update(form.getContent());
     }
 
+
     @Transactional
     public Long delete(Long id) {
         NestedComment nComment = nestedCommentRepository.findById(id)
@@ -87,6 +85,7 @@ public class NestedCommentService {
         nestedCommentRepository.delete(nComment);
         return id;
     }
+
 
     @Transactional
     public int like(Long id) {

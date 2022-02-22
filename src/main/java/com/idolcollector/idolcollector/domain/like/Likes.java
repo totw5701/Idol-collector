@@ -32,7 +32,6 @@ public class Likes {
         this.construct(member);
     }
 
-
     // 연관관계 메서드
     private void construct(Member member) {
         member.getLikesList().add(this);

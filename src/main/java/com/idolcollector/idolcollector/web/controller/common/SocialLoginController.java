@@ -24,7 +24,6 @@ public class SocialLoginController {
 
     @GetMapping("/login-success")
     public void loginSuccess(HttpServletResponse res) throws IOException {
-        System.out.println("httpSession.getId() = " + httpSession.getId());
 
         res.sendRedirect("/api/home");
         //return httpSession.getId();

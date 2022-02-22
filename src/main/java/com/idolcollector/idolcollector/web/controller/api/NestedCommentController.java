@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.*;
 @Api(tags = {"대댓글"})
 @Slf4j
 @RestController
-@RequestMapping("/api/n-comment")
+@RequestMapping("/api/n-comments")
 @RequiredArgsConstructor
 public class NestedCommentController {
 

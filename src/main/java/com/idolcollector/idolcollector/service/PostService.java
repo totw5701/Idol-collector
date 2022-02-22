@@ -39,7 +39,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.ModelAttribute;
 
 import javax.servlet.http.HttpSession;
-import java.io.File;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -70,16 +69,6 @@ public class PostService {
 
         Member member = memberRepository.findById((Long) httpSession.getAttribute("loginMember")).get();
 
-        /**
-         * post에서 넘어온 memberId는 언제든 조작될 수있음. 세션에서 받아오는것이 정확하다.
-         * Controller에서 세션 memberId와 save form dto로 넘어온 memberId가 맞는지 확인하고 맞으면 service시작
-         * 그렇지 않다면 취소하자.
-         *
-         * 안됨, 실제 DB에서 받아온 post의 memberId와 세션이 일치하는지 확인해야함. service에서 할 수 밖에 없다.
-         *
-         * 그렇다면 컨트롤에서 save form DTO에 넣어줄까?
-         */
-
         // 사진 저장
         UploadFile uploadFile = fileStore.storeFile(form.getAttachFile());
 
@@ -93,6 +82,7 @@ public class PostService {
 
         return savedPost.getId();
     }
+
 
     @Transactional
     public PostResponseDto detail(Long id) {
@@ -151,6 +141,7 @@ public class PostService {
         return postResponseDto;
     }
 
+
     @Transactional
     public Long update(PostUpdateRequestDto form) {
         Post post = postRepository.findById(form.getPostId())
@@ -172,6 +163,7 @@ public class PostService {
 
         return post.getId();
     }
+
 
     @Transactional
     public Long delete(Long id) {
@@ -204,6 +196,7 @@ public class PostService {
         return list;
     }
 
+
     public List<HomePostListResponseDto> scorePostListSearch(Integer page, List<String> keywords) {
         PageRequest preq = PageRequest.of(page, 15);
 
@@ -217,6 +210,7 @@ public class PostService {
         return list;
     }
 
+
     public List<HomePostListResponseDto> memberPostList(Long memberId, Integer page) {
         PageRequest preq = PageRequest.of(page, 15);
         List<Post> result = postRepository.findAllInMember(memberId, preq);
@@ -228,6 +222,7 @@ public class PostService {
 
         return list;
     }
+
 
     @Transactional
     public int like(Long id) {
@@ -274,6 +269,7 @@ public class PostService {
         return save.getId();
     }
 
+
     @Transactional
     public Long cancelScrap(Long id) {
         Post post = postRepository.findById(id)
@@ -288,39 +284,5 @@ public class PostService {
         scrapRepository.delete(opt.get());
 
         return id;
-    }
-
-
-    /**
-     *
-     * 사용하지 않는 코드
-     *
-     */
-    public List<HomePostListResponseDto> scorePostListLegacy(Integer page) {
-
-        // 트렌딩 먼저 출력, 트렌딩 모두 출력한 뒤에는 최근 업로드순으로 출력
-        Integer count = trendingRepository.trendAnalyByDateCount(LocalDateTime.now().minusDays(7));
-        int trendingPageCount = count / 15 + 1;
-
-        List<Post> list = new ArrayList<>();
-        if (trendingPageCount > page) {
-            PageRequest preq = PageRequest.of(page, 15);
-            Page<Post> result = trendingRepository.trendAnalyByDate(LocalDateTime.now().minusDays(7), preq);
-
-            list = result.getContent();
-        } else {
-            page = page - trendingPageCount;
-            PageRequest preq = PageRequest.of(page, 15);
-            Page<Post> result = postRepository.findAll(preq);
-
-            list = result.getContent();
-        }
-
-        List<HomePostListResponseDto> postList = new ArrayList<>();
-        for (Post post : list) {
-            postList.add(new HomePostListResponseDto(post));
-        }
-
-        return postList;
     }
 }
