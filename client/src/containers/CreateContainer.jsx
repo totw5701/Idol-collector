@@ -4,6 +4,7 @@ import CancelIcon from '@mui/icons-material/Cancel';
 import ApiService from '../ApiService'
 import axios from 'axios'
 import Validator from '../Validator'
+import CreateModal from '../components/CreateModal'
 import { useHistory } from 'react-router-dom'
 
 //null검사, reg검사
@@ -180,43 +181,18 @@ function CreateContainer() {
         }}>만들기</CreateBtn>
       </CreateRight>
 
-{/* 카드 등록 완료 모달 */}
-<Back showModal={showModal} >
-  <CreateModal showModal={showModal} setShowModal={setShowModal} preview = {selectedPhoto.photoPreview} />
-</Back>
+    {/* 카드 등록 완료 모달 */}
+      <Back showModal={showModal} >
+        <CreateModal showModal={showModal} setShowModal={setShowModal} preview = {selectedPhoto.photoPreview} />
+      </Back>
 
-<button onClick={()=>{setShowModal(true)}}>setShowModal</button>
+        <button onClick={()=>{setShowModal(true)}}>setShowModal</button>
     </CreateWrap>
   );
 }
 
 export default CreateContainer;
 
-function CreateModal(props){
-  const showModal = props.showModal
-  const setShowModal = props.setShowModal
-  const history = useHistory()
-  return(
-    <Modal showModal={showModal}>
-      <h1>카드 등록 완료</h1>
-
-      <img src = { props.preview }/>
-      <p/>
-      <button onClick={()=>{setShowModal(false)}}>nono</button>
-      <ButtonItem>
-      <NoBtn onClick={() => {
-        history.push('/')
-      }}>홈으로 이동</NoBtn>
-
-      <YesBtn onClick={() => {
-        history.push('/card')
-      }}>카드 보기</YesBtn>
-
-      </ButtonItem>
-    </Modal>
-
-  )
-}
 
 const greyColor = '#e0e0e0';
 const yesBgColor = '#ED1E79';
@@ -273,35 +249,6 @@ const Back = styled.div`
     background: ${ modalBgColor };
 
   `}
-`;
-
-const Modal = styled.div`
-  display: ${ props => props.showModal ? 'block':'none'};
-  width: 70%;
-  height: 50%;
-  background: white;
-  border: 1px solid black;
-  border-radius: 20px;
-  position: absolute;
-  top: 20%;
-  left: 50%;
-  transform: translateX(-50%);
-  text-align: center;
-
-  > h1 {
-    font-size: 30px;
-    font-weight: bold;
-    margin: 30px auto 10px auto;
-  }
-
-  > img {
-    max-width: 70%;
-    max-height: 60%;
-    object-fit: cover;
-    margin: 15px auto 0 auto;
-  }
-
-
 `;
 
 
