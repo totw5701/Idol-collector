@@ -11,6 +11,7 @@ const post = dummyPost
 // const post = axiosPost
 const bundle = dummyBundle
 const member = dummyMember
+const photo = {}
 
 // const userReducer = ( state = member, action) => {
 //   switch(action.type) {
@@ -70,6 +71,10 @@ const memberReducer = ( state = member, action = {type: ''} ) => {
 
   return state
 
+}
+
+const userPhoto = (state = photo, action) => {
+  
 }
 
 
