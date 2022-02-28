@@ -6,6 +6,8 @@ import { MdCached } from 'react-icons/md';
 
 function SettingContainer() {
   const nicknameRef = useRef();
+  const dispatch = useDispatch();
+
   const data = useSelector(({ memberReducer }) => {
     return memberReducer;
   });
@@ -23,6 +25,9 @@ function SettingContainer() {
   const handelChangeUserInfo = () => {
     setchangeUserInfo(!changeUserInfo);
     setNickname(nickname);
+    dispatch(
+      
+    )
   };
 
   const changeUserNickname = e => {

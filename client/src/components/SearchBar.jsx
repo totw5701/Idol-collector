@@ -94,8 +94,8 @@ const StyledSearchBar = styled.form`
     display: ${({fixed})=> !fixed && 'none'};
   }
 
-/*
-   @media screen and (max-width: 400px) {
+
+   /* @media screen and (max-width: 400px) {
      width: 80%;
      top: 60px;
      left: 50%;
@@ -104,9 +104,9 @@ const StyledSearchBar = styled.form`
      fixed랑 sticky 둘 다 쓰는 경우 scroll 위치 fixed여부 받아옴
      width: ${ props => props.fixed? '80%' : '62%' };
      top: ${ props => props.fixed? '60px' : '140px' };
-*/
 
-   }
+
+   } */
 
 /* 기본 sticky로 하다가 scroll시 fixed로 바꾸는 css
 
