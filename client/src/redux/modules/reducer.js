@@ -5,12 +5,16 @@ import axiosPost from '../../data/axiosPost'
 //import axiosMember from '../../data/axiosMember'
 import dummyBundle from '../../data/dummyBundle'
 import dummyMember from '../../data/dummyMember'
+import dummyScrap from '../../data/dummyScrap'
+import dummyUserCard from '../../data/dummyUserCard'
 import ApiService from '../../ApiService'
 
 const post = dummyPost
 // const post = axiosPost
 const bundle = dummyBundle
 const member = dummyMember
+const scrap = dummyScrap
+const usercard = dummyUserCard
 const photo = {}
 
 // const userReducer = ( state = member, action) => {
@@ -59,6 +63,18 @@ const bundleReducer = ( state = bundle, action = { type: '' } ) => {
     return state
 }
 
+const userCardReducer = ( state = usercard, action = { type: '' } ) => {
+  let copy = [...usercard]
+
+  return state
+}
+
+const scrapReducer = ( state = scrap, action = { type: '' } ) => {
+  let copy = [...scrap]
+
+  return state
+}
+
 /* 회원관리 */
 const memberReducer = ( state = member, action = {type: ''} ) => {
   let copy = {...member}
@@ -83,6 +99,8 @@ const reducer = combineReducers({
   postReducer, 
   bundleReducer, 
   memberReducer,
+  userCardReducer,
+  scrapReducer,
 });
 
 export default reducer

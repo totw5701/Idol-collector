@@ -8,6 +8,17 @@ import UserScrap from '../components/UserScrap';
 
 const UserPage = () => {
 
+  const data = useSelector(({ memberReducer }) => {
+    return memberReducer;
+  });
+  const card = useSelector(({ userCardReducer }) => {
+    return userCardReducer;
+  });
+  const scrap = useSelector(({ scrapReducer }) => {
+    return scrapReducer;
+  });
+
+  const [isUserInfo, setUserInfo] = useState(data[0]);
   const [isChange, setIsChange] = useState(false);
 
   const handleChangeCard = () => {
@@ -36,11 +47,11 @@ const UserPage = () => {
         <UserPageIn>
           <UserInfo>
             <img src="images/회원개인정보-사진.png" />
-            <div className="userName">User Name</div>
-            <div className="userEmail">abc@naver.com</div>
+            <div className="userName">{isUserInfo.name}</div>
+            <div className="userEmail">{isUserInfo.email}</div>
             <CardScrapTitle>
-            <div className="userCardNum">카드 4개</div>
-            <div className="userScrapNum">스크랩 4개</div>
+            <div className="userCardNum">카드 {card.length}개</div>
+            <div className="userScrapNum">스크랩 {scrap.length}개</div>
             </CardScrapTitle>
           </UserInfo>
           <CardScrapMain>

@@ -1,19 +1,45 @@
 import React from 'react';
+import { Link } from 'react-router-dom'
+import styled from 'styled-components'
 import { useSelector } from 'react-redux';
 
 const UserCard = () => {
-    const bundle = useSelector(({ bundleReducer }) => {
-        return bundleReducer;
+    const card = useSelector(({ userCardReducer }) => {
+        return userCardReducer;
       });
 
-      console.log(bundle)
     return (
-        <div>
-            {bundle.map((el,idx) => (
-                <img src={el} />
-            ))}
-        </div>
+        <ColumnsContainer>
+      {card.map((el,idx) => (
+        <Card key={el.id}>
+
+              <Link to={`/card/${el.id}`}>
+                <img src={el.storeFileName} alt={el.title} />
+              </Link>
+
+      </Card>
+      ))}
+      </ColumnsContainer>
     );
 };
 
 export default UserCard;
+
+const ColumnsContainer = styled.ul`
+  margin: auto;
+  width: 90%;
+  max-width: 2000px;
+  column-width: 15em;
+  column-gap: 1em;
+`;
+
+const Card = styled.li`
+  display: inline-block;
+  padding: 0.4rem;
+  width: 100%;
+
+  img {
+    border-radius: 10px;
+    width: 100%;
+  }
+`;
