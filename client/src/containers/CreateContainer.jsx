@@ -17,6 +17,7 @@ function CreateContainer() {
   const [isPhotoSelected, setIsPhotoSelected] = useState(false)
   const [title, setTitle] = useState()
   const [description, setDescription] = useState()
+  const [cardId,setCardId] = useState()
   const [alt, setAlt] = useState()
   const [selectedPhoto, setSelectedPhoto] = useState({
     photo: null,
@@ -54,6 +55,7 @@ function CreateContainer() {
 
       ApiService.postCard(newCard)
       .then( (result)=> {
+        setCardId(result.data.data);
         console.log('card/create 성공');
         setShowModal(true);
        })
@@ -183,10 +185,8 @@ function CreateContainer() {
 
     {/* 카드 등록 완료 모달 */}
       <Back showModal={showModal} >
-        <CreateModal showModal={showModal} setShowModal={setShowModal} preview = {selectedPhoto.photoPreview} />
+        <CreateModal showModal={showModal} setShowModal={setShowModal} preview = {selectedPhoto.photoPreview} cardId = {cardId}/>
       </Back>
-
-        <button onClick={()=>{setShowModal(true)}}>setShowModal</button>
     </CreateWrap>
   );
 }

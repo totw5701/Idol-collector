@@ -28,7 +28,9 @@ function Detail({ card }) {
   const [isUpdate, setIsUpdate] = useState(false) // 카드 수정 창 스위치
 
   const [limit,setLimit] = useState(1) // 댓글 배열 slice 끝값 설정
-  const limitEnd = card.comments.length
+
+  const limitEnd = card.comments != null? card.comments.length : 0
+
 
   const createDate = moment(card.createDate).format('YYYY-MM-DD')
   const likes = Number(card.likes).toString().replace(/\B(?=(\d{3})+(?!\d))/g,',')
@@ -320,16 +322,19 @@ function Detail({ card }) {
               </CommentFormItem>
             </CommentForm>
       { /* 댓글 토글 */ }
-            <CommentWrapper>
-            { isShow
-              ? <h3>댓글 열기</h3>
-              : <h3>댓글 닫기</h3>
+            { card.comments.length> 0 &&(
+              <CommentWrapper>
+              { isShow
+                ? <h3>댓글 열기</h3>
+                : <h3>댓글 닫기</h3>
 
-            }
-              <CommentButton onClick={toggleShow} isShow={isShow}>
-                <ArrowForwardIos />
-              </CommentButton>
-            </CommentWrapper>
+              }
+                <CommentButton onClick={toggleShow} isShow={isShow}>
+                  <ArrowForwardIos />
+                </CommentButton>
+              </CommentWrapper>
+            )}
+
 
       { /* Comment 댓글 리스트
            isShow (댓글몇개) 스위치가 true && 코멘트가 존재하는 경우만 */ }
