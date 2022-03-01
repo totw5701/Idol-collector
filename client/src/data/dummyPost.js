@@ -144,29 +144,54 @@ export default [
       'https://pbs.twimg.com/profile_images/1417337660683612166/k969fqda_400x400.jpg',
   },
   {
-    id: 3,
-    authorNickName: 'nickname3',
-    authorId: 'id3',
-    title: '제니',
-    content: '제니 녹색 옷',
-    createDate: '2021-12-21',
-    views: 300,
-    likes: 30,
-    storeFileName:
-      'https://cdn.kihoilbo.co.kr/news/photo/201902/792241_247400_4056.jpg',
-  },
+   authorId: 3,
+   authorNickName: "회원 별명",
+   createDate: "2022-02-06T15:19:49.146Z",
+   comments: [
+     {
+       authorId: 15,
+       authorNickName: "별명3",
+       content: "댓글내용 여기 써요3!",
+       createDate: "2022-02-06T15:19:49.146Z",
+       didLike: true,
+       id: 207,
+       likes: 0,
+       modifyDate: "2022-02-06T15:19:49.146Z",
+       nestedComments: []
+     },
+   ],
+   content: "설명은 파란배경 아이돌 사진",
+   didLike: true,
+   didScrap: true,
+   id: 3,
+   likes: 10000,
+   oriFileName: "string",
+   storeFileName:
+'https://post-phinf.pstatic.net/MjAyMDA4MDRfMTM1/MDAxNTk2NTMzMDAxNjU4.IWaWaf1YDVPgPgxX0Td0nge2UClOiPaA99r8HpLsaGQg.PnAM3SqL6YeB3ZbRFnLAQyAE-YgBloIbmb_SQ0YL0_Ag.JPEG/%EB%A1%9C%EC%A0%9C01.jpg?type=w1200',   tags: [{name:'아무나'},{name:'아이돌'}
+     ],
+   title: "카드제목은 로운입니다.",
+   views: 0
+   },
   {
-    id: 4,
-    authorNickName: 'nickname4',
-    authorId: 'id4',
-    title: 'BTS',
-    content: '방탄 버터 단체사진',
-    createDate: '2021-12-21',
-    views: 400,
-    likes: 40,
-    storeFileName:
-      'https://img.koreatimes.co.kr/upload/newsV2/images/202108/c6758c3ec6454152bf0d29e969caac1c.jpg/dims/resize/740/optimize',
-  },
+   authorId: 3,
+   authorNickName: "회원 별명",
+   createDate: "2022-02-06T15:19:49.146Z",
+   comments: [
+
+   ],
+   content: "설명은 파란배경 아이돌 사진",
+   didLike: true,
+   didScrap: true,
+   id: 4,
+   likes: 10000,
+   oriFileName: "string",
+   storeFileName:
+  'https://img.koreatimes.co.kr/upload/newsV2/images/202108/c6758c3ec6454152bf0d29e969caac1c.jpg/dims/resize/740/optimize',
+  tags: [{name:'아무나'},{name:'아이돌'}
+     ],
+   title: "방탄 버터.",
+   views: 12
+   },
   {
     id: 5,
     authorNickName: 'nickname5',
@@ -294,7 +319,7 @@ export default [
     views: 1500,
     likes: 150,
     storeFileName:
-      'https://www.topdaily.kr/news/photo/202009/75485_43360_4337.jpg',
+      'https://img.hankyung.com/photo/201906/BF.19897553.1.jpg',
   },
   {
     id: 16,
