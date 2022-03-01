@@ -7,22 +7,21 @@ function CreateModal(props){
 
   const showModal = props.showModal
   const setShowModal = props.setShowModal
+  const cardId = props.cardId
   const history = useHistory()
-
   return(
     <Modal showModal={showModal}>
       <h1>카드 등록 완료</h1>
 
       <img src = { props.preview }/>
       <p/>
-      <button onClick={()=>{setShowModal(false)}}>nono</button>
       <ButtonItem>
       <NoBtn onClick={() => {
         history.push('/')
       }}>홈으로 이동</NoBtn>
 
       <YesBtn onClick={() => {
-        history.push('/card')
+        history.push('/card/' + cardId )
       }}>카드 보기</YesBtn>
 
       </ButtonItem>
