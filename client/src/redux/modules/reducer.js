@@ -1,5 +1,12 @@
 import { combineReducers } from 'redux'
-import { ADD_LIKE, REMOVE_LIKE, ADD_VIEW, GET_MEMBER } from './types'
+import { 
+  ADD_LIKE, 
+  REMOVE_LIKE, 
+  ADD_VIEW, 
+  GET_MEMBER,
+  USER_CARD,
+  USER_SCRAP,
+ } from './types'
 import dummyPost from '../../data/dummyPost'
 import axiosPost from '../../data/axiosPost'
 //import axiosMember from '../../data/axiosMember'
@@ -63,16 +70,19 @@ const bundleReducer = ( state = bundle, action = { type: '' } ) => {
     return state
 }
 
+// mypage 카드모음
 const userCardReducer = ( state = usercard, action = { type: '' } ) => {
-  let copy = [...usercard]
-
-  return state
+  switch (action.type) {
+    case USER_CARD:
+      return {...state, userCard: action.payload}
+  }
 }
 
 const scrapReducer = ( state = scrap, action = { type: '' } ) => {
-  let copy = [...scrap]
-
-  return state
+  switch (action.type) {
+    case USER_SCRAP:
+      return {...state, userScrap: action.payload}
+  }
 }
 
 /* 회원관리 */

@@ -1,5 +1,13 @@
-import { ADD_LIKE, REMOVE_LIKE, ADD_VIEW, GET_MEMBER } from './types'
+import { 
+  ADD_LIKE, 
+  REMOVE_LIKE, 
+  ADD_VIEW, 
+  GET_MEMBER,
+  USER_CARD,
+  USER_SCRAP,
+ } from './types'
 import ApiService from '../../ApiService'
+import ApiService2 from '../../ApiService2'
 import axios from 'axios'
 
 export const addLike = (id) => {
@@ -44,6 +52,30 @@ export const getMember = async () => {
     payload: home.data.data.member
   }
 
+}
+
+// 마이페이지 내 유저가 생성한 카드 보이기
+export const getUserCard = async() => {
+  const request = await ApiService2.getCardBundleInfo()
+  .then((res) => {
+    console.log(res)
+  })
+  return {
+    type: USER_CARD,
+    payload: request
+  }
+}
+
+// 마이페이지 내 유저가 스크랩한 카드 보이기
+export const getUserScrap = async() => {
+  const request = await ApiService2.getCardBundleInfo()
+  .then((res) => {
+    console.log(res)
+  })
+  return {
+    type: USER_SCRAP,
+    payload: request
+  }
 }
 
 
