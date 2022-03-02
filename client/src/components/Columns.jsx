@@ -109,9 +109,19 @@ const Card = styled.li`
   display: inline-block;
   padding: 0.4rem;
   width: 100%;
+  border-radius: 10px;
 
   img {
     border-radius: 10px;
     width: 100%;
   }
+
+  &:hover {
+    padding: 0;
+    box-shadow: 4px 4px 10px grey;
+    img {
+      display: block;
+    }
+  }
+
 `;
