@@ -17,8 +17,7 @@ function NComment(props) { // cmt.nestedComments 대댓글 리스트, nCmtLimit 
   const nCmtLimit = props.nCmtLimit
 
   //console.log(nestedComments)
-  const member = useSelector ( ({memberReducer}) => { return memberReducer})
-
+   const member = useSelector ( ({memberReducer}) => { return memberReducer.userData })
   const [isShow, setIsShow] = useState(false) // 댓글 보기 스위치
   const [isNCmt, setIsNCmt] = useState(false) // 댓글 작성칸 스위치
   const [isUpNCmt, setIsUpNCmt] = useState(false) // 대댓글 수정창 스위치
