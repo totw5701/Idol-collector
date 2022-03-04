@@ -158,12 +158,7 @@ const nCmtToggle = () =>  setShowNCmt(prev => !prev )
               setOpenEditor(cmt.id);
             }}/>
           </li>
-          <li>
-            <MoreHorizIcon onClick = {() => {
-              setOpenEditor(cmt.id);
-              toggleEdit();
-            }}/>
-          </li>
+
   { /* 본인 댓글만 삭제수정가능 */ }
 
            { cmt.authorId === member.id &&(

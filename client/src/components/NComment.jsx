@@ -125,12 +125,6 @@ function NComment(props) { // cmt.nestedComments 대댓글 리스트, nCmtLimit 
         <li>
           <ChatBubbleIcon onClick = { () => { toggleReNCmt(); setOpenEditor(nCmt.id) }} />
         </li>
-        <li>
-          <MoreHorizIcon onClick = {() => {
-            setOpenEditor(nCmt.id);
-            toggleEdit();
-          }}/>
-        </li>
 
   { /* 본인인 경우만 삭제,수정  */ }
       { nCmt.authorId === member.id && (
