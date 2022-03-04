@@ -11,7 +11,7 @@ import UserPage from './pages/UserPage';
 import { useSelector,useDispatch } from 'react-redux';
 import ApiService from './ApiService'
 import { useState, useEffect } from 'react';
-import { getMember } from './redux/modules/actions'
+import { getMember,getHome } from './redux/modules/actions'
 
 function App() {
 
@@ -19,39 +19,20 @@ function App() {
   const [isLogin, setIsLogin] = useState(false);
 
 
-/*  post */
-   let data = useSelector(({postReducer})=> { return postReducer })
-  // let data = useSelector((state)=> { return state.postReducer })
-/*   let axiosPost = [];
-
-  ApiService.getHome().then(( result ) => {
-    //console.log(result.data.data.member)
-    data = [...axiosPost,...result.data.data.cards]
-    //console.log(data)
-    dispatch({ type:'axiosPost', payload: axiosPost })
-  }).catch((err) => {
-    console.log('axiosPost 데이터 가져오기 에러! '+err )
-  }) */
-
-/* member
-  let axiosMember = {}
-
-  ApiService.getHome().then(( result ) => {
-    //console.log(result.data.data.member)
-    axiosMember = {...axiosMember,...result.data.data.member}
-    //console.log(axiosMember)
-    dispatch({ type:'axiosMember', payload: axiosMember })
-  }).catch((err) => {
-    console.log('axiosMember 데이터 가져오기 에러! '+err )
-
-  })
-*/
-/* 로그인 시 회원 정보 dispatch */
+/* 로그인 시 회원 정보, post 정보 dispatch */
   useEffect(()=>{
     getMember().then((result) => {
       dispatch(result)
     })
+    getHome().then((result) => {
+      dispatch(result)
+    })
   },[isLogin])
+
+
+/*  post */
+   let data = useSelector(({postReducer})=> { return postReducer.data })
+  // let data = useSelector((state)=> { return state.postReducer.data })
 
 
 

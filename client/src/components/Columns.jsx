@@ -7,7 +7,7 @@ import { useSelector } from 'react-redux'
 
 function Columns( props ) {
 
-  const data = useSelector(({postReducer}) => postReducer )//dummyDB
+  const data = useSelector(({postReducer}) => postReducer.data )
 
   const [card, setCard] = useState([])
   const [page, setPage] = useState( 0 ) //PageRequest page 0부터 시작
