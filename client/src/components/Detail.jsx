@@ -129,49 +129,6 @@ function Detail({ card }) {
     }
   };
 
-  const handleDelCmt = e => { // 댓글 삭제
-    //console.log(e.target.value) //cmt.id
-
-    ApiService.delCmtId(Number(e.target.value))
-    .then((result) => {
-      console.log('댓글 삭제 완료')
-    })
-    .catch((err)=> {
-      console.log('delCmtId axios 에러!'+ err )
-    })
-
-  }
-
-  const handleCmtUpdate = id => { // 댓글 수정
-    console.log({ id: Number(id), content: cmt })
-
-    if(cmt ==null){
-      alert('내용을 입력해주세요!')
-    }else{
-      ApiService.putCmtUpdate({ id: Number(id), content: cmt })
-      .then((result) => {
-        console.log('댓글 수정 완료')
-        setCmt(null)// 값 입력 후 cmt state 비워주기
-      })
-      .catch((err)=> {
-        console.log('putCmtUpdate axios 에러!'+ err )
-      })
-    }
-  }
-
-  const handleCmtLike = id => { //댓글 좋아요
-    // console.log(id) //cmt.id
-    ApiService.putCmtLike(Number(id))
-    .then((result) => {
-      console.log('댓글 좋아요 완료')
-    })
-    .catch((err)=> {
-      console.log('putCmtLike axios 에러!'+ err )
-    })
-
-  }
-
-
   const handleDelCard = () => { // 카드 삭제
 
     ApiService.delCardId(card.id)

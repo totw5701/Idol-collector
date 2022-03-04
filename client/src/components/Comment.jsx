@@ -68,10 +68,10 @@ function Comment(props) {
   }
 
 // 댓글 삭제
-  const handleDelCmt = e => {
-    //console.log(e.target.value) //cmt.id
+  const handleDelCmt = id => {
+    //console.log(id) //cmt.id
 
-    ApiService.delCmtId(Number(e.target.value))
+    ApiService.delCmtId(Number(id))
     .then((result) => {
       console.log('댓글 삭제 완료')
     })
@@ -176,7 +176,7 @@ const nCmtToggle = () =>  setShowNCmt(prev => !prev )
   { /* 삭제수정 버튼 모달  */ }
       { isEditMenu && openEditor === cmt.id  &&(
       <EditMenu>
-        <EditBtn type='button' onClick = {() =>{ handleDelCmt(); toggleEdit(); }} value = { cmt.id } >삭제</EditBtn>
+        <EditBtn type='button' onClick = {() =>{ handleDelCmt(cmt.id); toggleEdit(); }} >삭제</EditBtn>
         <EditBtn type='button' onClick = {() => {
            setOpenEditor(cmt.id);
            setIsUpCmt(true);
