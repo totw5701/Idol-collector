@@ -16,9 +16,7 @@ import NComment from './NComment'
 
 function Comment(props) {
  //comments(card.comments 카드의 코멘트들 배열 props로 받아 올 예정), limit(댓글 slice 끝 수)
-
-  const member = useSelector ( ({memberReducer}) => { return memberReducer})
-
+  const member = useSelector ( ({memberReducer}) => { return memberReducer.userData }) //console.log(member)
   const comments = props.comments
 
   const limit = props.limit
@@ -133,7 +131,7 @@ const nCmtToggle = () =>  setShowNCmt(prev => !prev )
           />
         </Link>
         <CommentInfo>
-          <UserLink to="/member/: cmt[idx].authorId" >comments authorId {cmt.authorId}</UserLink>
+          <UserLink to= {`/member/${cmt.authorId}`}>{cmt.authorId}</UserLink>
           <CommentContent>comments content { cmt.content }</CommentContent>
         </CommentInfo>
       </CommentItem>
@@ -160,12 +158,7 @@ const nCmtToggle = () =>  setShowNCmt(prev => !prev )
               setOpenEditor(cmt.id);
             }}/>
           </li>
-          <li>
-            <MoreHorizIcon onClick = {() => {
-              setOpenEditor(cmt.id);
-              toggleEdit();
-            }}/>
-          </li>
+
   { /* 본인 댓글만 삭제수정가능 */ }
 
            { cmt.authorId === member.id &&(
@@ -239,7 +232,7 @@ const nCmtToggle = () =>  setShowNCmt(prev => !prev )
             </NCommentFormItem>
 
               <NoBtn type='button' onClick = {()=>{ setIsNCmt(false) } }>취소</NoBtn>
-              <YesBtn type = 'onSubmit'>완료</YesBtn>
+              <YesBtn type ='onSubmit'>완료</YesBtn>
             </ItemContainer>
           </NCommentForm>
 
@@ -286,7 +279,7 @@ const EditBtn = styled.button`
 
 
 const EditMenu = styled.div`
-  z-index: 5;
+  z-index: 2;
   width: 25%;
   height: 70px;
   margin: 0 0 0 auto;

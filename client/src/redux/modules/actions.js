@@ -3,6 +3,7 @@ import {
   REMOVE_LIKE,
   ADD_VIEW,
   GET_MEMBER,
+  GET_HOME,
   USER_CARD,
   USER_SCRAP,
   USER_INFO,
@@ -11,6 +12,32 @@ import {
 import ApiService from '../../ApiService';
 import ApiService2 from '../../ApiService2';
 import axios from 'axios';
+
+export const getHome = async () => {
+  let request = await ApiService.getHome().then((result => console.log(result)))
+  .catch(err => { console.log(err)})
+
+/*  return {
+    type: GET_HOME,
+    payload: request.data.data.cards
+  }  */
+  return {
+    type: GET_HOME,
+    payload:  [  {
+                 id: 25,
+                 authorNickName: 'nickname20',
+                 authorId: 'id20',
+                 title: '버논',
+                 content: '세븐틴 버논',
+                 createDate: '2021-12-21',
+                 views: 2000,
+                 likes: 200,
+                 storeFileName:
+                   'http://file2.instiz.net/data/cached_img/upload/2017/12/10/22/ea157bc4974420076209cce9df096bd9.jpg',
+               }]
+  }
+
+}
 
 export const addLike = id => {
   ApiService.putCardLike(id)
@@ -42,13 +69,13 @@ export const addView = id => {
 
 /* 회원 정보 가져오기 */
 export const getMember = async () => {
-  let home = await ApiService.getHome().catch(err => {
+  let request = await ApiService.getHome().catch(err => {
     console.log('getMember actions 에러! ' + err);
   });
 
   return {
     type: GET_MEMBER,
-    payload: home.data.data.member,
+    payload: request.data.data.member,
   };
 };
 
