@@ -2,16 +2,17 @@ import { combineReducers } from 'redux';
 import {
   ADD_LIKE,
   REMOVE_LIKE,
-  ADD_VIEW,
   GET_MEMBER,
   GET_HOME,
   USER_CARD,
   USER_SCRAP,
   USER_INFO,
   USER_PHOTO,
+  REMOVE_SCRAP,
+  ADD_SCRAP,
+  ADD_CARD
 } from './types';
 import dummyPost from '../../data/dummyPost';
-import axiosPost from '../../data/axiosPost';
 import dummyBundle from '../../data/dummyBundle';
 import dummyMember from '../../data/dummyMember';
 import dummyScrap from '../../data/dummyScrap';
@@ -19,7 +20,7 @@ import dummyUserCard from '../../data/dummyUserCard';
 // import dummyPhoto from '../../images'
 import ApiService from '../../ApiService';
 
-const post = [];
+const post = dummyPost;
 const bundle = dummyBundle;
 const member = dummyMember;
 const scrap = dummyScrap;
@@ -37,28 +38,21 @@ const photo = {};
 //   }
 // }
 
-/* post: mainPage 카드들 */
+/* post: 카드 */
 const postReducer = (state = post, action = { type: '' }) => {
-  let copy = [...state]
+  let copy = [...state];
 
   switch (action.type) {
     case GET_HOME:
-      state = [...dummyPost,...action.payload];
-      //state = action.payload;
-      return {...state, data: [...dummyPost,...action.payload] }
-      //return {...state, data: action.payload }
-    /* likes */
+      copy.push(action.payload);
+      return copy;
+
     case ADD_LIKE:
       copy[action.id].likes++;
       return copy;
 
-    case REMOVE_LIKE:
-      copy[action.id].likes--;
-      return copy;
-
-    /* views */
-    case ADD_VIEW:
-      copy[action.id].views++;
+    case ADD_CARD:
+      copy.push(action.payload);
       return copy;
 
     default:
@@ -88,6 +82,8 @@ const scrapReducer = (state = scrap, action = { type: '' }) => {
   switch (action.type) {
     case USER_SCRAP:
       return { ...state, userScrap: action.payload };
+    case ADD_SCRAP:
+      return {...state, userScrap: [...state,...action.payload]}
     default:
       return state;
   }

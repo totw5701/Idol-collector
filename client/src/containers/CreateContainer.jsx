@@ -6,6 +6,8 @@ import axios from 'axios'
 import Validator from '../Validator'
 import CreateModal from '../components/CreateModal'
 import { useHistory } from 'react-router-dom'
+import { useDispatch } from 'react-redux'
+import { addCard } from '../redux/modules/actions'
 
 //null검사, reg검사
 
@@ -25,6 +27,7 @@ function CreateContainer() {
   });
   const [tags, setTags] = useState([])
   const history = useHistory()
+  const dispatch = useDispatch()
 
 /* 유효성 검사 */
   const cardDB = [ { id: 'title', value: title },{id: 'description', value: description },{id: 'alt', value: alt },
@@ -53,14 +56,12 @@ function CreateContainer() {
 
       console.log(newCard.get('attachFile')) // newCard FormData는 출력안돼,get(key)로 값출력
 
-      ApiService.postCard(newCard)
-      .then( (result)=> {
-        setCardId(result.data.data);
-        console.log('card/create 성공');
+    addCard(newCard).then((result) => {
+        dispatch(result);
+        //console.log(result);
+        setCardId(result.payload.id);
         setShowModal(true);
-       })
-      .catch( (err) => { console.log(err+ 'card/create axios실패!') } )
-
+      })
 
   };
 
