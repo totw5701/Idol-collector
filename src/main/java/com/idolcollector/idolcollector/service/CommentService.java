@@ -10,7 +10,6 @@ import com.idolcollector.idolcollector.domain.like.Likes;
 import com.idolcollector.idolcollector.domain.like.LikesRepository;
 import com.idolcollector.idolcollector.domain.member.Member;
 import com.idolcollector.idolcollector.domain.member.MemberRepository;
-import com.idolcollector.idolcollector.domain.member.MemberRole;
 import com.idolcollector.idolcollector.domain.nestedcomment.NestedComment;
 import com.idolcollector.idolcollector.domain.nestedcomment.NestedCommentRepository;
 import com.idolcollector.idolcollector.domain.notice.Notice;
@@ -30,7 +29,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpSession;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -41,7 +39,6 @@ import java.util.Optional;
 public class CommentService {
 
     private final CommentRepository commentRepository;
-    private final NestedCommentRepository nestedCommentRepository;
     private final MemberRepository memberRepository;
     private final PostRepository postRepository;
     private final NoticeRepository noticeRepository;
@@ -95,9 +92,7 @@ public class CommentService {
                 .orElseThrow(CCommentNotFoundException::new);
 
         Member member = memberRepository.findById((Long) httpSession.getAttribute("loginMember")).get();
-        if (member.getId() != comment.getMember().getId()) {
-            throw new CAccessDeniedException();
-        }
+        if (member.getId() != comment.getMember().getId()) throw new CAccessDeniedException();
 
         return comment.update(form.getContent());
     }
@@ -109,9 +104,7 @@ public class CommentService {
                 .orElseThrow(CCommentNotFoundException::new);
 
         Member member = memberRepository.findById((Long) httpSession.getAttribute("loginMember")).get();
-        if (member.getId() != comment.getMember().getId()) {
-            throw new CAccessDeniedException();
-        }
+        if (member.getId() != comment.getMember().getId()) throw new CAccessDeniedException();
 
         commentRepository.delete(comment);
         return comment.getId();
@@ -135,16 +128,13 @@ public class CommentService {
         Likes likes = new Likes(comment.getId(), member, LikeType.COMMENT);
         likesRepository.save(likes);
 
-
         return comment.addLike();
     }
 
     public List<CommentResponseDto> findAllInPost(Long postId) {
 
         List<Comment> comments = commentRepository.findAllByPostId(postId);
-
         List<CommentResponseDto> list = new ArrayList<>();
-
         Member member = memberRepository.findById((Long) httpSession.getAttribute("loginMember")).get();
 
         for (Comment comment : comments) {
@@ -165,21 +155,6 @@ public class CommentService {
             if(didLike.isPresent()) dto.didLike();
 
             list.add(dto);
-        }
-
-        return list;
-    }
-
-
-    // 사용하지 않음.
-    public List<CommentResponseDto> findAllInMember(Long memberId) {
-
-        List<Comment> comments = commentRepository.findAllByMemberId(memberId);
-
-        List<CommentResponseDto> list = new ArrayList<>();
-
-        for (Comment comment : comments) {
-            list.add(new CommentResponseDto(comment));
         }
 
         return list;

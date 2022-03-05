@@ -1,6 +1,5 @@
 package com.idolcollector.idolcollector.config.auth;
 
-import com.idolcollector.idolcollector.domain.member.Member;
 import com.idolcollector.idolcollector.domain.member.MemberRole;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -43,7 +42,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         .successHandler(loginSuccessHandler)
                         .userInfoEndpoint()
                             .userService(customOAuth2UserService);
-
 
     }
 

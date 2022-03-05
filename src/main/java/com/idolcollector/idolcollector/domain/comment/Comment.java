@@ -69,5 +69,4 @@ public class Comment {
         return ++this.likes;
     }
 
-
 }
