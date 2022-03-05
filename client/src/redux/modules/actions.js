@@ -9,7 +9,8 @@ import {
   USER_PHOTO,
   REMOVE_SCRAP,
   ADD_SCRAP,
-  ADD_CARD
+  ADD_CARD,
+  REMOVE_CARD
 } from './types';
 import ApiService from '../../ApiService';
 import ApiService2 from '../../ApiService2';
@@ -28,8 +29,8 @@ export const getHome = async () => {
   }  */
   return {
     type: GET_HOME,
-    payload:  [  {
-                 id: 25,
+    payload: [ {
+                 id: 43,
                  authorNickName: 'nickname20',
                  authorId: 'id20',
                  title: '버논',
@@ -61,7 +62,7 @@ export const getMember = async () => {
 
   // 카드 생성
 export const addCard = async (newCard) => {
-  let request = await ApiService.postCard(newCard)
+  const request = await ApiService.postCard(newCard)
   .catch( (err) => { console.log(err+ 'card/create axios실패!') } )
 
   return {
@@ -86,19 +87,37 @@ export const addCard = async (newCard) => {
   }*/
 }
 
+  //카드 삭제
+export const removeCard = id => {
+
+  ApiService.delCardId(id)
+    .then((result) => {
+      console.log('카드 삭제완료')
+    })
+    .catch((err) => {
+      console.log('delCardId axios 에러! '+err )
+    })
+
+  return {
+    type: REMOVE_CARD,
+    id: id
+  }
+
+}
+
   // 좋아요 추가
 export const addLike = id => {
-/*  ApiService.putCardLike(id)
+  ApiService.putCardLike(id)
     .then(result => {
       console.log('카드 좋아요 완료');
     })
     .catch(err => {
       console.log('putCardLike axios 에러! ' + err);
-    });*/
+    });
 
   return {
     type: ADD_LIKE,
-    id: id,
+    id: id
   };
 };
 
@@ -106,7 +125,7 @@ export const addLike = id => {
 
   // 스크랩
 export const addScrap = async (id) => {
-  const request = await ApiService.putCardScrap(id)
+/*   const request = await ApiService.putCardScrap(id)
     .then((result) => {
        console.log('카드 스크랩 완료'+ result)
      })
@@ -114,7 +133,7 @@ export const addScrap = async (id) => {
        console.log('putCardScrap axios 에러! '+err )
      })
 
-/*  return {
+ return {
     type: ADD_SCRAP,
     payload: request.data.data
   }*/

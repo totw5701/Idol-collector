@@ -10,7 +10,8 @@ import {
   USER_PHOTO,
   REMOVE_SCRAP,
   ADD_SCRAP,
-  ADD_CARD
+  ADD_CARD,
+  REMOVE_CARD
 } from './types';
 import dummyPost from '../../data/dummyPost';
 import dummyBundle from '../../data/dummyBundle';
@@ -20,7 +21,7 @@ import dummyUserCard from '../../data/dummyUserCard';
 // import dummyPhoto from '../../images'
 import ApiService from '../../ApiService';
 
-const post = dummyPost;
+const post = dummyPost;//[];
 const bundle = dummyBundle;
 const member = dummyMember;
 const scrap = dummyScrap;
@@ -44,7 +45,7 @@ const postReducer = (state = post, action = { type: '' }) => {
 
   switch (action.type) {
     case GET_HOME:
-      copy.push(action.payload);
+      copy = [...copy,...action.payload];
       return copy;
 
     case ADD_LIKE:
@@ -53,6 +54,10 @@ const postReducer = (state = post, action = { type: '' }) => {
 
     case ADD_CARD:
       copy.push(action.payload);
+      return copy;
+
+    case REMOVE_CARD:
+      copy.splice(action.id,1);
       return copy;
 
     default:
