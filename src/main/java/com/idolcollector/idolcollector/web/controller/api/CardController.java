@@ -25,6 +25,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpSession;
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
@@ -33,7 +35,7 @@ import java.util.ArrayList;
 @Slf4j
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/card")
+@RequestMapping("/api/cards")
 public class CardController {
 
     private final PostService postService;
@@ -44,8 +46,8 @@ public class CardController {
     private final ResponseService responseService;
 
     @ApiOperation(value = "카드 생성", notes = "카드를 생성합니다.")
-    @PostMapping(value = "/create")
-    public CommonResult create(@ApiParam @Validated @ModelAttribute PostSaveRequestDto form) throws IOException {
+    @PostMapping()
+    public CommonResult<Long> create(@ApiParam @Validated @ModelAttribute PostSaveRequestDto form) throws IOException {
 
         Long id = postService.create(form);
 
@@ -53,15 +55,8 @@ public class CardController {
     }
 
     @ApiOperation(value = "카드 상세정보", notes = "카드 상세정보를 조회합니다.")
-    @ApiResponses({
-        @ApiResponse(
-                code = 200
-                , response = CardDetailClass.class
-                , message = "생성 성공"
-        )
-    })
     @GetMapping("/{id}")
-    public CommonResult detail(@PathVariable("id") Long id) {
+    public CommonResult<CardDetailPageDto> detail(@PathVariable("id") Long id) {
 
         PostResponseDto post = postService.detail(id);
 
@@ -72,8 +67,8 @@ public class CardController {
     }
 
     @ApiOperation(value = "카드 수정", notes = "카드를 수정합니다.")
-    @PutMapping("/update")
-    public CommonResult update(@ApiParam @Validated @RequestBody PostUpdateRequestDto form) {
+    @PatchMapping()
+    public CommonResult<Object> update(@ApiParam @Validated @RequestBody PostUpdateRequestDto form) {
 
         postService.update(form);
 
@@ -81,16 +76,16 @@ public class CardController {
     }
 
     @ApiOperation(value = "카드 삭제", notes = "카드를 삭제합니다.")
-    @DeleteMapping("/delete/{id}")
-    public CommonResult delete(@PathVariable("id") Long id) {
+    @DeleteMapping("/{id}")
+    public CommonResult<Object> delete(@PathVariable("id") Long id) {
 
         postService.delete(id);
         return responseService.getSuccessResult();
     }
 
     @ApiOperation(value = "카드 좋아요", notes = "이 카드를 좋아합니다.")
-    @PutMapping("/like/{id}")
-    public CommonResult addLike(@PathVariable("id") Long id) {
+    @PatchMapping("/like/{id}")
+    public CommonResult<Object> addLike(@PathVariable("id") Long id) {
 
         postService.like(id);
         return responseService.getSuccessResult();
@@ -98,15 +93,15 @@ public class CardController {
 
     @ApiOperation(value = "카드 스크랩", notes = "이 카드를 스크랩합니다.")
     @PutMapping("/scrap/{id}")
-    public CommonResult scrap(@PathVariable("id") Long id) {
+    public CommonResult<Long> scrap(@PathVariable("id") Long id) {
 
         Long scrapId = postService.scrap(id);
         return responseService.getResult(scrapId);
     }
 
     @ApiOperation(value = "스크랩 취소", notes = "스크랩을 취소합니다.")
-    @DeleteMapping("/unscrap/{id}")
-    public CommonResult unscrap(@PathVariable("id") Long id) {
+    @DeleteMapping("/scrap/{id}")
+    public CommonResult<Object> unscrap(@PathVariable("id") Long id) {
         postService.cancelScrap(id);
         return responseService.getSuccessResult();
     }
@@ -114,12 +109,9 @@ public class CardController {
     @ApiOperation(value = "이미지 파일 받아오기", notes = "이미지 파일을 받아옵니다.")
     @GetMapping("/image/{fileName}")
     public Resource imageFile(@PathVariable String fileName) throws MalformedURLException {
+
+        File file = new File(fileStore.getProfileFullPath(fileName));
+        if(!file.exists()) return null;
         return new UrlResource("file:" + fileStore.getFullPath(fileName));
     }
-
-    /**
-     * Swagger Response API docs 용 클래스
-     */
-
-    private class CardDetailClass extends CommonResult<CardDetailPageDto>{ }
 }

@@ -57,6 +57,8 @@ public class MemberService {
         Member member = memberRepository.findById((Long) httpSession.getAttribute("loginMember"))
                 .orElseThrow(() -> new CNotLoginedException());
 
+        fileStore.deleteProFile(member.getPicture());
+
         UploadFile uploadFile = fileStore.storeProFile(form.getProfile());
         String picture = url + uploadFile.getStoreFileName();
 
@@ -78,6 +80,7 @@ public class MemberService {
         return member;
     }
 
+
     @Transactional
     public List<NoticeResponseDto> noticeConfirm() {
         Member member = memberRepository.findById((Long) httpSession.getAttribute("loginMember"))
@@ -94,6 +97,7 @@ public class MemberService {
         return list;
     }
 
+
     @Transactional
     public Blame blame(BlameRequestDto form) {
         Member member = memberRepository.findById((Long) httpSession.getAttribute("loginMember"))
@@ -106,6 +110,7 @@ public class MemberService {
         Blame save = blameRepository.save(new Blame(member, targetMember, form.getTargetId(), form.getType(), form.getMessage()));
         return save;
     }
+
 
     public MemberDetailDto testMember() {
         Member member = new Member(MemberRole.USER, "SessionLoginGuy", "email", "1111", "pressLike", "dsfsdfdsfdsf", LocalDateTime.now());

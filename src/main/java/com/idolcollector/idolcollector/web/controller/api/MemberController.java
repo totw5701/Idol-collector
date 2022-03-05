@@ -1,7 +1,5 @@
 package com.idolcollector.idolcollector.web.controller.api;
 
-import com.idolcollector.idolcollector.domain.blame.Blame;
-import com.idolcollector.idolcollector.domain.notice.NoticeRepository;
 import com.idolcollector.idolcollector.file.FileStore;
 import com.idolcollector.idolcollector.service.BundleService;
 import com.idolcollector.idolcollector.service.MemberService;
@@ -29,6 +27,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.List;
@@ -38,7 +37,7 @@ import java.util.Optional;
 @Slf4j
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/member")
+@RequestMapping("/api/members")
 public class MemberController {
 
     private final MemberService memberService;
@@ -51,37 +50,23 @@ public class MemberController {
     private final ResponseService responseService;
 
     @ApiOperation(value = "알림 확인", notes = "알림은 확인과 동시에 삭제됩니다.")
-    @ApiResponses({
-            @ApiResponse(
-                    code = 200
-                    , response = NoticeConfirmClass.class
-                    , message = "생성 성공"
-            )
-    })
     @GetMapping("/notice")
-    public CommonResult noticeConfirm() {
+    public CommonResult<List<NoticeResponseDto>> noticeConfirm() {
         List<NoticeResponseDto> noticeResponseDtos = memberService.noticeConfirm();
         return responseService.getResult(noticeResponseDtos);
     }
 
     @ApiOperation(value = "신고", notes = "다른 회원을 신고합니다.")
     @PostMapping("/blame")
-    public CommonResult blame(@Validated @RequestBody BlameRequestDto form) {
+    public CommonResult<Object> blame(@Validated @RequestBody BlameRequestDto form) {
         memberService.blame(form);
         return responseService.getSuccessResult();
     }
 
 
     @ApiOperation(value = "회원 정보", notes = "타 회원 정보를 조회합니다. 회원 id를 넘겨 회원 정보와 카드, 카드집을 조회합니다. page를 넣어 다음 페이지를 조회합니다.")
-    @ApiResponses({
-            @ApiResponse(
-                    code = 200
-                    , response = MemberDetailClass.class
-                    , message = "생성 성공"
-            )
-    })
-    @GetMapping({"/member/{id}/{page}", "/member/{id}"})
-    public CommonResult memberInfo(@PathVariable(name = "page", required = false) Optional<Integer> page,
+    @GetMapping({"/{id}/{page}", "/{id}"})
+    public CommonResult<MemberDetailPageDto> memberInfo(@PathVariable(name = "page", required = false) Optional<Integer> page,
                                    @PathVariable(name = "id") Long memberId,
                                    HttpServletResponse res,
                                    HttpServletRequest req) throws ServletException, IOException {
@@ -105,15 +90,8 @@ public class MemberController {
 
 
     @ApiOperation(value = "내 정보", notes = "회원 정보를 조회합니다. 회원 id를 넘겨 회원 정보와 카드, 카드집을 조회합니다. page를 넣어 다음 페이지를 조회합니다.")
-    @ApiResponses({
-            @ApiResponse(
-                    code = 200
-                    , response = MyDetailClass.class
-                    , message = "생성 성공"
-            )
-    })
     @GetMapping({"/mypage/{page}", "/mypage"})
-    public CommonResult myInfo(@PathVariable(name = "page", required = false) Optional<Integer> page) {
+    public CommonResult<MyDetailPageDto> myInfo(@PathVariable(name = "page", required = false) Optional<Integer> page) {
 
         int pageNum = 0;
         if (page.isPresent()) pageNum = page.get();
@@ -132,8 +110,8 @@ public class MemberController {
     }
 
     @ApiOperation(value = "회원 정보수정", notes = "회원 정보를 수정합니다.")
-    @PutMapping("/mypage")
-    public CommonResult updateMember(@ApiParam @Validated @ModelAttribute MemberUpdateRequestDto form) throws IOException {
+    @PatchMapping("/mypage")
+    public CommonResult<Object> updateMember(@ApiParam @Validated @ModelAttribute MemberUpdateRequestDto form) throws IOException {
 
         memberService.update(form);
 
@@ -142,23 +120,9 @@ public class MemberController {
 
     @GetMapping("/image/{fileName}")
     public Resource imageFile(@PathVariable String fileName) throws MalformedURLException {
+
+        File file = new File(fileStore.getProfileFullPath(fileName));
+        if(!file.exists()) return null;
         return new UrlResource("file:" + fileStore.getProfileFullPath(fileName));
     }
-
-
-
-    /**
-     * Swagger Response API docs 용 클래스
-     */
-
-    private class NoticeConfirmClass extends CommonResult<List<NoticeResponseDto>> {
-    }
-
-    private class MemberDetailClass extends CommonResult<MemberDetailPageDto> {
-    }
-
-    private class MyDetailClass extends CommonResult<MyDetailPageDto> {
-    }
-
-
 }

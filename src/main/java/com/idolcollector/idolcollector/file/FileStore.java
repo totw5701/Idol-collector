@@ -66,5 +66,22 @@ public class FileStore {
         return new UploadFile(originalFilename, storeFileName);
     }
 
+    public void deleteFile(String storeFileName) {
 
+        File file = new File(getFullPath(storeFileName));
+        if(file.exists()) file.delete();
+    }
+
+    public void deleteProFile(String uri) {
+
+        String storeFileName = getProfileStoreFileName(uri);
+        File file = new File(getProfileFullPath(storeFileName));
+        if(file.exists()) file.delete();
+    }
+
+    public String getProfileStoreFileName(String uri) {
+
+        int idx = uri.lastIndexOf('/');
+        return uri.substring(idx + 1, uri.length());
+    }
 }
