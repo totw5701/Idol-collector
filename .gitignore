@@ -66,3 +66,4 @@ application-dev.properties
 application-prod.properties
 /src/test/resources/imgs/*.png
 /src/test/resources/imgs/profile/*.png
+.DS_Store
