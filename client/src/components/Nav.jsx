@@ -60,7 +60,7 @@ function Nav({ isLogin, setIsLogin }) {
             </Link>
           </li>
           <li onClick={backToLogin}>
-            <Link>
+            <Link to="/">
               <Button src={'로그아웃.png'}>로그아웃</Button>
             </Link>
           </li>
@@ -156,7 +156,7 @@ const LoginNickname = styled.div`
 `;
 
 const DropdownBar = styled.ul`
-  position: absolute;
+  position: fixed;
   right: 2rem;
   top: 4rem;
   padding: 0.4rem 1rem;
