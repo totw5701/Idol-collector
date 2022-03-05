@@ -54,9 +54,9 @@ function CreateContainer() {
       newCard.append('content', description )
       newCard.append('tags', tags )
 
-      console.log(newCard.get('attachFile')) // newCard FormData는 출력안돼,get(key)로 값출력
+      //console.log(newCard.get('attachFile')) // newCard FormData는 출력안돼,get(key)로 값출력
 
-    addCard(newCard).then((result) => {
+      addCard(newCard).then((result) => {
         dispatch(result);
         //console.log(result);
         setCardId(result.payload.id);
