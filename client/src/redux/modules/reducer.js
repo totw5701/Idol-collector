@@ -1,17 +1,26 @@
 import { combineReducers } from 'redux';
 import {
-  ADD_LIKE,
-  REMOVE_LIKE,
-  GET_MEMBER,
   GET_HOME,
+  GET_MEMBER,
   USER_CARD,
   USER_SCRAP,
   USER_INFO,
   USER_PHOTO,
-  REMOVE_SCRAP,
-  ADD_SCRAP,
   ADD_CARD,
-  REMOVE_CARD
+  REMOVE_CARD,
+  UPDATE_CARD,
+  ADD_LIKE,
+  ADD_SCRAP,
+  REMOVE_SCRAP,
+  ADD_CMT,
+  REMOVE_CMT,
+  UPDATE_CMT,
+  LIKE_CMT,
+  ADD_NCMT,
+  REMOVE_NCMT,
+  UPDATE_NCMT,
+  LIKE_NCMT,
+  GET_DETAIL
 } from './types';
 import dummyPost from '../../data/dummyPost';
 import dummyBundle from '../../data/dummyBundle';
@@ -39,17 +48,13 @@ const photo = {};
 //   }
 // }
 
-/* post: 카드 */
+/* post: 전체 카드 */
 const postReducer = (state = post, action = { type: '' }) => {
   let copy = [...state];
 
   switch (action.type) {
     case GET_HOME:
       copy = [...copy,...action.payload];
-      return copy;
-
-    case ADD_LIKE:
-      copy[action.id].likes++;
       return copy;
 
     case ADD_CARD:
@@ -60,10 +65,36 @@ const postReducer = (state = post, action = { type: '' }) => {
       copy.splice(action.id,1);
       return copy;
 
+    case ADD_CMT:
+      copy[action.payload.id].comments.push(action.payload);
+      return copy;
+
+    case REMOVE_CMT:
+      copy[action.payload.id].comments.splice(action.payload.postId,1);
+      return copy;
+
     default:
       return state;
   }
 };
+
+
+/* Detail: 단일 카드  */
+
+const cardReducer = (state = {} , action = { type: '' }) => {
+  let copy = {...state}
+
+  switch(action.type){
+    case GET_DETAIL:
+      copy = {...action.payload};
+      return copy;
+    case ADD_LIKE:
+      copy.likes++;
+      return copy;
+    default:
+      return copy;
+  }
+}
 
 /* bundle: mypage 카드집 */
 const bundleReducer = (state = bundle, action = { type: '' }) => {
@@ -120,6 +151,7 @@ const reducer = combineReducers({
   memberReducer,
   userCardReducer,
   scrapReducer,
+  cardReducer
 });
 
 export default reducer;
