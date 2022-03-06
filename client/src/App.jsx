@@ -27,12 +27,12 @@ function App() {
     getHome().then((result) => {
       dispatch(result)
     })
-  },[isLogin])
+  },[])
 
 
 /*  post */
-   let data = useSelector(({postReducer})=> { return postReducer.data })
-  // let data = useSelector((state)=> { return state.postReducer.data })
+   let data = useSelector(({postReducer})=> { return postReducer })
+  // let data = useSelector((state)=> { return state.postReducer })
 
 
 
