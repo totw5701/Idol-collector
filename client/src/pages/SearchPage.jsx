@@ -11,20 +11,17 @@ import { css } from 'styled-components';
 
 function SearchPage() {
 
-  const keywords = useParams()
+  const { keywords } = useParams()
+  const keyList = keywords.split(',')
+  const param = { params: { keywords: keywords } }
 
-  const param = { params: { keywords: keywords} }
-
-  let [axiosSearch,setAxiosSearch] = useState()
-
-    //console.log(keywords)
+  let [axiosSearch,setAxiosSearch] = useState([])
 
   useEffect(() => { // 이거 안해도 columns 에서 page별 axios해오자냐.. 필요할까? 얜 post처럼 영구적인 데이터도 아니고,,
     //axios.default.paramsSerializer = params => qs.stringify(params)
-
     ApiService.getSearch( param )
     .then((result) => {
-      console.log('검색완료')
+      //console.log(result)
       setAxiosSearch(result.data.data.cards)
     })
     .catch((err) => {
@@ -37,11 +34,11 @@ function SearchPage() {
   return (
     <>
       <StyledBanner>
-        <Banner>'{keywords.keywords}'로 검색한 결과입니다</Banner>
+        <Banner>'{keyList[0]}'의 검색 결과입니다</Banner>
         <SearchBar />
       </StyledBanner>
       <Line/>
-      <Columns pageName = 'search' param = { param } />
+      <Columns pageName = 'search' param = { param } axiosSearch = { axiosSearch } />
     </>
   );
 }

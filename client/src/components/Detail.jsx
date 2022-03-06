@@ -10,14 +10,17 @@ import ApiService from '../ApiService'
 import Comment from './Comment'
 import Update from './Update'
 import Validator from '../Validator'
-import { addLike } from '../redux/modules/actions'
-
-function Detail({ card }) {
+import {
+  addLike,
+  removeCard,
+  addCmt
+   } from '../redux/modules/actions'
+import { ADD_CMT } from '../redux/modules/types'
+function Detail({card}){
 
   const member = useSelector ( ({memberReducer}) => { return memberReducer.userData })
-
+  //console.log(card)
   //console.log(member)
-
   const history = useHistory();
   const [isShow, setIsShow] = useState(false) // 댓글 보기 스위치
   const [isNCmt, setIsNCmt] = useState(false) // 댓글 작성칸 스위치
@@ -28,7 +31,7 @@ function Detail({ card }) {
   const [isUpdate, setIsUpdate] = useState(false) // 카드 수정 창 스위치
 
   const [limit,setLimit] = useState(1) // 댓글 배열 slice 끝값 설정
-
+  const [likeCnt,setLikeCnt] = useState(false) //좋아요 회원당 1번만 가능
   const limitEnd = card.comments != null? card.comments.length : 0
 
 
@@ -120,76 +123,30 @@ function Detail({ card }) {
     if(inputRef.current.value == null || inputRef.current.value === ''){
       alert('내용을 입력해주세요!')
     }else{
-      ApiService.postCmt( { content: inputRef.current.value, postId: card.id } )
-      .then((result) => {
-        console.log('댓글 달기 성공')
-      }).catch((err) => {
-        console.log('postCmt axios 에러!'+ err )
+      addCmt(inputRef.current.value, card.id).then((result) => {
+        dispatch(result)
       })
+
     }
   };
 
-  const handleDelCmt = e => { // 댓글 삭제
-    //console.log(e.target.value) //cmt.id
-
-    ApiService.delCmtId(Number(e.target.value))
-    .then((result) => {
-      console.log('댓글 삭제 완료')
-    })
-    .catch((err)=> {
-      console.log('delCmtId axios 에러!'+ err )
-    })
-
-  }
-
-  const handleCmtUpdate = id => { // 댓글 수정
-    console.log({ id: Number(id), content: cmt })
-
-    if(cmt ==null){
-      alert('내용을 입력해주세요!')
-    }else{
-      ApiService.putCmtUpdate({ id: Number(id), content: cmt })
-      .then((result) => {
-        console.log('댓글 수정 완료')
-        setCmt(null)// 값 입력 후 cmt state 비워주기
-      })
-      .catch((err)=> {
-        console.log('putCmtUpdate axios 에러!'+ err )
-      })
-    }
-  }
-
-  const handleCmtLike = id => { //댓글 좋아요
-    // console.log(id) //cmt.id
-    ApiService.putCmtLike(Number(id))
-    .then((result) => {
-      console.log('댓글 좋아요 완료')
-    })
-    .catch((err)=> {
-      console.log('putCmtLike axios 에러!'+ err )
-    })
-
-  }
-
-
   const handleDelCard = () => { // 카드 삭제
+    dispatch(removeCard(card.id));
+    handlePage();
 
-    ApiService.delCardId(card.id)
-    .then((result) => {
-      console.log('카드 삭제완료')
-      handlePage()
-    })
-    .catch((err) => {
-      console.log('delCardId axios 에러! '+err )
-    })
   }
 
   const handleDownload = () => { // 카드 이미지 다운로드
-    console.log(card)
-    console.log(card.storeFileName)
-    ApiService.getCardImage(card.storeFileName)
+    //console.log(card)
+    //console.log(card.storeFileName)
+    ApiService.getCardImage('card.storeFileName')
     .then((result) => {
-      console.log('카드 이미지 다운로드 완료')
+      console.log(result.data.data)//카드 다운로드 링크
+      const link = document.createElement('a');
+      document.body.appendChild(link);
+      link.href = result.data.data;
+      link.click((e)=>{e.preventDefault()});// 해당 링크 자동 클릭 후 다운로드 진행
+      link.remove();// 다운로드 후 링크 삭제
     })
     .catch((err) => {
       console.log('getCardImage axios 실패! '+err )
@@ -199,7 +156,10 @@ function Detail({ card }) {
 /* 좋아요 */
 
   const handleAddLike = () => {
-      dispatch(addLike(card.id))
+      if(!likeCnt){
+        dispatch(addLike(card.id));
+        //setLikeCnt(true); 회원당 1번만 좋아요 누를 수 있도록 기능 추가
+      }
   }
 
 
@@ -212,6 +172,7 @@ function Detail({ card }) {
     .catch((err) => {
       console.log('putCardScrap axios 에러! '+err )
     })
+    //addScrap(card.id).then((result) => { dispatch(result) })
     setDidScrap(true)
   }
 
@@ -341,7 +302,7 @@ function Detail({ card }) {
 
             {!isShow && card.comments.length> 0 &&(
             <>
-              <Comment comments = { card.comments } limit = { limit }/>
+              <Comment comments = { card.comments } cardId = {card.id} limit = { limit }/>
 
               { limit < card.comments.length
                 ? <button onClick={ cmtPage }> 댓글 더보기 </button>

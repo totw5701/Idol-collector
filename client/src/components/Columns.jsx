@@ -7,14 +7,15 @@ import { useSelector } from 'react-redux'
 
 function Columns( props ) {
 
-  const data = useSelector(({postReducer}) => postReducer.data )
+  const data = useSelector(({postReducer}) => postReducer )
 
-  const [card, setCard] = useState([])
-  const [page, setPage] = useState( 0 ) //PageRequest page 0부터 시작
+  const [card, setCard] = useState([...data])//postReducer로 받은 데이터가 나오도록
+  const [page, setPage] = useState( 0 ) //PageRequest page  0은 그냥 api/home
   const [loading,setLoading] = useState( false )
 
   const [last,inView] = useInView()//ref속성값으로 last 들어가면 inView가 true로 변함
 
+  //useEffect(()=>{ console.log(card) },[card])
 /*   api/home/page: 페이지가 바뀔 때마다 해당 page data받기 */
   const getData = useCallback(() => {
     setLoading(true)
@@ -23,8 +24,7 @@ function Columns( props ) {
       ApiService.getHomePage(page)
       .then((result) => {
         //console.log(result)
-        setCard([...data,...result.data.data.cards])//dummyDB
-        //setCard([...card,...result.data.data.cards])
+        setCard([...card,...result.data.data.cards])
         setLoading(false)
       })
       .catch((err) => {
@@ -35,16 +35,15 @@ function Columns( props ) {
 
     }else if( props.pageName === 'search' ){ // search 페이지
 
+      setCard([...props.axiosSearch])
       ApiService.getSearchPage(page, props.param )
       .then((result) => {
         //console.log(result)
-        setCard([...data,...result.data.data.cards])//dummyDB
-        //setCard([...card,...result.data.data.cards])
-        setLoading(false)
+        setCard([...props.axiosSearch,...result.data.data.cards])
+        setLoading(false);
       })
       .catch((err) => {
         console.log('getSearchPage axios 에러! '+err )
-        setCard(data)
         setLoading(false)
       })
 

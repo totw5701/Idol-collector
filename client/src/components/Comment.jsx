@@ -11,13 +11,20 @@ import Columns from './Columns';
 import { useSelector, useDispatch } from 'react-redux';
 import ApiService from '../ApiService'
 import NComment from './NComment'
+import
+{ removeCmt,
+  updateCmt,
+  likeCmt
 
+} from '../redux/modules/actions'
 
 
 function Comment(props) {
  //comments(card.comments 카드의 코멘트들 배열 props로 받아 올 예정), limit(댓글 slice 끝 수)
   const member = useSelector ( ({memberReducer}) => { return memberReducer.userData }) //console.log(member)
   const comments = props.comments
+  const cardId = props.cardId
+  const dispatch = useDispatch()
 
   const limit = props.limit
   const [isShow, setIsShow] = useState(false) // 댓글 보기 스위치
@@ -61,6 +68,7 @@ function Comment(props) {
       .then((result) => {
          console.log('대댓글 등록 완료')
          setCmtValue(null)// 값 입력 후 cmt state 비워주기
+
       })
       .catch((err) => {console.log('postNCmt axios 에러! '+err )})
     }
@@ -68,33 +76,22 @@ function Comment(props) {
   }
 
 // 댓글 삭제
-  const handleDelCmt = e => {
-    //console.log(e.target.value) //cmt.id
-
-    ApiService.delCmtId(Number(e.target.value))
-    .then((result) => {
-      console.log('댓글 삭제 완료')
+  const handleDelCmt = id => {
+    //console.log(id) //cmt.id
+    removeCmt(cardId,id).then((result) => {
+      dispatch(result);
     })
-    .catch((err)=> {
-      console.log('delCmtId axios 에러!'+ err )
-    })
-
   }
 
 // 댓글 수정
   const handleCmtUpdate = id => {
-    console.log({ id: Number(id), content: cmtValue })
-
+    //console.log({ id: Number(id), content: cmtValue })
     if(cmtValue ==null){
       alert('내용을 입력해주세요!')
     }else{
-      ApiService.putCmtUpdate({ id: Number(id), content: cmtValue })
-      .then((result) => {
-        console.log('댓글 수정 완료')
-        setCmtValue(null)// 값 입력 후 cmt state 비워주기
-      })
-      .catch((err)=> {
-        console.log('putCmtUpdate axios 에러!'+ err )
+      setCmtValue(null)// 값 입력 후 cmt state 비워주기
+      updateCmt(cardId,id,cmtValue).then((result) => {
+        dispatch(result);
       })
     }
   }
@@ -102,13 +99,7 @@ function Comment(props) {
 //댓글 좋아요
   const handleCmtLike = id => {
     // console.log(id) //cmt.id
-    ApiService.putCmtLike(Number(id))
-    .then((result) => {
-      console.log('댓글 좋아요 완료')
-    })
-    .catch((err)=> {
-      console.log('putCmtLike axios 에러!'+ err )
-    })
+    likeCmt(cardId,id).then((result) => dispatch(result))
 
   }
 
@@ -132,7 +123,7 @@ const nCmtToggle = () =>  setShowNCmt(prev => !prev )
         </Link>
         <CommentInfo>
           <UserLink to= {`/member/${cmt.authorId}`}>{cmt.authorId}</UserLink>
-          <CommentContent>comments content { cmt.content }</CommentContent>
+          <CommentContent> { cmt.content }</CommentContent>
         </CommentInfo>
       </CommentItem>
 
@@ -176,7 +167,7 @@ const nCmtToggle = () =>  setShowNCmt(prev => !prev )
   { /* 삭제수정 버튼 모달  */ }
       { isEditMenu && openEditor === cmt.id  &&(
       <EditMenu>
-        <EditBtn type='button' onClick = {() =>{ handleDelCmt(); toggleEdit(); }} value = { cmt.id } >삭제</EditBtn>
+        <EditBtn type='button' onClick = {() =>{ handleDelCmt(cmt.id); toggleEdit(); }} >삭제</EditBtn>
         <EditBtn type='button' onClick = {() => {
            setOpenEditor(cmt.id);
            setIsUpCmt(true);

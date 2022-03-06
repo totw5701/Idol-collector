@@ -6,7 +6,7 @@ import ApiService from '../ApiService'
 
 function SearchBar() {
   const [isFixed, setIsFixed] = useState(true);
-  const [searchValue, setSearchValue] = useState();
+  const [searchValue, setSearchValue] = useState([]);
   const [keywords, setKeywords] = useState([searchValue]);
   const history = useHistory()
 
@@ -31,7 +31,7 @@ function SearchBar() {
   const handleSearch = e => {
     e.preventDefault()
     console.log(searchValue)
-    let keywords = [searchValue]
+    let keywords = [...searchValue]
     if(searchValue != null && searchValue != ''){
       if(searchValue.includes(' ')){
         keywords = [searchValue,...searchValue.split(' ')]

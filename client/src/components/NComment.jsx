@@ -10,14 +10,23 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import Columns from './Columns';
 import { useSelector, useDispatch } from 'react-redux';
 import ApiService from '../ApiService'
+import
+{ removeNCmt,
+  updateNCmt,
+  likeNCmt
+} from '../redux/modules/actions'
 
 function NComment(props) { // cmt.nestedComments 대댓글 리스트, nCmtLimit slice 끝값 를 받아옴
 
   const nestedComments = props.nestedComments
   const nCmtLimit = props.nCmtLimit
+  const cardId = props.cardId
+  const cmtId = props.cmtId
+  const member = useSelector ( ({memberReducer}) => { return memberReducer.userData })
+
+  const dispatch = useDispatch()
 
   //console.log(nestedComments)
-   const member = useSelector ( ({memberReducer}) => { return memberReducer.userData })
   const [isShow, setIsShow] = useState(false) // 댓글 보기 스위치
   const [isNCmt, setIsNCmt] = useState(false) // 댓글 작성칸 스위치
   const [isUpNCmt, setIsUpNCmt] = useState(false) // 대댓글 수정창 스위치
@@ -33,65 +42,32 @@ function NComment(props) { // cmt.nestedComments 대댓글 리스트, nCmtLimit 
   const toggleReNCmt = () => setIsReNCmt(prev => !prev)
   const toggleEdit = () => setIsEditMenu(prev => !prev)
 
-// 대댓글 등록
-  const handleNCmtSubmit = id => {
-
-    setOpenEditor('')
-
-    let nComment = {  commentId: id ,content: cmtValue }
-    //console.log(nComment)
-
-    if(cmtValue ==null){
-      alert('내용을 입력해주세요!')
-    }else{
-      ApiService.postNCmt({ commentId: Number(id) ,content: cmtValue })
-      .then((result) => {
-         console.log('대댓글 등록 완료')
-         setCmtValue(null)// 값 입력 후 cmt state 비워주기
-      })
-      .catch((err) => {console.log('postNCmt axios 에러! '+err )})
-    }
-  }
-
 // 대댓글 삭제
   const handleDelNCmt = id => {
     //console.log(id) //nCmt.id
-
-    ApiService.delNCmtId(Number(id))
-    .then((result) => {
-      console.log('대댓글 삭제 완료')
-    })
-    .catch((err)=> {
-      console.log('delNCmtId axios 에러!'+ err )
+    removeNCmt(cardId,cmtId,id).then((result) => {
+      dispatch(result)
     })
   }
 
 // 대댓글 수정
   const handleNCmtUpdate = id => {
-    //console.log({ id: Number(id), content: cmt })
+    //console.log({ id: Number(id), content: cmtValue })
     if(id == null || id === '' ){
       alert('내용을 입력해주세요!')
     }else{
-      ApiService.putNCmtUpdate({ id: Number(id), content: cmtValue })
-      .then((result) => {
-        console.log('대댓글 수정 완료')
-        setCmtValue(null)
+      setCmtValue(null)
+      updateNCmt(cardId,cmtId,{ id: Number(id), content: cmtValue }).then((result) => {
+        dispatch(result)
       })
-      .catch((err)=> {
-        console.log('putNCmtUpdate axios 에러!'+ err )
-      })
+
     }
   }
 // 대댓글 좋아요
   const handleNCmtLike = id => {
     //console.log(id) //nCmt.id
-
-    ApiService.putNCmtLike(Number(id))
-    .then((result) => {
-      console.log('대댓글 좋아요 완료')
-    })
-    .catch((err)=> {
-      console.log('putNCmtLike axios 에러!'+ err )
+    likeNCmt(cardId,cmtId,id).then((result)=>{
+      dispatch(result)
     })
 
   }
@@ -108,7 +84,7 @@ function NComment(props) { // cmt.nestedComments 대댓글 리스트, nCmtLimit 
       </Link>
       <CommentInfo>
         <UserLink to="/member/: card.comments[0].authorId" >comments authorId {nCmt.authorId}</UserLink>
-        <CommentContent>comments content {nCmt.content}</CommentContent>
+        <CommentContent>{nCmt.content}</CommentContent>
       </CommentInfo>
       </NCommentItem>
 
@@ -120,10 +96,8 @@ function NComment(props) { // cmt.nestedComments 대댓글 리스트, nCmtLimit 
       }
       <Menu>
         <li>
+          {nCmt.likes}
           <FavoriteIcon onClick = {() => { handleNCmtLike(nCmt.id) }} />
-        </li>
-        <li>
-          <ChatBubbleIcon onClick = { () => { toggleReNCmt(); setOpenEditor(nCmt.id) }} />
         </li>
 
   { /* 본인인 경우만 삭제,수정  */ }
@@ -149,8 +123,6 @@ function NComment(props) { // cmt.nestedComments 대댓글 리스트, nCmtLimit 
         </EditMenu>
       )}
 
-
-
       { isUpNCmt && openEditor === nCmt.id && (
       <ItemContainer>
         <NCommentItem as="div">
@@ -168,29 +140,6 @@ function NComment(props) { // cmt.nestedComments 대댓글 리스트, nCmtLimit 
         </NCommentItem>
           <NoBtn type = 'button' onClick = {()=>{ setIsUpNCmt(false); setOpenEditor('') }}>취소</NoBtn>
           <YesBtn type = 'button' onClick = {() => { setIsUpNCmt(false); handleNCmtUpdate(nCmt.id); setOpenEditor('') }}>완료</YesBtn>
-      </ItemContainer>
-      )}
-
-  { /* 대댓글에 대댓글 달기 */ }
-
-      { isReNCmt && openEditor === nCmt.id && (
-
-      <ItemContainer>
-        <NCommentItem as="div">
-          <Link to="마이페이지path">
-            <img
-            src="/images/업로더-사진.png"
-            alt={`아이디 이미지`}
-            />
-          </Link>
-          <CommentText
-            type = 'text'
-            placeholder = '대댓글 추가'
-            onChange = {(e) => { setCmtValue(e.target.value) }}
-          />
-        </NCommentItem>
-          <NoBtn type = 'button' onClick = {()=>{ setIsReNCmt(false); setOpenEditor('') }}>취소</NoBtn>
-          <YesBtn type = 'button' onClick = {() => { handleNCmtSubmit(nCmt.id); setOpenEditor('') }}>완료</YesBtn>
       </ItemContainer>
       )}
 
