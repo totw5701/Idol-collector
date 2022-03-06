@@ -61,16 +61,31 @@ const postReducer = (state = post, action = { type: '' }) => {
       copy.push(action.payload);
       return copy;
 
+    case ADD_LIKE:
+      copy.find(c => c.id === action.id ).likes++;
+      return copy;
+
     case REMOVE_CARD:
       copy.splice(action.id,1);
       return copy;
-
+// cmt,ncmt 모두 post 내의 card에서 접근해야 됨 => dispatch 할 때 card의 id를 cardId로 받아오기
     case ADD_CMT:
-      copy[action.payload.id].comments.push(action.payload);
+      copy.find(c=> c.id === action.cardId).comments.push(action.payload);
       return copy;
 
     case REMOVE_CMT:
-      copy[action.payload.id].comments.splice(action.payload.postId,1);
+      let card = copy.find(c=> c.id === action.cardId );
+      copy.find(c=> c.id === action.cardId ).comments = card.comments.filter(cmt => cmt.id !== action.cmtId);//댓글, 대댓글 둘다 id가 속성명
+      return copy;
+
+    case UPDATE_CMT:
+      let idx = copy.find(c=> c.id === action.cardId ).comments.findIndex(cmt=> cmt.id === action.payload.id )
+      copy.find(c=> c.id === action.cardId ).comments[idx] = action.payload;
+      return copy;
+
+    case LIKE_CMT:
+      copy.find(c=> c.id === action.cardId ).comments.find(cmt=> cmt.id === action.cmtId).likes++;
+      console.log(copy.find(c=> c.id === action.cardId ).comments);
       return copy;
 
     default:
@@ -87,10 +102,12 @@ const cardReducer = (state = {} , action = { type: '' }) => {
   switch(action.type){
     case GET_DETAIL:
       copy = {...action.payload};
+      console.log(copy)
+      console.log('ddfs')
       return copy;
-    case ADD_LIKE:
+/*    case ADD_LIKE:
       copy.likes++;
-      return copy;
+      return copy;*/
     default:
       return copy;
   }

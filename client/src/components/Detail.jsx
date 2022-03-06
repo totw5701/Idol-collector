@@ -13,13 +13,13 @@ import Validator from '../Validator'
 import {
   addLike,
   removeCard,
+  addCmt
    } from '../redux/modules/actions'
 import { ADD_CMT } from '../redux/modules/types'
-function Detail(){
+function Detail({card}){
 
   const member = useSelector ( ({memberReducer}) => { return memberReducer.userData })
-  const card = useSelector ( ({cardReducer}) => { return cardReducer })
-
+  //console.log(card)
   //console.log(member)
   const history = useHistory();
   const [isShow, setIsShow] = useState(false) // 댓글 보기 스위치
@@ -31,7 +31,7 @@ function Detail(){
   const [isUpdate, setIsUpdate] = useState(false) // 카드 수정 창 스위치
 
   const [limit,setLimit] = useState(1) // 댓글 배열 slice 끝값 설정
-
+  const [likeCnt,setLikeCnt] = useState(false) //좋아요 회원당 1번만 가능
   const limitEnd = card.comments != null? card.comments.length : 0
 
 
@@ -123,13 +123,10 @@ function Detail(){
     if(inputRef.current.value == null || inputRef.current.value === ''){
       alert('내용을 입력해주세요!')
     }else{
+      addCmt(inputRef.current.value, card.id).then((result) => {
+        dispatch(result)
+      })
 
-/*    ApiService.postCmt( { content: inputRef.current.value, postId: card.id } )
-      .then((result) => {
-        console.log('댓글 달기 성공')
-      }).catch((err) => {
-        console.log('postCmt axios 에러!'+ err )
-      }) */
     }
   };
 
@@ -159,7 +156,10 @@ function Detail(){
 /* 좋아요 */
 
   const handleAddLike = () => {
-      dispatch(addLike(card.id));
+      if(!likeCnt){
+        dispatch(addLike(card.id));
+        //setLikeCnt(true); 회원당 1번만 좋아요 누를 수 있도록 기능 추가
+      }
   }
 
 
@@ -302,7 +302,7 @@ function Detail(){
 
             {!isShow && card.comments.length> 0 &&(
             <>
-              <Comment comments = { card.comments } limit = { limit }/>
+              <Comment comments = { card.comments } cardId = {card.id} limit = { limit }/>
 
               { limit < card.comments.length
                 ? <button onClick={ cmtPage }> 댓글 더보기 </button>

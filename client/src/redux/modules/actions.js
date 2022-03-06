@@ -1,16 +1,24 @@
 import {
-  ADD_LIKE,
-  REMOVE_LIKE,
-  GET_MEMBER,
   GET_HOME,
+  GET_MEMBER,
   USER_CARD,
   USER_SCRAP,
   USER_INFO,
   USER_PHOTO,
-  REMOVE_SCRAP,
-  ADD_SCRAP,
   ADD_CARD,
-  REMOVE_CARD
+  REMOVE_CARD,
+  UPDATE_CARD,
+  ADD_LIKE,
+  ADD_SCRAP,
+  REMOVE_SCRAP,
+  ADD_CMT,
+  REMOVE_CMT,
+  UPDATE_CMT,
+  LIKE_CMT,
+  ADD_NCMT,
+  REMOVE_NCMT,
+  UPDATE_NCMT,
+  LIKE_NCMT
 } from './types';
 import ApiService from '../../ApiService';
 import ApiService2 from '../../ApiService2';
@@ -60,7 +68,7 @@ export const getMember = async () => {
 
 /* 카드 */
 
-  // 카드 생성
+// 카드 생성
 export const addCard = async (newCard) => {
   const request = await ApiService.postCard(newCard)
   .catch( (err) => { console.log(err+ 'card/create axios실패!') } )
@@ -87,7 +95,7 @@ export const addCard = async (newCard) => {
   }*/
 }
 
-  //카드 삭제
+//카드 삭제
 export const removeCard = id => {
 
   ApiService.delCardId(id)
@@ -105,7 +113,10 @@ export const removeCard = id => {
 
 }
 
-  // 좋아요 추가
+// 카드 수정
+
+
+// 카드 좋아요
 export const addLike = id => {
   ApiService.putCardLike(id)
     .then(result => {
@@ -123,13 +134,10 @@ export const addLike = id => {
 
 
 
-  // 스크랩
+// 스크랩
 export const addScrap = async (id) => {
 /*   const request = await ApiService.putCardScrap(id)
-    .then((result) => {
-       console.log('카드 스크랩 완료'+ result)
-     })
-     .catch((err) => {
+    .catch((err) => {
        console.log('putCardScrap axios 에러! '+err )
      })
 
@@ -138,7 +146,7 @@ export const addScrap = async (id) => {
     payload: request.data.data
   }*/
 
-  return {
+  return { //더미
     type: ADD_SCRAP,
     payload: [  {
                  authorId: 3,
@@ -164,19 +172,79 @@ export const addScrap = async (id) => {
 
 }
 
-  // 스크랩 취소
+// 스크랩 취소
 export const removeScrap = async (id) => {
   const request = await ApiService.delCardUnscrap(id)
-    .then((result) => {
-      console.log('카드 스크랩 취소 완료'+result)
-    })
     .catch((err) => {
       console.log('delCardUnscrap axios 에러! '+err )
     })
+
   return {
-    type: REMOVE_SCRAP
+    type: REMOVE_SCRAP,
+    payload: request.data.data //아마 스크랩한 카드의 id일듯
   }
 }
+
+// 카드 수정
+
+/* 댓글 */
+
+// 댓글 달기
+export const addCmt = async (content,cardId) => {
+  const request = await ApiService.postCmt( { content: content, postId: cardId } )
+    .catch((err) => {
+        console.log('postCmt axios 에러!'+ err )
+    })
+
+  return {
+    type: ADD_CMT,
+    cardId: cardId,
+    payload: {id: 2, authorId: 2, content: '더미' }//request.data.data
+  }
+}
+// 댓글 삭제
+export const removeCmt = async (cardId,cmtId) => {
+  const request = ApiService.delCmtId(Number(cmtId))
+  .catch((err)=> {
+    console.log('delCmtId axios 에러!'+ err )
+  })
+
+  return {
+    type: REMOVE_CMT,
+    cardId: cardId,
+    cmtId: cmtId
+  }
+}
+// 댓글 수정
+export const updateCmt = async (cardId, cmtId, content) => {
+
+  const request = ApiService.putCmtUpdate({ id: Number(cmtId), content: content })
+    .catch((err)=> {
+      console.log('putCmtUpdate axios 에러!'+ err )
+    })
+
+  return {
+    type: UPDATE_CMT,
+    cardId: cardId,
+    payload:{id: 2, authorId: 2, content: '더미수정' } //request.data.data
+  }
+}
+
+// 댓글 좋아요
+export const likeCmt = async (cardId, cmtId) => {
+
+  const request = ApiService.putCmtLike(Number(cmtId))
+    .catch((err)=> {
+      console.log('putCmtLike axios 에러!'+ err )
+    })
+
+  return {
+    type: LIKE_CMT,
+    cardId: cardId,
+    cmtId: cmtId
+  }
+}
+
 
 // 마이페이지 내 유저가 생성한 카드 보이기
 export const getUserCard = async () => {
