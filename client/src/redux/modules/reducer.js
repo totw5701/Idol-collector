@@ -116,7 +116,6 @@ const postReducer = (state = post, action = { type: '' }) => {
       copy.find(c=> c.id === action.cardId ).comments.find(cmt=> cmt.id === action.cmtId)
       .nestedComments.find(nCmt => nCmt.id === action.nCmtId).likes++;
 
-      console.log(copy.find(c=> c.id === action.cardId ).comments.find(cmt=> cmt.id === action.cmtId).nestedComments);
       return copy;
 
     default:
@@ -124,25 +123,6 @@ const postReducer = (state = post, action = { type: '' }) => {
   }
 };
 
-
-/* Detail: 단일 카드  */
-
-const cardReducer = (state = {} , action = { type: '' }) => {
-  let copy = {...state}
-
-  switch(action.type){
-    case GET_DETAIL:
-      copy = {...action.payload};
-      console.log(copy)
-      console.log('ddfs')
-      return copy;
-/*    case ADD_LIKE:
-      copy.likes++;
-      return copy;*/
-    default:
-      return copy;
-  }
-}
 
 /* bundle: mypage 카드집 */
 const bundleReducer = (state = bundle, action = { type: '' }) => {
@@ -198,8 +178,7 @@ const reducer = combineReducers({
   bundleReducer,
   memberReducer,
   userCardReducer,
-  scrapReducer,
-  cardReducer
+  scrapReducer
 });
 
 export default reducer;
