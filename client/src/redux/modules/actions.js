@@ -114,7 +114,32 @@ export const removeCard = id => {
 }
 
 // 카드 수정
+export const updateCard = async (title,content,postId,tags) => {
+  const request = ApiService.putCardUpdate(
+    {
+      title: title,
+      content: content,
+      postId: Number(postId),
+      tags: tags
+    }
+  )//에러나면 postId == cardId 파싱, 또는 form 속성값을 따로 받기
+  .catch((err) => {
+    console.log('putCardUpdate axios 에러! '+err )
+  })
 
+  return {
+    type: UPDATE_CARD,
+    title: title,
+    content: content,
+    cardId: postId,
+    tags: tags
+  };
+
+/*  return {
+    type: UPDATE_CARD,
+    payload: request.data.data
+  }*/
+};
 
 // 카드 좋아요
 export const addLike = id => {

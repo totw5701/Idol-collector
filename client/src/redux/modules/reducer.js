@@ -61,12 +61,26 @@ const postReducer = (state = post, action = { type: '' }) => {
       copy.push(action.payload);
       return copy;
 
-    case ADD_LIKE:
-      copy.find(c => c.id === action.id ).likes++;
+    case REMOVE_CARD:
+      copy = copy.filter(c=> c.id !== action.id);
       return copy;
 
-    case REMOVE_CARD:
-      copy.splice(action.id,1);
+    case UPDATE_CARD:
+      let idx = copy.findIndex(c => c.id === action.cardId);
+      let temp = copy.find(c => c.id === action.cardId);
+      temp.title = action.title; //form이 전체 데이터가 아니라서 일일이 넣어줘야 해... 비효율적
+      temp.content = action.content;
+      temp.tags = action.tags;
+      console.log(temp)
+      copy[idx] = temp;
+      /*
+      let idx = copy.findIndex(c => c.id === action.payload.id);
+      copy[idx] = action.payload;
+      */
+      return copy;
+
+    case ADD_LIKE:
+      copy.find(c => c.id === action.id ).likes++;
       return copy;
 
 
