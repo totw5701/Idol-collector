@@ -11,7 +11,7 @@ export default [
       content: "댓글내용 여기 써요!",
       createDate: "2022-02-06T15:19:49.146Z",
       didLike: true,
-      id: 200,
+      id: 10,
       likes: 0,
       modifyDate: "2022-02-06T15:19:49.146Z",
       nestedComments: [
@@ -21,7 +21,7 @@ export default [
           content: "대댓글",
           createDate: "2022-02-06T15:19:49.146Z",
           didLike: true,
-          id: 201,
+          id: 11,
           likes: 0,
           modifyDate: "2022-02-06T15:19:49.146Z"
         },
@@ -31,7 +31,7 @@ export default [
           content: "대댓글",
           createDate: "2022-02-06T15:19:49.146Z",
           didLike: true,
-          id: 202,
+          id: 12,
           likes: 0,
           modifyDate: "2022-02-06T15:19:49.146Z"
         }
@@ -43,7 +43,7 @@ export default [
       content: "댓글내용 여기 써요1!",
       createDate: "2022-02-06T15:19:49.146Z",
       didLike: true,
-      id: 203,
+      id: 20,
       likes: 0,
       modifyDate: "2022-02-06T15:19:49.146Z",
       nestedComments: [
@@ -53,7 +53,7 @@ export default [
           content: "대댓글",
           createDate: "2022-02-06T15:19:49.146Z",
           didLike: true,
-          id: 204,
+          id: 21,
           likes: 0,
           modifyDate: "2022-02-06T15:19:49.146Z"
         }
@@ -65,7 +65,7 @@ export default [
       content: "댓글내용 여기 써요2!",
       createDate: "2022-02-06T15:19:49.146Z",
       didLike: true,
-      id: 205,
+      id: 30,
       likes: 0,
       modifyDate: "2022-02-06T15:19:49.146Z",
       nestedComments: [
@@ -75,7 +75,7 @@ export default [
           content: "대댓글",
           createDate: "2022-02-06T15:19:49.146Z",
           didLike: true,
-          id: 206,
+          id: 31,
           likes: 0,
           modifyDate: "2022-02-06T15:19:49.146Z"
         }
@@ -87,7 +87,7 @@ export default [
       content: "댓글내용 여기 써요3!",
       createDate: "2022-02-06T15:19:49.146Z",
       didLike: true,
-      id: 207,
+      id: 40,
       likes: 0,
       modifyDate: "2022-02-06T15:19:49.146Z",
       nestedComments: [
@@ -97,7 +97,7 @@ export default [
           content: "대댓글",
           createDate: "2022-02-06T15:19:49.146Z",
           didLike: true,
-          id: 208,
+          id: 41,
           likes: 0,
           modifyDate: "2022-02-06T15:19:49.146Z"
         }

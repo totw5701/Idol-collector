@@ -187,11 +187,13 @@ export const removeScrap = async (id) => {
 
 // 카드 수정
 
+
+
 /* 댓글 */
 
-// 댓글 달기
+// 댓글 등록
 export const addCmt = async (content,cardId) => {
-  const request = await ApiService.postCmt( { content: content, postId: cardId } )
+  const request = await ApiService.postCmt( { content: content, postId: Number(cardId) } )
     .catch((err) => {
         console.log('postCmt axios 에러!'+ err )
     })
@@ -199,7 +201,7 @@ export const addCmt = async (content,cardId) => {
   return {
     type: ADD_CMT,
     cardId: cardId,
-    payload: {id: 2, authorId: 2, content: '더미' }//request.data.data
+    payload: {id: 4, authorId: 1, content: content }//request.data.data
   }
 }
 // 댓글 삭제
@@ -226,7 +228,8 @@ export const updateCmt = async (cardId, cmtId, content) => {
   return {
     type: UPDATE_CMT,
     cardId: cardId,
-    payload:{id: 2, authorId: 2, content: '더미수정' } //request.data.data
+    cmtId: cmtId,
+    content: content
   }
 }
 
@@ -242,6 +245,65 @@ export const likeCmt = async (cardId, cmtId) => {
     type: LIKE_CMT,
     cardId: cardId,
     cmtId: cmtId
+  }
+}
+
+
+/* 대댓글 */
+
+// 대댓글 등록
+export const addNCmt = async (cardId, nComment ) => {
+  const request = ApiService.postNCmt(nComment)//혹시 에러나면 여기서 Number파싱
+    .catch((err) => {console.log('postNCmt axios 에러! '+err )})
+
+  return {
+    type: ADD_NCMT,
+    cardId: cardId,
+    cmtId: nComment.commentId,
+    payload: {id: 10, authorId: 1, content: nComment.content }//request.data.data
+  }
+}
+
+
+// 대댓글 삭제
+export const removeNCmt = async (cardId, cmtId, nCmtId ) => {
+  const request = ApiService.delNCmtId(Number(cmtId))
+    .catch((err)=> {
+      console.log('delNCmtId axios 에러!'+ err )
+    })
+  return {
+    type: REMOVE_NCMT,
+    cardId: cardId,
+    cmtId: cmtId,
+    nCmtId: nCmtId
+  }
+}
+// 대댓글 수정
+export const updateNCmt = async (cardId, cmtId, nCmt ) => {
+  const request = ApiService.putNCmtUpdate(nCmt)//오류나면 nCmt id를 여기서 Number 파싱
+    .catch((err)=> {
+      console.log('putNCmtUpdate axios 에러!'+ err )
+    })
+  return {
+    type: UPDATE_NCMT,
+    cardId: cardId,
+    cmtId: cmtId,
+    nCmtId: nCmt.id,
+    content: nCmt.content
+  }
+}
+// 대댓글 좋아요
+export const likeNCmt = async (cardId,cmtId,nCmtId) => {
+  const request = ApiService.putNCmtLike(Number(nCmtId))
+    .catch((err)=> {
+      console.log('putNCmtLike axios 에러!'+ err )
+    })
+
+  return {
+    type: LIKE_NCMT,
+    cardId: cardId,
+    cmtId: cmtId,
+    nCmtId: nCmtId
   }
 }
 

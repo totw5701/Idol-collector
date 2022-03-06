@@ -68,7 +68,11 @@ const postReducer = (state = post, action = { type: '' }) => {
     case REMOVE_CARD:
       copy.splice(action.id,1);
       return copy;
+
+
 // cmt,ncmt 모두 post 내의 card에서 접근해야 됨 => dispatch 할 때 card의 id를 cardId로 받아오기
+// 댓글, 대댓글... api 분리해서 받아온 뒤 reducer 분리하는 게 좋지 않을까? 아래처럼 데이터를 순회하면 너무 비효율적인데
+
     case ADD_CMT:
       copy.find(c=> c.id === action.cardId).comments.push(action.payload);
       return copy;
@@ -79,13 +83,40 @@ const postReducer = (state = post, action = { type: '' }) => {
       return copy;
 
     case UPDATE_CMT:
-      let idx = copy.find(c=> c.id === action.cardId ).comments.findIndex(cmt=> cmt.id === action.payload.id )
-      copy.find(c=> c.id === action.cardId ).comments[idx] = action.payload;
+      copy.find(c=> c.id === action.cardId ).comments.find(cmt=> cmt.id === action.cmtId).content = action.content;
       return copy;
 
     case LIKE_CMT:
       copy.find(c=> c.id === action.cardId ).comments.find(cmt=> cmt.id === action.cmtId).likes++;
-      console.log(copy.find(c=> c.id === action.cardId ).comments);
+      //console.log(copy.find(c=> c.id === action.cardId ).comments);
+      return copy;
+
+    case ADD_NCMT:
+      copy.find(c=> c.id === action.cardId )
+      .comments.find(cmt=> cmt.id === action.cmtId).nestedComments.push(action.payload);
+      return copy;
+
+    case REMOVE_NCMT:
+      let nComments = copy.find(c=> c.id === action.cardId )
+      .comments.find(cmt=> cmt.id === action.cmtId).nestedComments.filter(nCmt => nCmt.id !== action.nCmtId);
+
+      copy.find(c=> c.id === action.cardId )
+      .comments.find(cmt=> cmt.id === action.cmtId).nestedComments = nComments;
+
+      return copy;
+
+    case UPDATE_NCMT:
+
+      copy.find(c=> c.id === action.cardId ).comments.find(cmt=> cmt.id === action.cmtId)
+      .nestedComments.find(nCmt => nCmt.id === action.nCmtId).content = action.content;
+
+      return copy;
+
+    case LIKE_NCMT:
+      copy.find(c=> c.id === action.cardId ).comments.find(cmt=> cmt.id === action.cmtId)
+      .nestedComments.find(nCmt => nCmt.id === action.nCmtId).likes++;
+
+      console.log(copy.find(c=> c.id === action.cardId ).comments.find(cmt=> cmt.id === action.cmtId).nestedComments);
       return copy;
 
     default:
