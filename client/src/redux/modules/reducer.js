@@ -70,6 +70,7 @@ const postReducer = (state = post, action = { type: '' }) => {
       return copy;
 
 
+
 // cmt,ncmt 모두 post 내의 card에서 접근해야 됨 => dispatch 할 때 card의 id를 cardId로 받아오기
 // 댓글, 대댓글... api 분리해서 받아온 뒤 reducer 분리하는 게 좋지 않을까? 아래처럼 데이터를 순회하면 너무 비효율적인데
 
@@ -143,11 +144,16 @@ const userCardReducer = (state = usercard, action = { type: '' }) => {
 
 // mypage 스크랩모음
 const scrapReducer = (state = scrap, action = { type: '' }) => {
+  let copy = [...state];
   switch (action.type) {
     case USER_SCRAP:
+      copy = [...state,...action.payload];
       return { ...state, userScrap: action.payload };
     case ADD_SCRAP:
       return {...state, userScrap: [...state,...action.payload]}
+    case REMOVE_SCRAP:
+      copy = copy.filter(c=> c.id !== action.cardId);
+      return copy;
     default:
       return state;
   }

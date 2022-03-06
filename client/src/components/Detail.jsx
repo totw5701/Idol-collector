@@ -13,7 +13,8 @@ import Validator from '../Validator'
 import {
   addLike,
   removeCard,
-  addCmt
+  addCmt,
+  removeScrap
    } from '../redux/modules/actions'
 import { ADD_CMT } from '../redux/modules/types'
 function Detail({card}){
@@ -118,16 +119,18 @@ function Detail({card}){
   const handleCmtSubmit = e => { // 댓글 등록
     //inputRef.current.style.height = '39px';
     e.preventDefault() // submit할 떄 새로고침 방지
+
     let comment = { content: inputRef.current.value, postId: card.id }
-    console.log(comment)
+    //console.log(comment)
+
     if(inputRef.current.value == null || inputRef.current.value === ''){
       alert('내용을 입력해주세요!')
     }else{
       addCmt(inputRef.current.value, card.id).then((result) => {
         dispatch(result)
       })
-
     }
+
   };
 
   const handleDelCard = () => { // 카드 삭제
@@ -177,18 +180,11 @@ function Detail({card}){
   }
 
   const handleUnScrap = () => { // 카드 스크랩 취소
-
-    ApiService.delCardUnscrap(card.id)
-    .then((result) => {
-      console.log('카드 스크랩 취소 완료')
+    removeScrap(card.id).then((result) => {
+      dispatch(result);
+      setDidScrap(false);//스크랩 제대로 실행된 경우만 작동
     })
-    .catch((err) => {
-      console.log('delCardUnscrap axios 에러! '+err )
-    })
-    setDidScrap(false)
   }
-
-
 
   return (
     <DetailBase>
