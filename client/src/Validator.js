@@ -30,7 +30,7 @@ class Validator {
            failed.push(this.regObj[el.id].msg)
          }else{ //태그 1~5개 입력시 각각의 태그 유효성 검사
            this.tags.map((tag) => {
-             if(!this.regObj['tags'].rule.test(tag) ){
+             if(!this.regObj['tags'].rule.test(tag.name) ){
                failed.push(this.regObj[el.id].msg)
              }
            })
