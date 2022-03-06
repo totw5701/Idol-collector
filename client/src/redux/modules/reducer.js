@@ -164,7 +164,9 @@ const scrapReducer = (state = scrap, action = { type: '' }) => {
       copy = [...state,...action.payload];
       return { ...state, userScrap: action.payload };
     case ADD_SCRAP:
-      return {...state, userScrap: [...state,...action.payload]}
+      console.log(action.payload);
+      copy.push(action.payload);
+      return copy;
     case REMOVE_SCRAP:
       copy = copy.filter(c=> c.id !== action.cardId);
       return copy;

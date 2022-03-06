@@ -14,6 +14,7 @@ import {
   addLike,
   removeCard,
   addCmt,
+  addScrap,
   removeScrap
    } from '../redux/modules/actions'
 import { ADD_CMT } from '../redux/modules/types'
@@ -167,22 +168,16 @@ function Detail({card}){
 
 
   const handleScrap = () => { // 카드 스크랩
-
-    ApiService.putCardScrap(card.id)
-    .then((result) => {
-      console.log('카드 스크랩 완료')
+    addScrap(card.id).then((result) => {
+      dispatch(result);
+      setDidScrap(true);//스크랩 제대로 실행된 경우만 작동
     })
-    .catch((err) => {
-      console.log('putCardScrap axios 에러! '+err )
-    })
-    //addScrap(card.id).then((result) => { dispatch(result) })
-    setDidScrap(true)
   }
 
   const handleUnScrap = () => { // 카드 스크랩 취소
     removeScrap(card.id).then((result) => {
       dispatch(result);
-      setDidScrap(false);//스크랩 제대로 실행된 경우만 작동
+      setDidScrap(false);
     })
   }
 

@@ -157,6 +157,46 @@ export const addLike = id => {
   };
 };
 
+// 스크랩
+export const addScrap = async (id) => {
+  const request = await ApiService.putCardScrap(id)
+    .catch((err) => {
+       console.log('putCardScrap axios 에러! '+err )
+     })
+
+/*  return {
+    type: ADD_SCRAP,
+    payload: request.data.data
+  }*/
+
+  return { //더미
+    type: ADD_SCRAP,
+    payload:   {
+                 authorId: 3,
+                 authorNickName: "회원 별명",
+                 createDate: "2022-02-06T15:19:49.146Z",
+                 comments: [
+
+                 ],
+                 content: "설명은 파란배경 아이돌 사진",
+                 didLike: true,
+                 didScrap: true,
+                 id: 4,
+                 likes: 10000,
+                 oriFileName: "string",
+                 storeFileName:
+                'https://img.koreatimes.co.kr/upload/newsV2/images/202108/c6758c3ec6454152bf0d29e969caac1c.jpg/dims/resize/740/optimize',
+                tags: [{name:'아무나'},{name:'아이돌'}
+                   ],
+                 title: "방탄 버터.",
+                 views: 12
+                 }//request.data.data //스크랩한 카드 객체
+  }
+
+}
+
+
+
 // 스크랩 취소
 export const removeScrap = async (id) => {
   const request = await ApiService.delCardUnscrap(id)
