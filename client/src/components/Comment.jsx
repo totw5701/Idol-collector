@@ -14,8 +14,8 @@ import NComment from './NComment'
 import
 { removeCmt,
   updateCmt,
-  likeCmt
-
+  likeCmt,
+  addNCmt
 } from '../redux/modules/actions'
 
 
@@ -36,7 +36,7 @@ function Comment(props) {
   const [isEditMenu,setIsEditMenu] =useState(false) //댓글 삭제, 수정 햄버거 스위치
 
   const [openEditor,setOpenEditor] = useState('') // 댓글 입력창 위치:  cmt.id 저장 후 해당 id인 댓글 아래만 나타나게
-
+  const [cmtOpen,setCmtOpen] = useState('')//댓글 숨기기 토글
   const [cmtValue,setCmtValue] = useState()// 댓글 수정시 쓸 state
 
   const toggleNCmt =() => setIsNCmt(prev => !prev)
@@ -57,20 +57,17 @@ function Comment(props) {
   const handleNCmtSubmit = e => {
 
     setOpenEditor('')
-
     let nComment = {  commentId: Number(e.target[0].value) ,content: e.target[1].value }
     console.log(nComment)
 
     if(nComment.content == null){
       alert('내용을 입력해주세요!')
     }else{
-      ApiService.postNCmt(nComment)
-      .then((result) => {
-         console.log('대댓글 등록 완료')
-         setCmtValue(null)// 값 입력 후 cmt state 비워주기
-
+      setCmtValue(null)// 값 입력 후 cmt state 비워주기
+      addNCmt(cardId,nComment).then((result) => {
+        dispatch(result);
       })
-      .catch((err) => {console.log('postNCmt axios 에러! '+err )})
+
     }
 
   }
@@ -85,7 +82,7 @@ function Comment(props) {
 
 // 댓글 수정
   const handleCmtUpdate = id => {
-    //console.log({ id: Number(id), content: cmtValue })
+    console.log({ id: Number(id), content: cmtValue })
     if(cmtValue ==null){
       alert('내용을 입력해주세요!')
     }else{
@@ -132,15 +129,16 @@ const nCmtToggle = () =>  setShowNCmt(prev => !prev )
       { cmt.nestedComments && cmt.nestedComments.length> 0
         ? <NCmtToggle onClick = { () =>{
              nCmtToggle();
-             setOpenEditor(cmt.id);
+             setCmtOpen(cmt.id);
           }}>
-            { showNCmt && openEditor === cmt.id ? cmt.nestedComments.length+'개 댓글 숨기기' : cmt.nestedComments.length+'개 댓글 보기' }
+            { showNCmt && cmtOpen === cmt.id ? cmt.nestedComments.length+'개 댓글 숨기기' : cmt.nestedComments.length+'개 댓글 보기' }
          </NCmtToggle>
 
         : <NCmtToggle></NCmtToggle>
       }
         <Menu>
           <li>
+            {cmt.likes}
             <FavoriteIcon type = 'button' onClick = { () => { handleCmtLike(cmt.id) }} />
           </li>
           <li>
@@ -230,9 +228,9 @@ const nCmtToggle = () =>  setShowNCmt(prev => !prev )
         )}
 
   { /* 대댓글 리스트 컴포넌트 */ }
-        { showNCmt && openEditor === cmt.id &&(
+        { showNCmt && cmtOpen === cmt.id &&(
         <>
-           <NComment nestedComments = { cmt.nestedComments } nCmtLimit = { nCmtLimit }/>
+           <NComment nestedComments = { cmt.nestedComments } nCmtLimit = { nCmtLimit } cardId = {cardId} cmtId = {cmt.id}/>
 
            { nCmtLimit < cmt.nestedComments.length
              && (<button onClick={ () => { nCmtPage(cmt.nestedComments.length) }}> 대댓글 더보기 </button>)
