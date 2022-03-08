@@ -47,11 +47,10 @@ public class CardController {
 
     @ApiOperation(value = "카드 생성", notes = "카드를 생성합니다.")
     @PostMapping()
-    public CommonResult<Long> create(@ApiParam @Validated @ModelAttribute PostSaveRequestDto form) throws IOException {
+    public CommonResult<PostResponseDto> create(@ApiParam @Validated @ModelAttribute PostSaveRequestDto form) throws IOException {
 
-        Long id = postService.create(form);
-
-        return responseService.getResult(id);
+        PostResponseDto postResponseDto = postService.create(form);
+        return responseService.getResult(postResponseDto);
     }
 
     @ApiOperation(value = "카드 상세정보", notes = "카드 상세정보를 조회합니다.")
@@ -93,10 +92,10 @@ public class CardController {
 
     @ApiOperation(value = "카드 스크랩", notes = "이 카드를 스크랩합니다.")
     @PutMapping("/scrap/{id}")
-    public CommonResult<Long> scrap(@PathVariable("id") Long id) {
+    public CommonResult<PostResponseDto> scrap(@PathVariable("id") Long id) {
 
-        Long scrapId = postService.scrap(id);
-        return responseService.getResult(scrapId);
+        PostResponseDto scrap = postService.scrap(id);
+        return responseService.getResult(scrap);
     }
 
     @ApiOperation(value = "스크랩 취소", notes = "스크랩을 취소합니다.")
@@ -110,7 +109,7 @@ public class CardController {
     @GetMapping("/image/{fileName}")
     public Resource imageFile(@PathVariable String fileName) throws MalformedURLException {
 
-        File file = new File(fileStore.getProfileFullPath(fileName));
+        File file = new File(fileStore.getFullPath(fileName));
         if(!file.exists()) return null;
         return new UrlResource("file:" + fileStore.getFullPath(fileName));
     }

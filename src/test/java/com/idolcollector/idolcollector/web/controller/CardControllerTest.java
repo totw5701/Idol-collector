@@ -67,11 +67,11 @@ class CardControllerTest {
         MockMultipartFile mf = new MockMultipartFile("image","test.png", "img", new FileInputStream(img));
 
         PostSaveRequestDto form = new PostSaveRequestDto("title", "content", mf, tags);
-        doReturn(1L).when(postService).create(any(PostSaveRequestDto.class));
+        doReturn(new PostResponseDto(generatePost(generateMember()))).when(postService).create(any(PostSaveRequestDto.class));
 
         // when
         final ResultActions resultActions = mockMvc.perform(
-                MockMvcRequestBuilders.multipart("/api/card/create")
+                MockMvcRequestBuilders.multipart("/api/cards")
                         .file("attachFile", form.getAttachFile().getBytes())
                         .param("title", form.getTitle())
                         .param("content", form.getContent())
@@ -94,7 +94,7 @@ class CardControllerTest {
 
         // When
         ResultActions resultActions = mockMvc.perform(
-                MockMvcRequestBuilders.get("/api/card/1")
+                MockMvcRequestBuilders.get("/api/cards/1")
         );
 
         // Then
@@ -107,11 +107,11 @@ class CardControllerTest {
     @Test
     void 카드_스크랩() throws Exception {
         // Given
-        doReturn(1L).when(postService).scrap(any(Long.class));
+        doReturn(new PostResponseDto(generatePost(generateMember()))).when(postService).scrap(any(Long.class));
 
         // When
         ResultActions resultActions = mockMvc.perform(
-                MockMvcRequestBuilders.put("/api/card/scrap/1")
+                MockMvcRequestBuilders.put("/api/cards/scrap/1")
         );
 
         // Then
@@ -128,7 +128,7 @@ class CardControllerTest {
 
         // When
         ResultActions resultActions = mockMvc.perform(
-                MockMvcRequestBuilders.get("/api/card/image/text.png")
+                MockMvcRequestBuilders.get("/api/cards/image/text.png")
         );
 
         // Then

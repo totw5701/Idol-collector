@@ -296,7 +296,7 @@ class PostServiceTest {
         doReturn(new Trending()).when(trendingRepository).save(any());
 
         // When
-        Long scrap = postService.scrap(post.getId());
+        PostResponseDto scrap = postService.scrap(post.getId());
 
         // Verify
         verify(postRepository, times(1)).findById(any());

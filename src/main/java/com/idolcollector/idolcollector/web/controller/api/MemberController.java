@@ -118,6 +118,7 @@ public class MemberController {
         return responseService.getSuccessResult();
     }
 
+    @ApiOperation(value = "회원 프로필이미지", notes = "회원 프로필 이미지를 받아옵니다.")
     @GetMapping("/image/{fileName}")
     public Resource imageFile(@PathVariable String fileName) throws MalformedURLException {
 
