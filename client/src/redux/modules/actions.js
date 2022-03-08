@@ -114,7 +114,32 @@ export const removeCard = id => {
 }
 
 // 카드 수정
+export const updateCard = async (title,content,postId,tags) => {
+  const request = ApiService.putCardUpdate(
+    {
+      title: title,
+      content: content,
+      postId: Number(postId),
+      tags: tags
+    }
+  )//에러나면 postId == cardId 파싱, 또는 form 속성값을 따로 받기
+  .catch((err) => {
+    console.log('putCardUpdate axios 에러! '+err )
+  })
 
+  return {
+    type: UPDATE_CARD,
+    title: title,
+    content: content,
+    cardId: postId,
+    tags: tags
+  };
+
+/*  return {
+    type: UPDATE_CARD,
+    payload: request.data.data
+  }*/
+};
 
 // 카드 좋아요
 export const addLike = id => {
@@ -132,23 +157,21 @@ export const addLike = id => {
   };
 };
 
-
-
 // 스크랩
 export const addScrap = async (id) => {
-/*   const request = await ApiService.putCardScrap(id)
+  const request = await ApiService.putCardScrap(id)
     .catch((err) => {
        console.log('putCardScrap axios 에러! '+err )
      })
 
- return {
+/*  return {
     type: ADD_SCRAP,
     payload: request.data.data
   }*/
 
   return { //더미
     type: ADD_SCRAP,
-    payload: [  {
+    payload:   {
                  authorId: 3,
                  authorNickName: "회원 별명",
                  createDate: "2022-02-06T15:19:49.146Z",
@@ -167,10 +190,12 @@ export const addScrap = async (id) => {
                    ],
                  title: "방탄 버터.",
                  views: 12
-                 }]
+                 }//request.data.data //스크랩한 카드 객체
   }
 
 }
+
+
 
 // 스크랩 취소
 export const removeScrap = async (id) => {
@@ -181,12 +206,9 @@ export const removeScrap = async (id) => {
 
   return {
     type: REMOVE_SCRAP,
-    payload: request.data.data //아마 스크랩한 카드의 id일듯
+    cardId: id
   }
 }
-
-// 카드 수정
-
 
 
 /* 댓글 */

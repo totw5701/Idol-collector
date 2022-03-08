@@ -1,4 +1,122 @@
 export default [
+ {
+  authorId: 1,
+  authorNickName: "회원 별명",
+  createDate: "2022-02-06T15:19:49.146Z",
+  comments: [
+    {
+      authorId: 1,
+      authorNickName: "별명0",
+      content: "댓글내용 여기 써요!",
+      createDate: "2022-02-06T15:19:49.146Z",
+      didLike: true,
+      id: 10,
+      likes: 0,
+      modifyDate: "2022-02-06T15:19:49.146Z",
+      nestedComments: [
+        {
+          authorId: 3,
+          authorNickName: "별명1",
+          content: "대댓글",
+          createDate: "2022-02-06T15:19:49.146Z",
+          didLike: true,
+          id: 11,
+          likes: 0,
+          modifyDate: "2022-02-06T15:19:49.146Z"
+        },
+        {
+          authorId: 5,
+          authorNickName: "별명1",
+          content: "대댓글",
+          createDate: "2022-02-06T15:19:49.146Z",
+          didLike: true,
+          id: 12,
+          likes: 0,
+          modifyDate: "2022-02-06T15:19:49.146Z"
+        }
+      ]
+    },
+    {
+      authorId: 7,
+      authorNickName: "별명1",
+      content: "댓글내용 여기 써요1!",
+      createDate: "2022-02-06T15:19:49.146Z",
+      didLike: true,
+      id: 20,
+      likes: 0,
+      modifyDate: "2022-02-06T15:19:49.146Z",
+      nestedComments: [
+        {
+          authorId: 9,
+          authorNickName: "별명1",
+          content: "대댓글",
+          createDate: "2022-02-06T15:19:49.146Z",
+          didLike: true,
+          id: 21,
+          likes: 0,
+          modifyDate: "2022-02-06T15:19:49.146Z"
+        }
+      ]
+    },
+    {
+      authorId: 11,
+      authorNickName: "별명2",
+      content: "댓글내용 여기 써요2!",
+      createDate: "2022-02-06T15:19:49.146Z",
+      didLike: true,
+      id: 30,
+      likes: 0,
+      modifyDate: "2022-02-06T15:19:49.146Z",
+      nestedComments: [
+        {
+          authorId: 13,
+          authorNickName: "별명1",
+          content: "대댓글",
+          createDate: "2022-02-06T15:19:49.146Z",
+          didLike: true,
+          id: 31,
+          likes: 0,
+          modifyDate: "2022-02-06T15:19:49.146Z"
+        }
+      ]
+    },
+    {
+      authorId: 15,
+      authorNickName: "별명3",
+      content: "댓글내용 여기 써요3!",
+      createDate: "2022-02-06T15:19:49.146Z",
+      didLike: true,
+      id: 40,
+      likes: 0,
+      modifyDate: "2022-02-06T15:19:49.146Z",
+      nestedComments: [
+        {
+          authorId: 17,
+          authorNickName: "별명1",
+          content: "대댓글",
+          createDate: "2022-02-06T15:19:49.146Z",
+          didLike: true,
+          id: 41,
+          likes: 0,
+          modifyDate: "2022-02-06T15:19:49.146Z"
+        }
+      ]
+    },
+
+  ],
+  content: "설명은 파란배경 아이돌 사진",
+  didLike: true,
+  didScrap: true,
+  id: 0,
+  likes: 10000,
+  oriFileName: "string",
+  storeFileName:
+  'https://pds.joongang.co.kr/news/component/htmlphoto_mmdata/202012/09/4b713b30-3499-4cf7-a95d-1e877f0367d4.jpg',
+  tags: [{name:'아무나'},{name:'아이돌'}
+    ],
+  title: "카드제목은 로운입니다.",
+  views: 0
+  },
     {
         id: 5,
         authorNickName: 'nickname5',

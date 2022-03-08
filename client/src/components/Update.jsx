@@ -12,30 +12,35 @@ import { useSelector, useDispatch } from 'react-redux';
 import ApiService from '../ApiService'
 import NComment from './NComment'
 import Validator from '../Validator'
-
+import {
+  updateCard
+   } from '../redux/modules/actions'
 
 function Update (props) { //card, isUpdate, setIsUpdate
   const card = props.card
+  const dispatch = useDispatch();
   const [title, setTitle] = useState()
   const [content, setContent] = useState()
   const [postId, setPostId] = useState(card.id)
-  const [tag,setTag] = useState()
-
+  const [tag,setTag] = useState({})
   const [tags,setTags] = useState([])
 
   const addTag = () => {
+  console.log(tag.name)
     if(tags.length > 4) {
       alert('태그는 최대 5개까지 등록 가능합니다!')
-    }else if( !tag.match(/^[a-zA-Zㄱ-ㅎ가-힣]{1,15}$/) ){
+    }else if( !tag.name.match(/^[a-zA-Zㄱ-ㅎ가-힣]{1,15}$/) ){
       alert('태그는 띄어쓰기 없이 15자 이내 한글로만 입력해주세요!')
     }else{
-      setTags([...tags,tag])
+      let copyTags = [...tags];
+      copyTags.push(tag);
+      setTags(copyTags);
     }
 
   }
 
-  const handleCloseTag = tag => { //태그 닫기
-    setTags(tags.filter( cur => cur !== tag))
+  const handleCloseTag = tagName => { //태그 닫기
+    setTags(tags.filter( cur => cur.name !== tagName))
   }
 
 /* 유효성 검사 */
@@ -58,19 +63,11 @@ function Update (props) { //card, isUpdate, setIsUpdate
 
 
   const handleUpdateCard = (title,content,postId) => { // 카드 수정
-    ApiService.putCardUpdate(
-      {
-        title: title,
-        content: content,
-        postId: postId,
-        tags: tags
-      }
-    )
+    updateCard(title,content,postId,tags)
     .then((result) => {
-      alert('카드 수정이 완료됐습니다!')
-    })
-    .catch((err) => {
-      console.log('putCardUpdate axios 에러! '+err )
+      dispatch(result);
+      alert('카드 수정이 완료됐습니다!');
+      props.setIsUpdate(false);
     })
 
   }
@@ -89,7 +86,7 @@ function Update (props) { //card, isUpdate, setIsUpdate
             <Input type='text' name='content'  onChange = {(e)=> { setContent(e.target.value) }}/>
           </Label>
           <Label> 태그
-            <Input type='text' name='tag' onChange = {(e)=> { setTag(e.target.value) }}/>
+            <Input type='text' name='tag' onChange = {(e)=> { setTag( { name : e.target.value } ) }}/>
             <AddTag onClick = { addTag }>태그등록</AddTag>
           </Label>
           <Label>
@@ -97,8 +94,8 @@ function Update (props) { //card, isUpdate, setIsUpdate
             { tags.length > 0 && (
               tags.map( (tag,idx) =>
                 <Tag key={idx}>
-                  {tag}
-                  <CancelIcon onClick={() => { handleCloseTag(tag) }} />
+                  {tag.name}
+                  <CancelIcon onClick={() => { handleCloseTag(tag.name) }} />
                 </Tag>
               )
             )}

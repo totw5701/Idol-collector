@@ -79,7 +79,9 @@ function CreateContainer() {
 
   const handleInputTag = e => {
     e.preventDefault();
-    setTags([...tags, e.target.tags.value]);
+    let copyTags = [...tags];
+    copyTags.push({name: e.target.tags.value});
+    setTags(copyTags);
 
   };
 
@@ -173,7 +175,7 @@ function CreateContainer() {
             <TagField>
               {tags.map((cur, i) => (
                 <Tag key={i}>
-                  {cur}
+                  {cur.name}
                   <CancelIcon onClick={() => handleCloseTag(i)} />
             </Tag>
           ))}

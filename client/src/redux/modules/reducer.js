@@ -61,13 +61,28 @@ const postReducer = (state = post, action = { type: '' }) => {
       copy.push(action.payload);
       return copy;
 
+    case REMOVE_CARD:
+      copy = copy.filter(c=> c.id !== action.id);
+      return copy;
+
+    case UPDATE_CARD:
+      let idx = copy.findIndex(c => c.id === action.cardId);
+      let temp = copy.find(c => c.id === action.cardId);
+      temp.title = action.title; //form이 전체 데이터가 아니라서 일일이 넣어줘야 해... 비효율적
+      temp.content = action.content;
+      temp.tags = action.tags;
+      console.log(temp)
+      copy[idx] = temp;
+      /*
+      let idx = copy.findIndex(c => c.id === action.payload.id);
+      copy[idx] = action.payload;
+      */
+      return copy;
+
     case ADD_LIKE:
       copy.find(c => c.id === action.id ).likes++;
       return copy;
 
-    case REMOVE_CARD:
-      copy.splice(action.id,1);
-      return copy;
 
 
 // cmt,ncmt 모두 post 내의 card에서 접근해야 됨 => dispatch 할 때 card의 id를 cardId로 받아오기
@@ -143,11 +158,18 @@ const userCardReducer = (state = usercard, action = { type: '' }) => {
 
 // mypage 스크랩모음
 const scrapReducer = (state = scrap, action = { type: '' }) => {
+  let copy = [...state];
   switch (action.type) {
     case USER_SCRAP:
+      copy = [...state,...action.payload];
       return { ...state, userScrap: action.payload };
     case ADD_SCRAP:
-      return {...state, userScrap: [...state,...action.payload]}
+      console.log(action.payload);
+      copy.push(action.payload);
+      return copy;
+    case REMOVE_SCRAP:
+      copy = copy.filter(c=> c.id !== action.cardId);
+      return copy;
     default:
       return state;
   }
