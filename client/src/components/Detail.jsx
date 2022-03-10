@@ -18,6 +18,10 @@ import {
   removeScrap
    } from '../redux/modules/actions'
 import { ADD_CMT } from '../redux/modules/types'
+import domtoimage from 'dom-to-image';
+import { saveAs } from 'file-saver';
+
+
 function Detail({card}){
 
   const member = useSelector ( ({memberReducer}) => { return memberReducer.userData })
@@ -52,6 +56,7 @@ function Detail({card}){
   const dispatch = useDispatch();
 
   const inputRef = useRef();
+  const imgRef = useRef();
 
   const toggleShow = () => setIsShow(prev => !prev)
 
@@ -146,11 +151,20 @@ function Detail({card}){
     ApiService.getCardImage('card.storeFileName')
     .then((result) => {
       console.log(result.data.data)//카드 다운로드 링크
-      const link = document.createElement('a');
+/*       const link = document.createElement('a');
+      const url = 'card/0';
+      link.href = url;
+      link.download = '';
       document.body.appendChild(link);
-      link.href = result.data.data;
-      link.click((e)=>{e.preventDefault()});// 해당 링크 자동 클릭 후 다운로드 진행
-      link.remove();// 다운로드 후 링크 삭제
+      link.click((e)=>{e.preventDefault()});// 해당 링크 자동 클릭 후 다운로드 진행 새로고침 방지
+      link.remove();// 다운로드 후 링크 삭제 */
+
+      domtoimage
+        .toBlob(imgRef.current)
+        .then((blob) => {
+          saveAs(blob,'cardFile.png');
+        });
+
     })
     .catch((err) => {
       console.log('getCardImage axios 실패! '+err )
@@ -192,7 +206,7 @@ function Detail({card}){
         <DetailBlock>
       { /* 이미지와 내부메뉴 */ }
           <ImgBlock>
-            <img src={card.storeFileName} alt={`${card.title} 사진`} />
+            <img src={card.storeFileName} alt={`${card.title} 사진`} ref={imgRef}/>
             <Buttons>
               <Button onClick = { handleDelCard }>
                 <img src="/images/휴지통.png" alt="삭제" />
