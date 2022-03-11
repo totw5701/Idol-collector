@@ -2,6 +2,7 @@ package com.idolcollector.idolcollector.web.controller.api;
 
 import com.idolcollector.idolcollector.service.CommentService;
 import com.idolcollector.idolcollector.service.ResponseService;
+import com.idolcollector.idolcollector.web.dto.comment.CommentResponseDto;
 import com.idolcollector.idolcollector.web.dto.comment.CommentSaveRequestDto;
 import com.idolcollector.idolcollector.web.dto.comment.CommentUpdateRequestDto;
 import com.idolcollector.idolcollector.web.dto.response.CommonResult;
@@ -27,9 +28,9 @@ public class CommentController {
 
     @ApiOperation(value = "댓글 생성", notes = "댓글을 생성합니다.")
     @PostMapping()
-    public CommonResult<Object> create(@ApiParam @Validated @RequestBody CommentSaveRequestDto form) throws IOException {
-        commentService.save(form);
-        return responseService.getSuccessResult();
+    public CommonResult<CommentResponseDto> create(@ApiParam @Validated @RequestBody CommentSaveRequestDto form) throws IOException {
+        CommentResponseDto comment = commentService.save(form);
+        return responseService.getResult(comment);
     }
 
     @ApiOperation(value = "댓글 수정", notes = "댓글을 수정합니다.")

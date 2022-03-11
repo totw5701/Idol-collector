@@ -77,7 +77,7 @@ public class CommentServiceTest {
         doReturn(generateComment(post, member)).when(commentRepository).save(any(Comment.class));
 
         // When
-        Long saveId = commentService.save(form);
+        CommentResponseDto save = commentService.save(form);
 
         // Then
 

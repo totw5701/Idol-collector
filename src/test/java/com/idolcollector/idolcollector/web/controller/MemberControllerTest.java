@@ -68,7 +68,7 @@ class MemberControllerTest {
 
         // When
         ResultActions resultActions = mockMvc.perform(
-                MockMvcRequestBuilders.get("/api/member/notice")
+                MockMvcRequestBuilders.get("/api/members/notice")
         );
 
         // Then
@@ -98,7 +98,7 @@ class MemberControllerTest {
 
         // When
         ResultActions resultActions = mockMvc.perform(
-                MockMvcRequestBuilders.get("/api/member/mypage")
+                MockMvcRequestBuilders.get("/api/members/mypage")
         );
 
         // Then
@@ -127,7 +127,7 @@ class MemberControllerTest {
 
         // When
         ResultActions resultActions = mockMvc.perform(
-                MockMvcRequestBuilders.get("/api/member/member/1")
+                MockMvcRequestBuilders.get("/api/members/1")
         );
 
         // Then

@@ -106,7 +106,10 @@ class BundleServiceTest {
         Bundle bundle = generateBundle(member);
 
         Optional<Bundle> bundleOp = Optional.of(bundle);
+        Optional<Member> memberOp = Optional.of(member);
 
+        doReturn(memberOp).when(memberRepository).findById(55L);
+        doReturn(55L).when(httpSession).getAttribute(any(String.class));
         doReturn(bundleOp).when(bundleRepository).findById(any());
         doNothing().when(bundleRepository).delete(any(Bundle.class));
 
@@ -125,7 +128,10 @@ class BundleServiceTest {
         Bundle bundle = generateBundle(member);
 
         Optional<Bundle> bundleOp = Optional.of(bundle);
+        Optional<Member> memberOp = Optional.of(member);
 
+        doReturn(memberOp).when(memberRepository).findById(55L);
+        doReturn(55L).when(httpSession).getAttribute(any(String.class));
         doReturn(bundleOp).when(bundleRepository).findById(1L);
 
         BundleUpdateDto form = new BundleUpdateDto(1L, "updated title", "updated desc");
@@ -149,7 +155,10 @@ class BundleServiceTest {
         Optional<Bundle> bundleOp = Optional.of(bundle);
         Optional<Post> postOp = Optional.of(post);
         Optional<BundlePost> bundlePostOp = Optional.empty();
+        Optional<Member> memberOp = Optional.of(member);
 
+        doReturn(memberOp).when(memberRepository).findById(55L);
+        doReturn(55L).when(httpSession).getAttribute(any(String.class));
         doReturn(bundleOp).when(bundleRepository).findById(any());
         doReturn(postOp).when(postRepository).findById(any());
         doReturn(bundlePostOp).when(bundlePostRepository).findByPostBundleId(any(), any());
@@ -163,25 +172,6 @@ class BundleServiceTest {
         // Verify
         verify(bundlePostRepository, times(1)).save(any());
     }
-
-
-    @Test
-    void 카드_삭제() {
-        // Given
-        Optional<BundlePost> bundlePostOp = Optional.of(new BundlePost());
-
-        doReturn(bundlePostOp).when(bundlePostRepository).findByPostBundleId(1L, 1L);
-        doNothing().when(bundlePostRepository).delete(any(BundlePost.class));
-
-        BundleDeleteCardDto form = new BundleDeleteCardDto(1L, 1L);
-
-        // When
-        bundleService.deletePost(form);
-
-        // Verify
-        verify(bundlePostRepository, times(1)).delete(any(BundlePost.class));
-    }
-
 
     @Test
     void 회원_카드집_조회() {

@@ -69,7 +69,7 @@ public class CommentService {
     }
 
     @Transactional
-    public Long save(CommentSaveRequestDto form) {
+    public CommentResponseDto save(CommentSaveRequestDto form) {
 
         Post post = postRepository.findById(form.getPostId())
                 .orElseThrow(CPostNotFoundException::new);
@@ -83,7 +83,7 @@ public class CommentService {
         trendingRepository.save(new Trending(post, TrendingType.COMMENT));
 
         Comment save = commentRepository.save(new Comment(member, post, form.getContent()));
-        return save.getId();
+        return new CommentResponseDto(save);
     }
 
     @Transactional

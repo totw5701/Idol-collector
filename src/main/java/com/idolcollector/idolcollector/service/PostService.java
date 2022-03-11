@@ -65,7 +65,7 @@ public class PostService {
     private final HttpSession httpSession;
 
     @Transactional
-    public Long create(@ModelAttribute PostSaveRequestDto form) throws IOException {
+    public PostResponseDto create(@ModelAttribute PostSaveRequestDto form) throws IOException {
 
         Member member = memberRepository.findById((Long) httpSession.getAttribute("loginMember")).get();
 
@@ -80,7 +80,7 @@ public class PostService {
             tagService.createPostTag(form.getTags(), savedPost);
         }
 
-        return savedPost.getId();
+        return new PostResponseDto(savedPost);
     }
 
 
@@ -143,7 +143,7 @@ public class PostService {
 
 
     @Transactional
-    public Long update(PostUpdateRequestDto form) {
+    public PostResponseDto update(PostUpdateRequestDto form) {
         Post post = postRepository.findById(form.getPostId())
                 .orElseThrow(CPostNotFoundException::new);
 
@@ -161,7 +161,7 @@ public class PostService {
             tagService.createPostTag(form.getTags(), post);
         }
 
-        return post.getId();
+        return new PostResponseDto(post);
     }
 
 
@@ -251,7 +251,7 @@ public class PostService {
 
 
     @Transactional
-    public Long scrap(Long id) {
+    public PostResponseDto scrap(Long id) {
         Post post = postRepository.findById(id)
                 .orElseThrow(CPostNotFoundException::new);
 
@@ -266,7 +266,7 @@ public class PostService {
         // 추천 기록 테이블
         trendingRepository.save(new Trending(post, TrendingType.SCRAP));
 
-        return save.getId();
+        return new PostResponseDto(post);
     }
 
 

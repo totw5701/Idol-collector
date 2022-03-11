@@ -2,6 +2,7 @@ package com.idolcollector.idolcollector.web.controller.api;
 
 import com.idolcollector.idolcollector.service.NestedCommentService;
 import com.idolcollector.idolcollector.service.ResponseService;
+import com.idolcollector.idolcollector.web.dto.nestedcomment.NestedCommentResponseDto;
 import com.idolcollector.idolcollector.web.dto.nestedcomment.NestedCommentSaveRequestDto;
 import com.idolcollector.idolcollector.web.dto.nestedcomment.NestedCommentUpdateRequestDto;
 import com.idolcollector.idolcollector.web.dto.response.CommonResult;
@@ -28,9 +29,9 @@ public class NestedCommentController {
 
     @ApiOperation(value = "대댓글 생성", notes = "대댓글 생성한다.")
     @PostMapping()
-    public CommonResult<Object> create(@ApiParam @Validated @RequestBody NestedCommentSaveRequestDto form){
-        nestedCommentService.save(form);
-        return responseService.getSuccessResult();
+    public CommonResult<NestedCommentResponseDto> create(@ApiParam @Validated @RequestBody NestedCommentSaveRequestDto form){
+        NestedCommentResponseDto save = nestedCommentService.save(form);
+        return responseService.getResult(save);
     }
 
     @ApiOperation(value = "대댓글 수정", notes = "대댓글 수정한다.")

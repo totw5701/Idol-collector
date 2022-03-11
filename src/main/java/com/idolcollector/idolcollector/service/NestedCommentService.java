@@ -46,7 +46,7 @@ public class NestedCommentService {
 
 
     @Transactional
-    public Long save(NestedCommentSaveRequestDto form) {
+    public NestedCommentResponseDto save(NestedCommentSaveRequestDto form) {
         Comment comment = commentRepository.findById(form.getCommentId())
                 .orElseThrow(CCommentNotFoundException::new);
 
@@ -56,7 +56,7 @@ public class NestedCommentService {
         noticeRepository.save(new Notice(comment.getMember(), member, comment.getPost(), comment, NoticeType.COMMENT));
 
         NestedComment save = nestedCommentRepository.save(new NestedComment(member, comment, form.getContent()));
-        return save.getId();
+        return new NestedCommentResponseDto(save);
     }
 
 
